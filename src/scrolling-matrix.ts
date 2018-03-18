@@ -17,8 +17,7 @@ export default class ScrollingMatrix {
   
   constructor(speed: number = 100, width: number = 24, height: number = 8) {
     this._index = 0;
-    // TODO: Handle large dimensions with short string
-    this._width = 24;
+    this._width = 60;
     this._height = 8;
     this._display = [];
     this._speed = speed;
