@@ -25,7 +25,7 @@ export default class ScrollingMatrix {
   }
 
   play(board: Board): string {
-    if (this._index > board.boardLength() - this._width) {
+    if (this._index > board.boardLength()) {
       this._index = 0;
     }
 
@@ -33,7 +33,12 @@ export default class ScrollingMatrix {
 
 
     for(let i = 0; i < this._width; i++) {
-      const column = board.getAtIndex(this._index + i);
+      let column;
+      if (this._index + i >= board.boardLength()) {
+        column = board.getAtIndex((this._index + i) % board.boardLength());
+      } else {
+        column = board.getAtIndex(this._index + i);
+      }
       for(let j = 0; j < this._height; j++) {
         this._display[j][i] = column[j];
       }
