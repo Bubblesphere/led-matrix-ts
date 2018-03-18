@@ -1,10 +1,11 @@
 var path = require("path");
 
 module.exports = {
+  target: 'web',
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
   },
-  entry: "./src/index.tsx",
+  entry: "./src/index.ts",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
