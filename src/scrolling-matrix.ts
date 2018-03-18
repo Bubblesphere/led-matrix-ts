@@ -1,5 +1,12 @@
 import Board from './board';
 
+type PlayParameters = {
+  board: Board, 
+  callbackTrue?: (x: number, y: number) => any, 
+  callbackFalse?: (x: number, y: number) => any,
+  callbackDone?: (display: Array<Array<number>>) => any
+}
+
 export default class ScrollingMatrix {
   private _index: number;
   private _width: number;
@@ -23,15 +30,8 @@ export default class ScrollingMatrix {
       this._display.push(Array.apply(null, Array(this._width)).map(Number.prototype.valueOf,0));
     }
   }
-
-  play(board: Board): string {
-    if (this._index > board.boardLength()) {
-      this._index = 0;
-    }
-
-    this._generateEmptyDisplay();
-
-
+  
+  private _generateDisplay(board: Board): void {
     for(let i = 0; i < this._width; i++) {
       let column;
       if (this._index + i >= board.boardLength()) {
@@ -43,23 +43,46 @@ export default class ScrollingMatrix {
         this._display[j][i] = column[j];
       }
     }
-
-    let output = "";
-    for (let i = 0; i < this._height; i++) {
-      for (let j = 0; j < this._width; j++) {
-        output += this._display[i][j] == 1 ? "X" : " ";
-      }
-      output += '\n';
-    }
-
-    this._index++;
-
-    return output;
   }
 
-  loop(board: Board, callback: (output: string) => any) {
+  play(params: PlayParameters): void {
+    if (this._index > params.board.boardLength()) {
+      this._index = 0;
+    }
+
+    this._generateEmptyDisplay();
+    this._generateDisplay(params.board);
+
+    // Only run if a callback method is provided
+    if (params.callbackTrue || params.callbackFalse) {
+      for (let i = 0; i < this._height; i++) {
+        for (let j = 0; j < this._width; j++) {
+          if (this._display[i][j] == 1) {
+            if (params.callbackTrue) {
+              params.callbackTrue(i, j)
+            }
+          } else {
+            if (params.callbackFalse) {
+              params.callbackFalse(i, j)
+            }
+          }
+        }
+      }
+    }
+
+    params.callbackDone(this._display);
+
+    this._index++;
+  }
+
+  loop(params: PlayParameters) {
       setInterval(function() {
-        callback(this.play(board));
+        this.play({
+          board: params.board, 
+          callbackTrue: params.callbackTrue, 
+          callbackFalse: params.callbackFalse, 
+          callbackDone: params.callbackDone
+        });
       }.bind(this), this._speed);    
   }
 };

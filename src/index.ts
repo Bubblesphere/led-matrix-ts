@@ -31,6 +31,17 @@ const dictionary = new CharacterDictionary(characters);
 
 board.load("aaa", dictionary);
 
-matrix.loop(board, (output) => {
-  document.getElementById("root").innerHTML = output;
+
+matrix.loop({
+  board: board, 
+  callbackDone: (display) => { 
+    let output = "";
+    for(var i = 0; i < display.length; i++) {
+        for(var j = 0; j < display[i].length; j++) {
+          output += display[i][j] == 1 ? "X" : " ";
+        }
+      output += '\n';
+    }
+    document.getElementById("root").innerHTML = output; 
+  }
 });
