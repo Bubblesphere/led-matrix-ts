@@ -12,8 +12,11 @@ export default class Board {
   }
   
   private _addSpacing(): void {
-    this._characters.push(
-      new Character(['[space]'], Array.apply(null, Array(this._spacing)).map(Number.prototype.valueOf,0)));
+    this._characters.push(new Character(['[space]'], []));
+    for (let i = 0; i < this._spacing; i++) {
+      // TODO: Change hardcoded value 8 to board height
+      this._characters[this._characters.length-1].pushOutputColumn(Array.apply(null, Array(8)).map(Number.prototype.valueOf,0));
+    }
   }
 
   private _getCharacterAtIndex(index: number): number {
@@ -46,9 +49,12 @@ export default class Board {
   }
 
   load(input: String, dictionnary: CharacterDictionary): void {
-    for(let i = 0; i < input.length; i = i++) {
-      this._characters.push(dictionnary.find(input[i]));
-      this._addSpacing();
+    for(let i = 0; i < input.length; i++) {
+      const character = dictionnary.find(input[i]);
+      if (character) {
+        this._characters.push(character);
+        this._addSpacing();
+      }
     }
   }
 };

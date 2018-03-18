@@ -11,8 +11,8 @@ export default class Character {
     return this._output[index];
   } 
 
-  setOutputColumn(index: number, value: Array<number>): void {
-    this._output[index] = value;
+  pushOutputColumn( value: Array<number>): void {
+    this._output.push(value);
   }
 
   set output(value: Array<Array<number>>) {
@@ -20,7 +20,7 @@ export default class Character {
   }
 
   hasPattern(input: string): boolean {
-    return this._patterns.indexOf(input) > 0;
+    return this._patterns.indexOf(input) >= 0;
   }
 
   outputLength() {

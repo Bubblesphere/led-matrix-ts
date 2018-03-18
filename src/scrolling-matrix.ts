@@ -9,14 +9,17 @@ export default class ScrollingMatrix {
   private _speed: number;
   
   constructor(speed: number) {
+    this._index = 0;
+    this._width = 8;
+    this._display = [];
     this._speed = speed;
   }
   
-  private rotateDisplayRight90() {
+  private _rotateDisplayRight90() {
     this._display.reverse();
     for (var i = 0; i < this._display.length; i++) {
       for (var j = 0; j < i; j++) {
-        var temp = this._display[i][j];
+        const temp = this._display[i][j];
         this._display[i][j] = this._display[j][i];
         this._display[j][i] = temp;
       }
@@ -33,7 +36,8 @@ export default class ScrollingMatrix {
       this._display.push(board.getAtIndex(this._index + i));
     }
 
-    this.rotateDisplayRight90();
+    // TODO: Fix bug
+    //this._rotateDisplayRight90();
 
     let output = "";
     for (let i = 0; i < this._width; i++) {
@@ -43,12 +47,14 @@ export default class ScrollingMatrix {
       output += '\n';
     }
 
-    this._speedBuffer++;
-    if(this._speedBuffer > this._speed) {
-      this._index++;
-      this._speedBuffer = 0;
-    }
+    this._index++;
 
     return output;
+  }
+
+  loop(board: Board, callback: (output: string) => any) {
+      setInterval(function() {
+        callback(this.play(board));
+      }.bind(this), this._speed);    
   }
 };
