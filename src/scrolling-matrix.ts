@@ -2,27 +2,25 @@ import Board from './board';
 
 export default class ScrollingMatrix {
   private _index: number;
-  // TODO: Have distinctive width and height
   private _width: number;
+  private _height: number;
   private _display: Array<Array<number>>;
   private _speedBuffer: number;
   private _speed: number;
   
-  constructor(speed: number) {
+  constructor(speed: number = 100, width: number = 24, height: number = 8) {
     this._index = 0;
-    this._width = 8;
+    // TODO: Handle large dimensions with short string
+    this._width = 24;
+    this._height = 8;
     this._display = [];
     this._speed = speed;
   }
-  
-  private _rotateDisplayRight90() {
-    this._display.reverse();
-    for (var i = 0; i < this._display.length; i++) {
-      for (var j = 0; j < i; j++) {
-        const temp = this._display[i][j];
-        this._display[i][j] = this._display[j][i];
-        this._display[j][i] = temp;
-      }
+
+  private _generateEmptyDisplay(): void {
+    this._display.splice(0, this._display.length);
+    for(let i = 0; i < this._height; i++) {
+      this._display.push(Array.apply(null, Array(this._width)).map(Number.prototype.valueOf,0));
     }
   }
 
@@ -31,18 +29,20 @@ export default class ScrollingMatrix {
       this._index = 0;
     }
 
-    this._display.splice(0, this._display.length);
+    this._generateEmptyDisplay();
+
+
     for(let i = 0; i < this._width; i++) {
-      this._display.push(board.getAtIndex(this._index + i));
+      const column = board.getAtIndex(this._index + i);
+      for(let j = 0; j < this._height; j++) {
+        this._display[j][i] = column[j];
+      }
     }
 
-    // TODO: Fix bug
-    //this._rotateDisplayRight90();
-
     let output = "";
-    for (let i = 0; i < this._width; i++) {
+    for (let i = 0; i < this._height; i++) {
       for (let j = 0; j < this._width; j++) {
-        output += this._display[i][j]
+        output += this._display[i][j] == 1 ? "X" : " ";
       }
       output += '\n';
     }
