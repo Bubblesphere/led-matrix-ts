@@ -15,7 +15,9 @@ export default class Board {
     this._characters.push(new Character(['[space]'], []));
     for (let i = 0; i < this._spacing; i++) {
       // TODO: Change hardcoded value 8 to board height
-      this._characters[this._characters.length-1].pushOutputColumn(Array.apply(null, Array(8)).map(Number.prototype.valueOf,0));
+      this._characters[this._characters.length-1]
+        .pushOutputColumn(Array.apply(null, Array(8))
+        .map(Number.prototype.valueOf,0));
     }
   }
 
