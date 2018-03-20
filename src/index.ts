@@ -5,12 +5,12 @@ import CharacterDictionary from './character-dictionary';
 import { Alphabet } from './alphabet';
 
 const board = new Board(2);
-const matrix = new ScrollingMatrix();
 const dictionary = new CharacterDictionary(Alphabet);
 
 board.load("abcdefghij", dictionary);
 
-matrix.loop({
+const matrix = new ScrollingMatrix(board);
+matrix.stepParameters({  
   board: board, 
   callbackDone: (display) => { 
     let output = "";
@@ -23,3 +23,10 @@ matrix.loop({
     document.getElementById("root").innerHTML = output; 
   }
 });
+
+matrix.play();
+
+setTimeout(function(){ matrix.pause() }, 3000);
+setTimeout(function(){ matrix.resume() }, 4000);
+setTimeout(function(){ matrix.stop() }, 5000);
+setTimeout(function(){ matrix.play() }, 6000);

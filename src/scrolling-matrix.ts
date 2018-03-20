@@ -1,6 +1,6 @@
 import Board from './board';
 
-type PlayParameters = {
+type StepParameters = {
   board: Board, 
   callbackTrue?: (x: number, y: number) => any, 
   callbackFalse?: (x: number, y: number) => any,
@@ -14,13 +14,16 @@ export default class ScrollingMatrix {
   private _display: Array<Array<number>>;
   private _speedBuffer: number;
   private _speed: number;
+  private _interval: number;
+  private _stepParameters: StepParameters;
   
-  constructor(speed: number = 100, width: number = 24, height: number = 8) {
+  constructor(board: Board, speed: number = 60, width: number = 256, height: number = 8) {
     this._index = 0;
-    this._width = 60;
-    this._height = 8;
+    this._width = width;
+    this._height = height;
     this._display = [];
     this._speed = speed;
+    this._stepParameters = {board: board};
   }
 
   private _generateEmptyDisplay(): void {
@@ -44,44 +47,77 @@ export default class ScrollingMatrix {
     }
   }
 
-  play(params: PlayParameters): void {
-    if (this._index > params.board.boardLength()) {
+  private _step(): void {
+    if (this._index > this._stepParameters.board.boardLength()) {
       this._index = 0;
     }
 
     this._generateEmptyDisplay();
-    this._generateDisplay(params.board);
+    this._generateDisplay(this._stepParameters.board);
 
     // Only run if a callback method is provided
-    if (params.callbackTrue || params.callbackFalse) {
+    if (this._stepParameters.callbackTrue || this._stepParameters.callbackFalse) {
       for (let i = 0; i < this._height; i++) {
         for (let j = 0; j < this._width; j++) {
           if (this._display[i][j] == 1) {
-            if (params.callbackTrue) {
-              params.callbackTrue(i, j)
+            if (this._stepParameters.callbackTrue) {
+              this._stepParameters.callbackTrue(i, j);
             }
           } else {
-            if (params.callbackFalse) {
-              params.callbackFalse(i, j)
+            if (this._stepParameters.callbackFalse) {
+              this._stepParameters.callbackFalse(i, j);
             }
           }
         }
       }
     }
 
-    params.callbackDone(this._display);
+    if (this._stepParameters.callbackDone) {
+      this._stepParameters.callbackDone(this._display);
+    }
 
     this._index++;
   }
 
-  loop(params: PlayParameters) {
-      setInterval(function() {
-        this.play({
-          board: params.board, 
-          callbackTrue: params.callbackTrue, 
-          callbackFalse: params.callbackFalse, 
-          callbackDone: params.callbackDone
-        });
-      }.bind(this), this._speed);    
+  private _loop(): void {
+    this._clearExistingLoop();
+    this._interval = window.setInterval(function() {
+      this._step();
+    }.bind(this), this._speed);    
+  }
+
+  private _clearExistingLoop(): void {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
+  }
+
+  stepParameters(params: StepParameters) {
+    this._stepParameters.board = params.board;
+    if (params.callbackTrue)
+      this._stepParameters.callbackTrue = params.callbackTrue;
+    if (params.callbackFalse)
+      this._stepParameters.callbackFalse = params.callbackFalse;
+    if (params.callbackDone)
+      this._stepParameters.callbackDone = params.callbackDone;
+  }
+
+  play() {
+    this._index = 0;
+    this._loop();
+  }
+
+  stop() {
+    this._index = 0;
+    this._step();
+    this._clearExistingLoop();
+  }
+
+  resume() {
+    this._loop();
+  }
+
+  pause() {
+    this._clearExistingLoop();
   }
 };
