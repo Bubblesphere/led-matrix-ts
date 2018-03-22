@@ -2,6 +2,7 @@ import Board from './board';
 import ScrollingMatrix from './scrolling-matrix';
 import Character from './character';
 import CharacterDictionary from './character-dictionary';
+import BitArray from './bit-array';
 import { Alphabet } from './alphabet';
 
 const board = new Board(2);
@@ -26,7 +27,19 @@ matrix.stepParameters({
 
 matrix.play();
 
+let arr = new BitArray(12);
+arr.push(1);
+arr.push(0);
+arr.push(1);
+arr.push(1);
+console.log(arr.atIndex(0));
+console.log(arr.atIndex(1));
+console.log(arr.atIndex(2));
+console.log(arr.atIndex(3));
+
+/*
 setTimeout(function(){ matrix.pause() }, 3000);
 setTimeout(function(){ matrix.resume() }, 4000);
 setTimeout(function(){ matrix.stop() }, 5000);
 setTimeout(function(){ matrix.play() }, 6000);
+*/
