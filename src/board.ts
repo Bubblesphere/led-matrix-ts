@@ -1,6 +1,6 @@
 import Character from './character';
 import CharacterDictionary from './character-dictionary';
-import BitArray from './bit-array';
+import BitArray, { bit } from './bit-array';
 
 export default class Board {
   private _characters: Array<Character>;
@@ -13,19 +13,18 @@ export default class Board {
   }
   
   private _addSpacing(): void {
-    this._characters.push(new Character(['[space]'], []));
-    for (let i = 0; i < this._spacing; i++) {
-      // TODO: Change hardcoded value 8 to board height
-      this._characters[this._characters.length-1]
-        .pushOutputColumn(new BitArray([0, 0, 0, 0, 0, 0, 0, 0]));
-    }
+    this._characters.push(new Character(
+      ['[space]'], 
+      new BitArray(Array.apply(null, Array(8)) 
+      .map(Number.prototype.valueOf,0)), 
+      this._spacing));
   }
 
   private _getCharacterAtIndex(index: number): number {
     let sum = 0;
     let i = 0;
     while (sum <= index) {
-      sum += this._characters[i++].outputLength();
+      sum += this._characters[i++].width;
     }
     return --i;
   }
@@ -34,20 +33,21 @@ export default class Board {
     let sum = 0;
     let i = 0;
     while (sum <= index) {
-      sum += this._characters[i++].outputLength();
+      sum += this._characters[i++].width;
     }
-    return index - (sum - this._characters[--i].outputLength());
+    return index - (sum - this._characters[--i].width);
   }
 
-  boardLength(): number {
+  get width() {
     return this._characters
-      .map(character => character.outputLength())
+      .map(character => character.width)
       .reduce((accumulator, current) => accumulator + current);
   }
 
-  getAtIndex(index: number): BitArray {
+  getAtIndex(index: number): Array<bit> {
+    index %= this.width;
     return this._characters[this._getCharacterAtIndex(index)]
-            .getOutputColumn(this._getCharacterOffsetAtIndex(index));
+            .getColumn(this._getCharacterOffsetAtIndex(index));
   }
 
   load(input: String, dictionnary: CharacterDictionary): void {

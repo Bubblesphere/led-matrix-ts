@@ -1,31 +1,64 @@
-import BitArray from "./bit-array";
+import BitArray, { bit } from "./bit-array";
 
 export default class Character {
   private _patterns: Array<string>;
-  private _output: Array<BitArray>;
+  private _output: BitArray;
+  private _width: number;
+  private _height: number;
 
-  constructor(patterns: Array<string>, output: Array<BitArray>) {
+  constructor(patterns: Array<string>, output: BitArray, width: number) {
     this._patterns = patterns;
     this._output = output;
+    if (output.size > width) {
+      this._width = width;
+    } else {
+      throw `Output size (${output.size}) can't be smaller than the character's width (${width})`;
+    }
+    
+    if (output.size % width === 0) {
+      this._height = output.size / width;
+    } else {
+      throw `Output size (${output.size}) must be a factor of the character's width (${width})`; 
+    }
   }
   
-  getOutputColumn(index: number): BitArray {
-    return this._output[index];
+  getColumn(index: number): bit[] {
+    if (index > this._width) {
+      throw `Index (${index}) is greater than the width of the character (${this._width})`;
+    }
+
+    let column:bit[] = [];
+    for(let i = 0; i < this._height; i++) {
+      column.push(this._output.atIndex(i * this._width + index));
+    }
+
+    return column;
   } 
 
-  pushOutputColumn( value: BitArray): void {
-    this._output.push(value);
+  /*
+  pushOutputColumn( value: Array<bit>): void {
+    value.slice(this._width - 1).forEach((bit) => {
+      this._output.push(bit);
+    })
+    
+  }
+  */
+
+  get width() {
+    return this._width;
   }
 
-  set output(value: Array<BitArray>) {
+  get height() {
+    return this._height;
+  }
+
+  /*
+  set output(value: BitArray) {
     this._output = value;
   }
+  */
 
   hasPattern(input: string): boolean {
     return this._patterns.indexOf(input) >= 0;
-  }
-
-  outputLength() {
-    return this._output.length;
   }
 };

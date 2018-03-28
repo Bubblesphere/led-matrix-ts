@@ -14,6 +14,10 @@ export default class BitArray {
     this._pointer = 0;
     this.pushAll(values);
   }
+  
+  get size() {
+    return this._size;
+  }
 
   push(value: bit) {
     if (this._pointer == this._size) {
@@ -49,9 +53,23 @@ export default class BitArray {
     if (index > this._size) {
       throw `Index (${index}) exceeds the size of the bit array (${this._size})`;
     }
-
+ 
     const mask = this._createMask(index);
     return this._matchesMask(mask, this._array[this._arrayIndex(index)]) ? 1 : 0;
+  }
+
+  // Returns the bit at a given index
+  atIndexRange(index: number, count: number): bit[] {
+    if (index + count - 1 > this._size) {
+      throw `Index (${index}) exceeds the size of the bit array (${this._size})`;
+    }
+  
+    const values: bit[] = [];
+    for (let i = 0; i < count; i++) {
+      const mask = this._createMask(index + i);
+      values.push(this._matchesMask(mask, this._array[this._arrayIndex(index + i)]) ? 1 : 0);
+    }
+    return  values;
   }
   
   // Checks whether a value has a bit of 1 at the mask position

@@ -8,7 +8,7 @@ import { Alphabet } from './alphabet';
 const board = new Board(2);
 const dictionary = new CharacterDictionary(Alphabet);
 
-board.load("abcdefghij", dictionary);
+board.load("aaaaaaaa", dictionary);
 
 const matrix = new ScrollingMatrix(board);
 matrix.stepParameters({  
