@@ -15,18 +15,21 @@ export default class BitArray {
   }
 
   push(value: bit) {
+    if (this._pointer == this._size) {
+      throw "Array max size reached";
+    }
     // create a mask for current index.
     const mask = this._createMask(this._pointer);
     // compare the array with the mask. A value different than 0 means the target bit is set
-    if (this._matchesMask(mask, this._array[this._arrayIndex()])) {
+    if (this._matchesMask(mask, this._array[this._arrayIndex(this._pointer)])) {
       // bit is set in array. Should we toggle it?
       if (value === 0) {
-        this._array[this._arrayIndex()] ^= mask;
+        this._array[this._arrayIndex(this._pointer)] ^= mask;
       }
     } else {
       // bit is unset in array. Sould we toggle it?
       if (value === 1) {
-        this._array[this._arrayIndex()] ^= mask;
+        this._array[this._arrayIndex(this._pointer)] ^= mask;
       }
     }
     // increment pointer for next push
@@ -39,12 +42,12 @@ export default class BitArray {
     }
 
     const mask = this._createMask(index);
-    return this._matchesMask(mask, this._array[this._arrayIndex()]) ? 1 : 0;
+    return this._matchesMask(mask, this._array[this._arrayIndex(index)]) ? 1 : 0;
   }
   
   private _matchesMask(mask: byte, value: byte) {
     // returns true if bit is set
-    return (mask & this._array[this._arrayIndex()]) != 0;
+    return (mask & value) != 0;
   }
 
   private _createMask(index: number): byte {
@@ -53,8 +56,8 @@ export default class BitArray {
     return  1 << (this._bitPerIndex - 1) - this._arrayIndexOffset(index);
   }
 
-  private _arrayIndex() {
-    return Math.floor(this._pointer / this._bitPerIndex);
+  private _arrayIndex(index: number) {
+    return Math.floor(index / this._bitPerIndex);
   }
 
   private _arrayIndexOffset(index: number) {

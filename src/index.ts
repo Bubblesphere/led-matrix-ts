@@ -29,13 +29,29 @@ matrix.play();
 
 let arr = new BitArray(12);
 arr.push(1);
-arr.push(0);
+arr.push(1);
+arr.push(1);
+arr.push(1);
+arr.push(1);
+arr.push(1);
+arr.push(1);
+arr.push(1);
+arr.push(1);
+arr.push(1);
 arr.push(1);
 arr.push(1);
 console.log(arr.atIndex(0));
 console.log(arr.atIndex(1));
 console.log(arr.atIndex(2));
 console.log(arr.atIndex(3));
+console.log(arr.atIndex(4));
+console.log(arr.atIndex(5));
+console.log(arr.atIndex(6));
+console.log(arr.atIndex(7));
+console.log(arr.atIndex(8));
+console.log(arr.atIndex(9));
+console.log(arr.atIndex(10));
+console.log(arr.atIndex(11));
 
 /*
 setTimeout(function(){ matrix.pause() }, 3000);
