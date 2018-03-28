@@ -26,7 +26,7 @@ matrix.stepParameters({
 });
 
 matrix.play();
-
+/*
 let arr = new BitArray(12);
 arr.push(1);
 arr.push(1);
@@ -52,7 +52,7 @@ console.log(arr.atIndex(8));
 console.log(arr.atIndex(9));
 console.log(arr.atIndex(10));
 console.log(arr.atIndex(11));
-
+*/
 /*
 setTimeout(function(){ matrix.pause() }, 3000);
 setTimeout(function(){ matrix.resume() }, 4000);

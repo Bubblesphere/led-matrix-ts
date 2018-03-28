@@ -1,5 +1,6 @@
 import Character from './character';
 import CharacterDictionary from './character-dictionary';
+import BitArray from './bit-array';
 
 export default class Board {
   private _characters: Array<Character>;
@@ -16,8 +17,7 @@ export default class Board {
     for (let i = 0; i < this._spacing; i++) {
       // TODO: Change hardcoded value 8 to board height
       this._characters[this._characters.length-1]
-        .pushOutputColumn(Array.apply(null, Array(8))
-        .map(Number.prototype.valueOf,0));
+        .pushOutputColumn(new BitArray([0, 0, 0, 0, 0, 0, 0, 0]));
     }
   }
 
@@ -45,7 +45,7 @@ export default class Board {
       .reduce((accumulator, current) => accumulator + current);
   }
 
-  getAtIndex(index: number): Array<number> {
+  getAtIndex(index: number): BitArray {
     return this._characters[this._getCharacterAtIndex(index)]
             .getOutputColumn(this._getCharacterOffsetAtIndex(index));
   }

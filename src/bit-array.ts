@@ -1,4 +1,4 @@
-type bit = 0 | 1;
+export type bit = 0 | 1;
 
 type byte = number;
 
@@ -8,10 +8,11 @@ export default class BitArray {
   private _pointer: number;
   private _bitPerIndex: number = 8;
 
-  constructor(size: number) {
-    this._array = new Uint8Array(Math.ceil(size/this._bitPerIndex));
+  constructor(values: Array<bit>) {
+    this._size = values.length;
+    this._array = new Uint8Array(Math.ceil(this._size/this._bitPerIndex));
     this._pointer = 0;
-    this._size = size;
+    this.pushAll(values);
   }
 
   push(value: bit) {
@@ -34,6 +35,13 @@ export default class BitArray {
     }
     // increment pointer for next push
     this._pointer++;
+  }
+
+  pushAll(values: Array<bit>) {
+    // TODO: Improve performance
+    values.forEach((value) => {
+      this.push(value);
+    });
   }
 
   // Returns the bit at a given index

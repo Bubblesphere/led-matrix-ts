@@ -1,4 +1,5 @@
 import Board from './board';
+import BitArray from './bit-array';
 
 type StepParameters = {
   board: Board, 
@@ -35,14 +36,14 @@ export default class ScrollingMatrix {
   
   private _generateDisplay(board: Board): void {
     for(let i = 0; i < this._width; i++) {
-      let column;
+      let column: BitArray;
       if (this._index + i >= board.boardLength()) {
         column = board.getAtIndex((this._index + i) % board.boardLength());
       } else {
         column = board.getAtIndex(this._index + i);
       }
       for(let j = 0; j < this._height; j++) {
-        this._display[j][i] = column[j];
+        this._display[j][i] = column.atIndex(j);
       }
     }
   }
