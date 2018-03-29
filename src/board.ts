@@ -50,7 +50,12 @@ export default class Board {
             .getColumn(this._getCharacterOffsetAtIndex(index));
   }
 
+  reset() {
+    this._characters = [];
+  }
+
   load(input: String, dictionnary: CharacterDictionary): void {
+    this.reset();
     for(let i = 0; i < input.length; i++) {
       const character = dictionnary.find(input[i]);
       if (character) {
