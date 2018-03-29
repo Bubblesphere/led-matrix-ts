@@ -18,7 +18,7 @@ export default class Character {
     if (output.size % width === 0) {
       this._height = output.size / width;
     } else {
-      throw `Output size (${output.size}) must be a factor of the character's width (${width})`; 
+      throw `Output size (${output.size}) must be divisible by the character's width (${width})`; 
     }
   }
   
