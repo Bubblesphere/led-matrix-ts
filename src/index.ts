@@ -9,7 +9,7 @@ const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
 
 // input your customized message which can be changed at any time
-board.load("HELLO WORLD! ", dictionary);
+board.load("HELLO WORLD ", dictionary);
 
 const panel = new Panel(board);
 
@@ -41,8 +41,10 @@ panel.play();
 // panel.resume()
 // panel.stop()
 
+/*
 setTimeout(function(){ panel.pause() }, 3000);
 setTimeout(function(){ panel.resume() }, 4000);
 setTimeout(function(){ board.load("a", dictionary); }, 4500);
 setTimeout(function(){ panel.stop() }, 6000);
 setTimeout(function(){ panel.play() }, 7000);
+*/
