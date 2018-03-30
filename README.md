@@ -31,7 +31,7 @@ const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
 
 // input your customized message which can be changed at any time
-board.load("HELLO WORLD", dictionary);
+board.load("HELLO WORLD! ", dictionary);
 
 const panel = new Panel(board);
 
@@ -78,6 +78,8 @@ panel.play();
 `npm install`
 
 `yarn install`
+
+`yarn start`
 
 ## Architecture
 ### Panel
