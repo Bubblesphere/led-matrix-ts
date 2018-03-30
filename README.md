@@ -5,7 +5,7 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 **Output**
 
-![](https://i.imgur.com/bT8uZPN.gif)
+![Demo gif](https://i.imgur.com/bT8uZPN.gif)
 
 **html**
 
