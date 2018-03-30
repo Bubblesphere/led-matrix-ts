@@ -24,6 +24,7 @@ export default class panel {
     this._display = [];
     this._speed = speed;
     this._board = board;
+    this._events = {};
   }
 
   private _generateEmptyDisplay(): void {
