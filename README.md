@@ -5,7 +5,7 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 **Output**
 
-![Demo gif](https://gph.is/2J7Qu9U)
+![](https://i.imgur.com/bT8uZPN.gif)
 
 **html**
 
@@ -84,9 +84,6 @@ panel.play();
 `yarn install`
 
 `yarn start`
-
-## Architecture
-### Panel
 
 ## API
 led-matrix-ts is not production ready. The documentation will be updated upon release.
