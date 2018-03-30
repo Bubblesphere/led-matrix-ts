@@ -1,14 +1,12 @@
 import Board from './board';
 import BitArray, { bit } from './bit-array';
 
-type StepParameters = {
-  board: Board, 
-  callbackTrue?: (x: number, y: number) => any, 
-  callbackFalse?: (x: number, y: number) => any,
-  callbackDone?: (display: Array<Array<number>>) => any
+type Events = {
+  onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
+  onPanelUpdate?: (display: Array<Array<number>>) => any
 }
 
-export default class ScrollingMatrix {
+export default class panel {
   private _index: number;
   private _width: number;
   private _height: number;
@@ -16,7 +14,8 @@ export default class ScrollingMatrix {
   private _speedBuffer: number;
   private _speed: number;
   private _interval: number;
-  private _stepParameters: StepParameters;
+  private _board: Board;
+  private _events: Events;
   
   constructor(board: Board, speed: number = 60, width: number = 256, height: number = 8) {
     this._index = 0;
@@ -24,7 +23,7 @@ export default class ScrollingMatrix {
     this._height = height;
     this._display = [];
     this._speed = speed;
-    this._stepParameters = {board: board};
+    this._board = board;
   }
 
   private _generateEmptyDisplay(): void {
@@ -46,32 +45,24 @@ export default class ScrollingMatrix {
   }
 
   private _step(): void {
-    if (this._index > this._stepParameters.board.width) {
+    if (this._index > this._board.width) {
       this._index = 0;
     }
 
     this._generateEmptyDisplay();
-    this._generateDisplay(this._stepParameters.board);
+    this._generateDisplay(this._board);
 
     // Only run if a callback method is provided
-    if (this._stepParameters.callbackTrue || this._stepParameters.callbackFalse) {
+    if (this._events.onPanelUpdateBit) {
       for (let i = 0; i < this._height; i++) {
         for (let j = 0; j < this._width; j++) {
-          if (this._display[i][j] == 1) {
-            if (this._stepParameters.callbackTrue) {
-              this._stepParameters.callbackTrue(i, j);
-            }
-          } else {
-            if (this._stepParameters.callbackFalse) {
-              this._stepParameters.callbackFalse(i, j);
-            }
-          }
+          this._events.onPanelUpdateBit(i, j, this._display[i][j] == 1 ? 1 : 0);
         }
       }
     }
 
-    if (this._stepParameters.callbackDone) {
-      this._stepParameters.callbackDone(this._display);
+    if (this._events.onPanelUpdate) {
+      this._events.onPanelUpdate(this._display);
     }
 
     this._index++;
@@ -90,14 +81,11 @@ export default class ScrollingMatrix {
     }
   }
 
-  stepParameters(params: StepParameters) {
-    this._stepParameters.board = params.board;
-    if (params.callbackTrue)
-      this._stepParameters.callbackTrue = params.callbackTrue;
-    if (params.callbackFalse)
-      this._stepParameters.callbackFalse = params.callbackFalse;
-    if (params.callbackDone)
-      this._stepParameters.callbackDone = params.callbackDone;
+  events(params: Events) {
+    if (params.onPanelUpdateBit)
+      this._events.onPanelUpdateBit = params.onPanelUpdateBit;
+    if (params.onPanelUpdate)
+      this._events.onPanelUpdate = params.onPanelUpdate;
   }
 
   play() {
