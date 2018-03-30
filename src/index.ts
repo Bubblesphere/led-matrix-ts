@@ -1,19 +1,20 @@
 import Board from './board';
-import ScrollingMatrix from './scrolling-matrix';
+import Panel from './panel';
 import Character from './character';
 import CharacterDictionary from './character-dictionary';
-import BitArray from './bit-array';
+// import your own font
 import { Alphabet } from './alphabet';
 
-const board = new Board(2);
+const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
 
-board.load("abcdefghijklmnopqrstuvwxyz", dictionary);
+// input your customized message which can be changed at any time
+board.load("HELLO WORLD", dictionary);
 
-const matrix = new ScrollingMatrix(board);
-matrix.stepParameters({  
-  board: board, 
-  callbackDone: (display) => { 
+const panel = new Panel(board);
+
+// create your own appearance
+const myCustomAppearance = (display: any) => {
     let output = "";
     for(var i = 0; i < display.length; i++) {
         for(var j = 0; j < display[i].length; j++) {
@@ -22,13 +23,26 @@ matrix.stepParameters({
       output += '\n';
     }
     document.getElementById("root").innerHTML = output; 
+}
+
+panel.events({
+  onPanelUpdate: (display) => { 
+    myCustomAppearance(display);
+  },
+  /*
+  onPanelUpdateBit: (x, y, value) => {
+
   }
+  */
 });
 
-matrix.play();
+panel.play();
+// panel.pause()
+// panel.resume()
+// panel.stop()
 
-setTimeout(function(){ matrix.pause() }, 3000);
-setTimeout(function(){ matrix.resume() }, 4000);
+setTimeout(function(){ panel.pause() }, 3000);
+setTimeout(function(){ panel.resume() }, 4000);
 setTimeout(function(){ board.load("a", dictionary); }, 4500);
-setTimeout(function(){ matrix.stop() }, 6000);
-setTimeout(function(){ matrix.play() }, 7000);
+setTimeout(function(){ panel.stop() }, 6000);
+setTimeout(function(){ panel.play() }, 7000);
