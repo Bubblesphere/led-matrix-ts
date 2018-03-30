@@ -7,7 +7,7 @@ export default class Board {
   private _spacing: number;
   private _characterCount: number;
 
-  constructor(spacing: number) {
+  constructor(spacing: number = 2) {
     this._spacing = spacing;
     this._characters = [];
   }
