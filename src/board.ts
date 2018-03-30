@@ -38,6 +38,7 @@ export default class Board {
     return index - (sum - this._characters[--i].width);
   }
 
+  // Returns the total width of all characters on the board
   get width() {
     return this._characters
       .map(character => character.width)
