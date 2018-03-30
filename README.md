@@ -3,6 +3,10 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 ## Basic usage
 
+**Output**
+
+![Demo gif](https://gph.is/2J7Qu9U)
+
 **html**
 
 ```html
