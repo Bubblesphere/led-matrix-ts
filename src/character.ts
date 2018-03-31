@@ -9,7 +9,7 @@ export default class Character {
   constructor(patterns: Array<string>, output: BitArray, width: number) {
     this._patterns = patterns;
     this._output = output;
-    if (output.size > width) {
+    if (output.size >= width) {
       this._width = width;
     } else {
       throw `Output size (${output.size}) can't be smaller than the character's width (${width})`;
