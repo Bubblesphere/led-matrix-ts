@@ -11,7 +11,12 @@ const dictionary = new CharacterDictionary(Alphabet);
 // input your customized message which can be changed at any time
 board.load("HELLO WORLD ", dictionary);
 
-const panel = new Panel(board);
+const panel = new Panel({
+  board: board,
+  // fps: 24,
+  // height: 8,
+  // width: 60,
+});
 
 // create your own appearance
 const myCustomAppearance = (display: any) => {

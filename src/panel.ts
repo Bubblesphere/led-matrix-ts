@@ -6,24 +6,30 @@ type Events = {
   onPanelUpdate?: (display: Array<Array<number>>) => any
 }
 
+type BoardParameters = {
+  board: Board,
+  fps?: number,
+  width?: number,
+  height?: number
+}
+
 export default class panel {
   private _index: number;
   private _width: number;
   private _height: number;
   private _display: Array<Array<number>>;
-  private _speedBuffer: number;
-  private _speed: number;
+  private _fps: number;
   private _interval: number;
   private _board: Board;
   private _events: Events;
   
-  constructor(board: Board, speed: number = 60, width: number = 256, height: number = 8) {
+  constructor(params: BoardParameters) {
+    this._width =  params.width ? params.width : 60;
+    this._height = params.height ? params.height : 8;
+    this._fps = params.fps ? params.fps : 24;
+    this._board = params.board;
     this._index = 0;
-    this._width = width;
-    this._height = height;
     this._display = [];
-    this._speed = speed;
-    this._board = board;
     this._events = {};
   }
 
@@ -70,10 +76,11 @@ export default class panel {
   }
 
   private _loop(): void {
+    const intervalRate = Math.floor(1000 / this._fps);
     this._clearExistingLoop();
     this._interval = window.setInterval(function() {
       this._step();
-    }.bind(this), this._speed);    
+    }.bind(this), intervalRate);    
   }
 
   private _clearExistingLoop(): void {
