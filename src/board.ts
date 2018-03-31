@@ -15,7 +15,7 @@ export default class Board {
   private _addSpacing(): void {
     this._characters.push(new Character(
       ['[space]'], 
-      new BitArray(Array.apply(null, Array(8)) 
+      new BitArray(Array.apply(null, Array(this._spacing)) 
       .map(Number.prototype.valueOf,0)), 
       this._spacing));
   }
