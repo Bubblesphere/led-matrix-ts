@@ -9,8 +9,8 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js']
   },
   entry: {
-    demo1: "./src/demos/index.ts",
-    demo2: "./src/demos/index2.ts"
+    basics: "./src/demos/basics/index.ts",
+    customizeAppearance: "./src/demos/customizeAppearance/index.ts"
   },
   output: {
     filename: "[name]-bundle.js",
@@ -20,7 +20,7 @@ module.exports = {
   plugins: [
     new BundleAnalyzerPlugin(),
     new CopyWebpackPlugin([{ 
-      from: 'src/demos/*.html',
+      from: 'src/demos/**/*.html',
       flatten: true
     }])
   ],

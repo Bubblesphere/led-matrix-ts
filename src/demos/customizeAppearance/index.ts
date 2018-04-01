@@ -1,9 +1,9 @@
-import Board from '../lib/board';
-import Panel from '../lib/panel';
-import Character from '../lib/character';
-import CharacterDictionary from '../lib/character-dictionary';
+import Board from '../../lib/board';
+import Panel from '../../lib/panel';
+import Character from '../../lib/character';
+import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
-import { Alphabet } from '../fonts/alphabet';
+import { Alphabet } from '../../fonts/alphabet';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
