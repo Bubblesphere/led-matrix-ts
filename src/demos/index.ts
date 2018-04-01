@@ -1,9 +1,9 @@
-import Board from './board';
-import Panel from './panel';
-import Character from './character';
-import CharacterDictionary from './character-dictionary';
+import Board from '../lib/board';
+import Panel from '../lib/panel';
+import Character from '../lib/character';
+import CharacterDictionary from '../lib/character-dictionary';
 // import your own font
-import { Alphabet } from './alphabet';
+import { Alphabet } from '../fonts/alphabet';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -50,7 +50,7 @@ const canvaAppearance = (display: any) => {
 
 panel.events({
   onPanelUpdate: (display) => { 
-    canvaAppearance(display);
+    myCustomAppearance(display);
   },
   /*
   onPanelUpdateBit: (x, y, value) => {

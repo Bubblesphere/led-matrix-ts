@@ -1,5 +1,5 @@
-import BitArray from "./bit-array";
-import Character from "./character";
+import BitArray from "../lib/bit-array";
+import Character from "../lib/character";
 
 export const Alphabet = [
   new Character(
