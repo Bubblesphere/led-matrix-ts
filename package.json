@@ -32,8 +32,7 @@
     "webpack-merge": "^4.1.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "tsc": "tsc"
+    "start": "webpack-dev-server --open-page dist/basics.html --config webpack.dev.js --mode development ",
+    "build": "webpack --config webpack.prod.js --mode production",
   }
 }

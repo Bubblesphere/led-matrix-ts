@@ -11,6 +11,6 @@ module.exports = merge(common, {
       errors: true,
       errorDetails: true,
     },
-    overlay: true
+    overlay: true,
   }
 });

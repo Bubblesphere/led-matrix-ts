@@ -1,7 +1,8 @@
 var path = require("path");
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   target: 'web',
@@ -16,6 +17,14 @@ module.exports = {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "dist"),
     publicPath: "/dist/"
+  },
+  // Demos use the same library, bundle the code in common into a diff file
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      minSize: 1000,
+      name: "common"
+    }
   },
   plugins: [
     new BundleAnalyzerPlugin(),
