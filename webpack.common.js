@@ -27,7 +27,6 @@ module.exports = {
     }
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
     new CopyWebpackPlugin([{ 
       from: 'src/demos/**/*.html',
       flatten: true
