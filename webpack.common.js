@@ -1,6 +1,7 @@
 var path = require("path");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   target: 'web',
@@ -17,6 +18,7 @@ module.exports = {
     publicPath: "/dist/"
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     new CopyWebpackPlugin([{ 
       from: 'src/demos/*.html',
       flatten: true
