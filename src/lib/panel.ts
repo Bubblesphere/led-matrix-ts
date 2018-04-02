@@ -1,19 +1,29 @@
 import Board from './board';
 import BitArray, { bit } from './bit-array';
 
+/**
+ * @param onPanelUpdateBit Triggered for every bit of every new frame the panel produces
+ * @param onPanelUpdate Triggered for every new frame the panel produces
+ */
 type Events = {
   onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
   onPanelUpdate?: (display: Array<Array<number>>) => any
 }
 
-type BoardParameters = {
+/**
+ * @param board The board for which the panel operates on
+ * @param fps Frames of the panel scrolled per second
+ * @param width The width of the panel in bits displayed
+ * @param height The height of the panel in bits displayed
+ */
+type PanelParameters = {
   board: Board,
   fps?: number,
   width?: number,
   height?: number
 }
 
-export default class panel {
+export default class Panel {
   private _index: number;
   private _width: number;
   private _height: number;
@@ -23,7 +33,11 @@ export default class panel {
   private _board: Board;
   private _events: Events;
   
-  constructor(params: BoardParameters) {
+  /**
+   * Creates a Panel
+   * @param params The panel parameters
+   */
+  constructor(params: PanelParameters) {
     this._width =  params.width ? params.width : 60;
     this._height = params.height ? params.height : 8;
     this._fps = params.fps ? params.fps : 24;
@@ -89,6 +103,10 @@ export default class panel {
     }
   }
 
+  /**
+   * Binds callback methods for whenever an event is triggered
+   * @param params The events callbacks
+   */
   events(params: Events) {
     if (params.onPanelUpdateBit)
       this._events.onPanelUpdateBit = params.onPanelUpdateBit;
@@ -96,21 +114,33 @@ export default class panel {
       this._events.onPanelUpdate = params.onPanelUpdate;
   }
 
+  /**
+   * Starts the panel
+   */
   play() {
     this._index = 0;
     this._loop();
   }
 
+  /**
+   * Stops the panel
+   */
   stop() {
     this._index = 0;
     this._step();
     this._clearExistingLoop();
   }
 
+  /**
+   * Resumes the panel
+   */
   resume() {
     this._loop();
   }
 
+  /**
+   * Pauses the panel
+   */
   pause() {
     this._clearExistingLoop();
   }

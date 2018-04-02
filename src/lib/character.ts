@@ -6,6 +6,13 @@ export default class Character {
   private _width: number;
   private _height: number;
 
+
+  /**
+   * Creates a character
+   * @param patterns The strings for which the dictionary will pick this character
+   * @param output The bit representation of the character
+   * @param width  The width of the character
+   */
   constructor(patterns: Array<string>, output: BitArray, width: number) {
     this._patterns = patterns;
     this._output = output;
@@ -22,6 +29,10 @@ export default class Character {
     }
   }
   
+  /**
+   * Gets a column of the character at an index
+   * @param index The index of the column
+   */
   getColumn(index: number): bit[] {
     if (index > this._width) {
       throw `Index (${index}) is greater than the width of the character (${this._width})`;
@@ -35,29 +46,24 @@ export default class Character {
     return column;
   } 
 
-  /*
-  pushOutputColumn( value: Array<bit>): void {
-    value.slice(this._width - 1).forEach((bit) => {
-      this._output.push(bit);
-    })
-    
-  }
-  */
-
+  /**
+   * Gets the width of the character
+   */
   get width() {
     return this._width;
   }
 
+  /**
+   * Gets the height of the character
+   */
   get height() {
     return this._height;
   }
 
-  /*
-  set output(value: BitArray) {
-    this._output = value;
-  }
-  */
-
+  /**
+   * Matches the character against a string to determine whether the input produces this character
+   * @param input The input string to match the character against
+   */
   hasPattern(input: string): boolean {
     return this._patterns.indexOf(input) >= 0;
   }

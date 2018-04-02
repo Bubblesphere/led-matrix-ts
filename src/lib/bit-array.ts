@@ -8,6 +8,10 @@ export default class BitArray {
   private _pointer: number;
   private _bitPerIndex: number = 8;
 
+  /**
+   * Creates a bitArray
+   * @param values The bits to push onto the array
+   */
   constructor(values: Array<bit>) {
     this._size = values.length;
     this._array = new Uint8Array(Math.ceil(this._size/this._bitPerIndex));
@@ -15,10 +19,17 @@ export default class BitArray {
     this.pushAll(values);
   }
   
+  /**
+   * Gets the size of the array
+   */
   get size() {
     return this._size;
   }
 
+  /**
+   * Pushes a single bit onto the array
+   * @param value The bit to push onto the array
+   */
   push(value: bit) {
     if (this._pointer == this._size) {
       throw `Bit array max size reached (${this._size})`;
@@ -41,6 +52,10 @@ export default class BitArray {
     this._pointer++;
   }
 
+  /**
+   * Pushes a an array of bits onto the array
+   * @param values The bits to push onto the array
+   */
   pushAll(values: Array<bit>) {
     // TODO: Improve performance
     values.forEach((value) => {
@@ -48,7 +63,10 @@ export default class BitArray {
     });
   }
 
-  // Returns the bit at a given index
+  /**
+   * Gets the bit at a given index
+   * @param index The index of the bit to return
+   */
   atIndex(index: number): bit {
     if (index > this._size) {
       throw `Index (${index}) exceeds the size of the bit array (${this._size})`;
@@ -58,7 +76,11 @@ export default class BitArray {
     return this._matchesMask(mask, this._array[this._arrayIndex(index)]) ? 1 : 0;
   }
 
-  // Returns the bit at a given index
+  /**
+   * Gets count bits at a given index
+   * @param index The index of the first bit to return
+   * @param count The amount of bits to fetch starting at the index
+   */
   atIndexRange(index: number, count: number): bit[] {
     if (index + count - 1 > this._size) {
       throw `Index (${index}) exceeds the size of the bit array (${this._size})`;
