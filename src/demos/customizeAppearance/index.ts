@@ -13,10 +13,9 @@ const dictionary = new CharacterDictionary(Alphabet);
 board.load("HELLO WORLD ", dictionary);
 
 const panel = new Panel({
-  board: board
+  board: board,
+  fps: 10
 });
-
-
 
 const canvaAppearance = (display: any) => {
   for(var i = 0; i < display.length; i++) {
