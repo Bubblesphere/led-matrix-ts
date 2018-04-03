@@ -1,25 +1,21 @@
 import Board from './board';
 import BitArray, { bit } from './bit-array';
 
-/**
- * @param onPanelUpdateBit Triggered for every bit of every new frame the panel produces
- * @param onPanelUpdate Triggered for every new frame the panel produces
- */
-type Events = {
+interface Events {
+  /** Triggered for every bit of every new frame the panel produces */
   onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
+  /** Triggered for every new frame the panel produces */
   onPanelUpdate?: (display: Array<Array<number>>) => any
 }
 
-/**
- * @param board The board for which the panel operates on
- * @param fps Frames of the panel scrolled per second
- * @param width The width of the panel in bits displayed
- * @param height The height of the panel in bits displayed
- */
-type PanelParameters = {
+interface PanelParameters {
+  /** The board for which the panel operates on */
   board: Board,
+  /** Frames of the panel scrolled per second */
   fps?: number,
+  /** The width of the panel in bits displayed */
   width?: number,
+  /** The height of the panel in bits displayed */
   height?: number
 }
 
