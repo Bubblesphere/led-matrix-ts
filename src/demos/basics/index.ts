@@ -1,5 +1,5 @@
 import Board from '../../lib/board';
-import Panel from '../../lib/panel';
+import Panel, { PanelParameters } from '../../lib/panel';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
@@ -11,12 +11,13 @@ const dictionary = new CharacterDictionary(Alphabet);
 // input your customized message which can be changed at any time
 board.load("HELLO WORLD ", dictionary);
 
-const panel = new Panel({
-  board: board,
-  // fps: 24,
-  // height: 8,
-  // width: 60,
-});
+const settings: PanelParameters = {
+    board: board,
+    // fps: 24,
+    // height: 8,
+    // width: 60,
+}
+const panel = new Panel(settings);
 
 // create your own appearance
 const myCustomAppearance = (display: any) => {

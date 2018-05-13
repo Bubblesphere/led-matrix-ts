@@ -1,7 +1,8 @@
 import BitArray from "../lib/bit-array";
 import Character from "../lib/character";
+import { IAlphabet } from "../lib/types";
 
-export const Alphabet = [
+export const Alphabet: IAlphabet = [
   new Character(
     ['a', 'A'], 
     new BitArray([0, 0, 1, 0, 0,

@@ -1,6 +1,4 @@
-export type bit = 0 | 1;
-
-type byte = number;
+import { bit, byte } from "./types";
 
 export default class BitArray {
   private _array: Uint8Array;

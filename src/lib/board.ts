@@ -1,6 +1,7 @@
 import Character from './character';
 import CharacterDictionary from './character-dictionary';
-import BitArray, { bit } from './bit-array';
+import BitArray from './bit-array';
+import { bit } from './types';
 
 export default class Board {
   private _characters: Array<Character>;

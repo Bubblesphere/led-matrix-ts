@@ -1,14 +1,15 @@
 import Board from './board';
-import BitArray, { bit } from './bit-array';
+import BitArray from './bit-array';
+import { bit } from './types';
 
 interface Events {
   /** Triggered for every bit of every new frame the panel produces */
   onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
   /** Triggered for every new frame the panel produces */
-  onPanelUpdate?: (display: Array<Array<number>>) => any
+  onPanelUpdate?: (display: Array<Array<bit>>) => any
 }
 
-interface PanelParameters {
+export interface PanelParameters {
   /** The board for which the panel operates on */
   board: Board,
   /** Frames of the panel scrolled per second */
@@ -23,7 +24,7 @@ export default class Panel {
   private _index: number;
   private _width: number;
   private _height: number;
-  private _display: Array<Array<number>>;
+  private _display: Array<Array<bit>>;
   private _fps: number;
   private _interval: number;
   private _board: Board;
