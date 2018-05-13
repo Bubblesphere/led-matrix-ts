@@ -2,8 +2,11 @@
 A library for simulating an LED matrix panel in the browser. The library offers a maximum of flexibility for the developer to do just about anything to it's panel. Whether you want to add a font, a scrolling sequence or/and customize the appareance, you can.
 
 **Check out `src/demos/basics` for more details**
+
 ![Demo gif](https://i.imgur.com/bT8uZPN.gif)
+
 **Check out `src/demos/customizeAppearance` for more details**
+
 ![Demo gif 2](https://i.imgur.com/08NQXUR.gif)
 
 ## Installation
@@ -87,7 +90,7 @@ The board creates the link between the dictionnary and the input. It's role is t
 
 #### Method
 Method | Description
---- | --- | ---
+--- | ---
 **`load(input: String, dictionnary: CharacterDictionary)`** | Stiches up the different characters of the dictionnary based on the input onto the board.
 
 
@@ -106,7 +109,7 @@ Parameters | Default | Description
 
 #### Methods
 Method | Description
---- | --- | ---
+--- | --- 
 **`play()`** | Places the panel at the begining of the board and starts moving at the the fps speed.
 **`pause()`** | Pauses the panel at the current position.
 **`resume()`** | Resumes the panel at the current position.
@@ -116,7 +119,7 @@ Method | Description
 Easily hook and customize and event by passing an object of events to the events method of the panel.
 
 Event | Description
---- | --- | ---
+--- | --- 
 **`OnPanelUpdate: (display) => void`** | Every time the panel gets updated, this event is triggered. The display variable contains an array of array of bits. This method is where you'd customize how the panel is rendered on the screen.
 **`onPanelUpdateBit: (display) => void`** | Similar to OnPnaleUpdate but triggers the event for every bit of every panel update.
 
