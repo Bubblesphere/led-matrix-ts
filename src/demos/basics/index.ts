@@ -3,8 +3,9 @@ import Panel, { PanelParameters } from '../../lib/panel';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
-import { Alphabet } from '../../fonts/alphabet';
+import { Alphabet } from '../../custom/fonts/alphabet';
 import SideScrollingPanel from '../../lib/side-scrolling-panel';
+import AsciiRenderer from '../../custom/appearance/ascii-renderer';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -18,25 +19,10 @@ const settings: PanelParameters = {
     // height: 8,
     // width: 60,
 }
-const panel = new Panel(settings);
 const panel = new SideScrollingPanel(settings);
 
-// create your own appearance
-const myCustomAppearance = (display: any) => {
-    let output = "";
-    for(var i = 0; i < display.length; i++) {
-        for(var j = 0; j < display[i].length; j++) {
-          output += display[i][j] == 1 ? "X" : " ";
-        }
-      output += '\n';
-    }
-    document.getElementById("root").innerHTML = output; 
-};
-
 panel.events({
-  onPanelUpdate: (display) => { 
-    myCustomAppearance(display);
-  },
+  onPanelUpdate: AsciiRenderer
   /*
   onPanelUpdateBit: (x, y, value) => {
 

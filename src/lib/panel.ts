@@ -1,12 +1,12 @@
 import Board from './board';
 import BitArray from './bit-array';
-import { bit } from './types';
+import { bit, PanelRenderer } from './types';
 
 interface Events {
   /** Triggered for every bit of every new frame the panel produces */
   onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
   /** Triggered for every new frame the panel produces */
-  onPanelUpdate?: (display: Array<Array<bit>>) => any
+  onPanelUpdate?: PanelRenderer
 }
 
 export interface PanelParameters {
