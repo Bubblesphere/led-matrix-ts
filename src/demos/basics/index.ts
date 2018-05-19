@@ -4,6 +4,7 @@ import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import { Alphabet } from '../../fonts/alphabet';
+import SideScrollingPanel from '../../lib/side-scrolling-panel';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -18,6 +19,7 @@ const settings: PanelParameters = {
     // width: 60,
 }
 const panel = new Panel(settings);
+const panel = new SideScrollingPanel(settings);
 
 // create your own appearance
 const myCustomAppearance = (display: any) => {

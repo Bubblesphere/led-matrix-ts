@@ -20,14 +20,14 @@ export interface PanelParameters {
   height?: number
 }
 
-export default class Panel {
-  private _index: number;
-  private _width: number;
-  private _height: number;
-  private _display: Array<Array<bit>>;
+export default abstract class Panel {
+  protected _index: number;
+  protected _width: number;
+  protected _height: number;
+  protected _display: Array<Array<bit>>;
   private _fps: number;
   private _interval: number;
-  private _board: Board;
+  protected _board: Board;
   private _events: Events;
   
   /**
@@ -51,16 +51,7 @@ export default class Panel {
     }
   }
   
-  private _generateDisplay(board: Board): void {
-    for(let i = 0; i < this._width; i++) {
-      let column: Array<bit>;
-      column = board.getAtIndex(this._index + i);
-      
-      for(let j = 0; j < this._height; j++) {
-        this._display[j][i] = column[j];
-      }
-    }
-  }
+  protected abstract _generateDisplay(board: Board): void
 
   private _step(): void {
     if (this._index > this._board.width) {

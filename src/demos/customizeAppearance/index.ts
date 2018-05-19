@@ -3,6 +3,7 @@ import Panel from '../../lib/panel';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 import { Alphabet } from '../../fonts/alphabet';
+import SideScrollingPanel from '../../lib/side-scrolling-panel';
 
 const canva = document.getElementById("myCanvas") as HTMLCanvasElement
 const ctx = canva.getContext("2d");
@@ -12,7 +13,7 @@ const dictionary = new CharacterDictionary(Alphabet);
 
 board.load("HELLO WORLD ", dictionary);
 
-const panel = new Panel({
+const panel = new SideScrollingPanel({
   board: board,
   fps: 10
 });
