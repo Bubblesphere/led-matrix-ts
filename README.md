@@ -46,12 +46,16 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 
 ```typescript
-import Board from './board';
-import Panel from './panel';
-import Character from './character';
-import CharacterDictionary from './character-dictionary';
+import Board from '../../lib/board';
+import Panel, { PanelParameters } from '../../lib/panel';
+import Character from '../../lib/character';
+import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
-import { Alphabet } from './alphabet';
+import { Alphabet } from '../../custom/fonts/alphabet';
+// import your own renderer
+import AsciiRenderer from '../../custom/appearance/ascii-renderer';
+// import your own panel scroller
+import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -59,27 +63,14 @@ const dictionary = new CharacterDictionary(Alphabet);
 // input your customized message which can be changed at any time
 board.load("HELLO WORLD ", dictionary);
 
-const panel = new Panel(board);
-
-// create your own appearance
-const myCustomAppearance = (display: any) => {
-    let output = "";
-    for(var i = 0; i < display.length; i++) {
-        for(var j = 0; j < display[i].length; j++) {
-          output += display[i][j] == 1 ? "X" : " ";
-        }
-      output += '\n';
-    }
-    document.getElementById("root").innerHTML = output; 
-}
+const panel = new SideScrollingPanel({ board: board });
 
 panel.events({
-  onPanelUpdate: (display) => { 
-    myCustomAppearance(display);
-  },
+  onPanelUpdate: AsciiRenderer
 });
 
 panel.play();
+panel.seek(20);
 ```
 
 ## Concepts
@@ -114,6 +105,7 @@ Method | Description
 **`pause()`** | Pauses the panel at the current position.
 **`resume()`** | Resumes the panel at the current position.
 **`stop()`** | Places the panel at the begining of the board and stops it.
+**`seek(frame: number)`** | Seek the panel to the specified position
 
 #### Events 
 Easily hook and customize and event by passing an object of events to the events method of the panel.
