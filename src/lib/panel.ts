@@ -21,13 +21,13 @@ export interface PanelParameters {
 }
 
 export default abstract class Panel {
-  protected _index: number;
-  protected _width: number;
-  protected _height: number;
-  protected _display: Array<Array<bit>>;
+  protected index: number;
+  protected width: number;
+  protected height: number;
+  protected display: Array<Array<bit>>;
+  protected board: Board;
   private _fps: number;
   private _interval: number;
-  protected _board: Board;
   private _events: Events;
   
   /**
@@ -35,60 +35,13 @@ export default abstract class Panel {
    * @param params The panel parameters
    */
   constructor(params: PanelParameters) {
-    this._width =  params.width ? params.width : 60;
-    this._height = params.height ? params.height : 8;
+    this.width =  params.width ? params.width : 60;
+    this.height = params.height ? params.height : 8;
     this._fps = params.fps ? params.fps : 24;
-    this._board = params.board;
-    this._index = 0;
-    this._display = [];
+    this.board = params.board;
+    this.index = 0;
+    this.display = [];
     this._events = {};
-  }
-
-  private _generateEmptyDisplay(): void {
-    this._display.splice(0, this._display.length);
-    for(let i = 0; i < this._height; i++) {
-      this._display.push(Array.apply(null, Array(this._width)).map(Number.prototype.valueOf,0));
-    }
-  }
-  
-  protected abstract _generateDisplay(board: Board): void
-
-  private _step(): void {
-    if (this._index > this._board.width) {
-      this._index = 0;
-    }
-
-    this._generateEmptyDisplay();
-    this._generateDisplay(this._board);
-
-    // Only run if a callback method is provided
-    if (this._events.onPanelUpdateBit) {
-      for (let i = 0; i < this._height; i++) {
-        for (let j = 0; j < this._width; j++) {
-          this._events.onPanelUpdateBit(i, j, this._display[i][j] == 1 ? 1 : 0);
-        }
-      }
-    }
-
-    if (this._events.onPanelUpdate) {
-      this._events.onPanelUpdate(this._display);
-    }
-
-    this._index++;
-  }
-
-  private _loop(): void {
-    const intervalRate = Math.floor(1000 / this._fps);
-    this._clearExistingLoop();
-    this._interval = window.setInterval(function() {
-      this._step();
-    }.bind(this), intervalRate);    
-  }
-
-  private _clearExistingLoop(): void {
-    if (this._interval) {
-      clearInterval(this._interval);
-    }
   }
 
   /**
@@ -106,7 +59,7 @@ export default abstract class Panel {
    * Starts the panel
    */
   play() {
-    this._index = 0;
+    this.setIndex(0);
     this._loop();
   }
 
@@ -114,7 +67,7 @@ export default abstract class Panel {
    * Stops the panel
    */
   stop() {
-    this._index = 0;
+    this.setIndex(0);
     this._step();
     this._clearExistingLoop();
   }
@@ -138,6 +91,98 @@ export default abstract class Panel {
    * @param frame The frame to seek to
    */
   seek(frame: number) {
-    this._index = frame;
+    this.setIndex(frame);
+  }
+
+  private _step(): void {
+    this._resetPanel();
+    this._generateDisplay();
+
+    this._fireOnPanelUpdateBit();
+    this._fireOnPanelUpdate();
+
+    this.incrementIndex();
+  }
+
+  /**
+   * Resets the panel to an all 0 panel
+   */
+  private _resetPanel(): void {
+    this.display.splice(0, this.display.length);
+    for(let i = 0; i < this.height; i++) {
+      this.display.push(Array.apply(null, Array(this.width)).map(Number.prototype.valueOf,0));
+    }
+  }
+
+  /**
+   * Generates the displayed matrix
+   */
+  protected abstract _generateDisplay(): void
+
+  /**
+   * Increments the panel index
+   */
+  private incrementIndex() {
+    if (this.index > this.board.width) {
+      this.index = 0;
+    } else {
+      this.index++;
+    }
+    
+  }
+
+  /**
+   * Sets the panel index
+   * @param value The value to set the index at
+   */
+  protected setIndex(value: number) {
+    if (value > this.board.width) {
+      this.index = 0;
+    } else {
+      this.index = value;
+    }
+  }
+
+  /**
+   * Handles the firing of OnPanelUpdateBit
+   */
+  private _fireOnPanelUpdateBit() {
+    // Only run if a callback method is provided
+    if (this._events.onPanelUpdateBit) {
+      for (let i = 0; i < this.height; i++) {
+        for (let j = 0; j < this.width; j++) {
+          this._events.onPanelUpdateBit(i, j, this.display[i][j] == 1 ? 1 : 0);
+        }
+      }
+    }
+  }
+
+  /**
+   * Handles the firing of OnPanelUpdate
+   */
+  private _fireOnPanelUpdate() {
+    if (this._events.onPanelUpdate) {
+      this._events.onPanelUpdate(this.display);
+    }
+  }
+
+  /**
+   * Steps at an interval of the panel's fps
+   */
+  private _loop(): void {
+    const intervalRate = Math.floor(1000 / this._fps);
+    this._clearExistingLoop();
+    this._interval = window.setInterval(function() {
+      this._step();
+    }.bind(this), intervalRate);    
+  }
+
+  /**
+   * Removes any existing interval
+   */
+  private _clearExistingLoop(): void {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
   }
 };

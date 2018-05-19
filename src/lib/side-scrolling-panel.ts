@@ -4,12 +4,12 @@ import Board from "./board";
 
 export default class SideScrollingPanel extends Panel {
   protected _generateDisplay(): void {
-    for(let i = 0; i < this._width; i++) {
+    for(let i = 0; i < this.width; i++) {
       let column: Array<bit>;
-      column = this._board.getAtIndex(this._index + i);
+      column = this.board.getAtIndex(this.index + i);
       
-      for(let j = 0; j < this._height; j++) {
-        this._display[j][i] = column[j];
+      for(let j = 0; j < this.height; j++) {
+        this.display[j][i] = column[j];
       }
     }
   }
