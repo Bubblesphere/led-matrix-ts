@@ -141,4 +141,12 @@ export default class Panel {
   pause() {
     this._clearExistingLoop();
   }
+
+  /**
+   * Seeks the panel
+   * @param frame The frame to seek to
+   */
+  seek(frame: number) {
+    this._index = frame;
+  }
 };

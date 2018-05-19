@@ -43,6 +43,7 @@ panel.events({
 });
 
 panel.play();
+panel.seek(20);
 // panel.pause()
 // panel.resume()
 // panel.stop()
