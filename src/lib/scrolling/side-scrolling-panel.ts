@@ -1,6 +1,6 @@
-import Panel from "./panel";
-import { bit } from "./types";
-import Board from "./board";
+import Panel from "../panel";
+import { bit } from "../bit-array";
+
 
 export default class SideScrollingPanel extends Panel {
   protected _generateDisplay(): void {

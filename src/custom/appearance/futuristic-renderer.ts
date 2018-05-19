@@ -1,4 +1,5 @@
-import { PanelRenderer, bit } from "../../lib/types";
+import { PanelRenderer } from "../../lib/types";
+import { bit } from "../../lib/bit-array";
 
 const FuturisticRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
   const canva = document.getElementById("myCanvas") as HTMLCanvasElement

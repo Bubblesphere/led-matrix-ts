@@ -3,7 +3,7 @@ import Panel from '../../lib/panel';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 import { Alphabet } from '../../custom/fonts/alphabet';
-import SideScrollingPanel from '../../lib/side-scrolling-panel';
+import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 import FuturisticRenderer from '../../custom/appearance/futuristic-renderer';
 
 const board = new Board();

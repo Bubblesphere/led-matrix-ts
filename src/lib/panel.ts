@@ -1,6 +1,6 @@
 import Board from './board';
-import BitArray from './bit-array';
-import { bit, PanelRenderer } from './types';
+import BitArray, { bit } from './bit-array';
+import { PanelRenderer } from './types';
 
 interface Events {
   /** Triggered for every bit of every new frame the panel produces */

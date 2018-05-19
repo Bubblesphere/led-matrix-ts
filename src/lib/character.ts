@@ -1,5 +1,4 @@
-import BitArray from "./bit-array";
-import { bit } from "./types";
+import BitArray, { bit } from "./bit-array";
 
 export default class Character {
   private _patterns: Array<string>;

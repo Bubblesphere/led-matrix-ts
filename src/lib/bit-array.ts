@@ -1,6 +1,15 @@
-import { bit, byte } from "./types";
+export type bit = 0 | 1;
+type byte = number;
 
-export default class BitArray {
+interface IBitArray {
+  size: number,
+  push: (value: bit) => void
+  pushAll: (value: Array<bit>) => void
+  atIndex: (index: number) => bit
+  atIndexRange: (index: number, count: number) => bit[]
+}
+
+export default class BitArray implements IBitArray {
   private _array: Uint8Array;
   private _size: number;
   private _pointer: number;
