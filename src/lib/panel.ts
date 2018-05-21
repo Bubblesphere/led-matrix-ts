@@ -2,7 +2,7 @@ import Board from './board';
 import BitArray, { bit } from './bit-array';
 import { PanelRenderer } from './types';
 
-interface Events {
+interface PanelEvents {
   /** Triggered for every bit of every new frame the panel produces */
   onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
   /** Triggered for every new frame the panel produces */
@@ -28,7 +28,7 @@ export default abstract class Panel {
   protected board: Board;
   private _fps: number;
   private _interval: number;
-  private _events: Events;
+  private _events: PanelEvents;
   
   /**
    * Creates a Panel
@@ -48,7 +48,7 @@ export default abstract class Panel {
    * Binds callback methods for whenever an event is triggered
    * @param params The events callbacks
    */
-  events(params: Events) {
+  public events(params: PanelEvents) {
     if (params.onPanelUpdateBit)
       this._events.onPanelUpdateBit = params.onPanelUpdateBit;
     if (params.onPanelUpdate)
@@ -58,7 +58,7 @@ export default abstract class Panel {
   /**
    * Starts the panel
    */
-  play() {
+  public play() {
     this.setIndex(0);
     this._loop();
   }
@@ -66,7 +66,7 @@ export default abstract class Panel {
   /**
    * Stops the panel
    */
-  stop() {
+  public stop() {
     this.setIndex(0);
     this._step();
     this._clearExistingLoop();
@@ -75,14 +75,14 @@ export default abstract class Panel {
   /**
    * Resumes the panel
    */
-  resume() {
+  public resume() {
     this._loop();
   }
 
   /**
    * Pauses the panel
    */
-  pause() {
+  public pause() {
     this._clearExistingLoop();
   }
 
@@ -90,7 +90,7 @@ export default abstract class Panel {
    * Seeks the panel
    * @param frame The frame to seek to
    */
-  seek(frame: number) {
+  public seek(frame: number) {
     this.setIndex(frame);
   }
 
