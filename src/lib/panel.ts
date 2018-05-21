@@ -31,6 +31,7 @@ export default abstract class Panel {
   protected height: number;
   protected display: Array<Array<bit>>;
   protected board: Board;
+  abstract indexUpperBound: number;
   private _fps: number;
   private _interval: number;
   private _events: PanelEvents;
@@ -131,7 +132,7 @@ export default abstract class Panel {
    * Increments the panel index
    */
   private incrementIndex() {
-    if (this.index > this.board.width) {
+    if (this.index > this.indexUpperBound) {
       this.index = 0;
     } else {
       this.index++;
@@ -144,7 +145,7 @@ export default abstract class Panel {
    * @param value The value to set the index at
    */
   protected setIndex(value: number) {
-    if (value > this.board.width) {
+    if (value > this.indexUpperBound) {
       this.index = 0;
     } else {
       this.index = value;

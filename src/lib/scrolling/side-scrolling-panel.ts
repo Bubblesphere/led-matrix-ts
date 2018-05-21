@@ -3,6 +3,8 @@ import { bit } from "../bit-array";
 
 
 export default class SideScrollingPanel extends Panel {
+  indexUpperBound: number = this.board.width;
+  
   protected _generateDisplay(): void {
     for(let i = 0; i < this.width; i++) {
       let column: Array<bit>;
