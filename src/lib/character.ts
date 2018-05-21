@@ -6,7 +6,6 @@ export default class Character {
   private _width: number;
   private _height: number;
 
-
   /**
    * Creates a character
    * @param patterns The strings for which the dictionary will pick this character
@@ -33,7 +32,7 @@ export default class Character {
    * Gets a column of the character at an index
    * @param index The index of the column
    */
-  getColumn(index: number): bit[] {
+  public getColumn(index: number): bit[] {
     if (index > this._width) {
       throw `Index (${index}) is greater than the width of the character (${this._width})`;
     }
@@ -49,14 +48,14 @@ export default class Character {
   /**
    * Gets the width of the character
    */
-  get width() {
+  public get width() {
     return this._width;
   }
 
   /**
    * Gets the height of the character
    */
-  get height() {
+  public get height() {
     return this._height;
   }
 
@@ -64,7 +63,7 @@ export default class Character {
    * Matches the character against a string to determine whether the input produces this character
    * @param input The input string to match the character against
    */
-  hasPattern(input: string): boolean {
+  public hasPattern(input: string): boolean {
     return this._patterns.indexOf(input) >= 0;
   }
 };

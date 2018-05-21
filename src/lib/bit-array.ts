@@ -29,7 +29,7 @@ export default class BitArray implements IBitArray {
   /**
    * Gets the size of the array
    */
-  get size() {
+  public get size() {
     return this._size;
   }
 
@@ -37,7 +37,7 @@ export default class BitArray implements IBitArray {
    * Pushes a single bit onto the array
    * @param value The bit to push onto the array
    */
-  push(value: bit) {
+  public push(value: bit) {
     if (this._pointer == this._size) {
       throw `Bit array max size reached (${this._size})`;
     }
@@ -63,7 +63,7 @@ export default class BitArray implements IBitArray {
    * Pushes a an array of bits onto the array
    * @param values The bits to push onto the array
    */
-  pushAll(values: Array<bit>) {
+  public pushAll(values: Array<bit>) {
     // TODO: Improve performance
     values.forEach((value) => {
       this.push(value);
@@ -74,7 +74,7 @@ export default class BitArray implements IBitArray {
    * Gets the bit at a given index
    * @param index The index of the bit to return
    */
-  atIndex(index: number): bit {
+  public atIndex(index: number): bit {
     if (index > this._size) {
       throw `Index (${index}) exceeds the size of the bit array (${this._size})`;
     }
@@ -88,7 +88,7 @@ export default class BitArray implements IBitArray {
    * @param index The index of the first bit to return
    * @param count The amount of bits to fetch starting at the index
    */
-  atIndexRange(index: number, count: number): bit[] {
+  public atIndexRange(index: number, count: number): bit[] {
     if (index + count - 1 > this._size) {
       throw `Index (${index}) exceeds the size of the bit array (${this._size})`;
     }

@@ -1,9 +1,9 @@
-import { IAlphabet } from "../../lib/types";
+import { ICharacterArray } from "../../lib/types";
 import Character from "../../lib/character";
 import BitArray from "../../lib/bit-array";
 
 
-export const Alphabet: IAlphabet = [
+export const Alphabet: ICharacterArray = [
   new Character(
     ['a', 'A'], 
     new BitArray([0, 0, 1, 0, 0,

@@ -15,6 +15,50 @@ export default class Board {
     this._spacing = spacing;
     this._characters = [];
   }
+
+    /**
+   * Returns the total width of all characters on the board
+   */
+  public get width() {
+    return this._characters
+      .map(character => character.width)
+      .reduce((accumulator, current) => accumulator + current);
+  }
+
+  /**
+   * Gets the column of the board at the specified index
+   * @param index The index of the column to fetch
+   */
+  public getAtIndex(index: number): Array<bit> {
+    index %= this.width;
+    return this._characters[this._getCharacterAtIndex(index)]
+            .getColumn(this._getCharacterOffsetAtIndex(index));
+  }
+
+  /**
+   * Clears the board
+   */
+  public reset() {
+    this._characters = [];
+  }
+
+  /**
+   * Loads a new input onto the board
+   * @param input The input to load on the board
+   * @param dictionnary The dictionnary for which the input is tested against
+   */
+  public load(input: String, dictionnary: CharacterDictionary): void {
+    this.reset();
+    for(let i = 0; i < input.length; i++) {
+      const character = dictionnary.find(input[i]);
+      if (character) {
+        this._characters.push(character);
+        this._addSpacing();
+      } else {
+        throw `Could not find any match for ${input[i]} within the provided dictionnary`;
+      }
+    }
+  }
   
   private _addSpacing(): void {
     this._characters.push(new Character(
@@ -40,49 +84,5 @@ export default class Board {
       sum += this._characters[i++].width;
     }
     return index - (sum - this._characters[--i].width);
-  }
-
-  /**
-   * Returns the total width of all characters on the board
-   */
-  get width() {
-    return this._characters
-      .map(character => character.width)
-      .reduce((accumulator, current) => accumulator + current);
-  }
-
-  /**
-   * Gets the column of the board at the specified index
-   * @param index The index of the column to fetch
-   */
-  getAtIndex(index: number): Array<bit> {
-    index %= this.width;
-    return this._characters[this._getCharacterAtIndex(index)]
-            .getColumn(this._getCharacterOffsetAtIndex(index));
-  }
-
-  /**
-   * Clears the board
-   */
-  reset() {
-    this._characters = [];
-  }
-
-  /**
-   * Loads a new input onto the board
-   * @param input The input to load on the board
-   * @param dictionnary The dictionnary for which the input is tested against
-   */
-  load(input: String, dictionnary: CharacterDictionary): void {
-    this.reset();
-    for(let i = 0; i < input.length; i++) {
-      const character = dictionnary.find(input[i]);
-      if (character) {
-        this._characters.push(character);
-        this._addSpacing();
-      } else {
-        throw `Could not find any match for ${input[i]} within the provided dictionnary`;
-      }
-    }
   }
 };
