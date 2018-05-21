@@ -2,6 +2,10 @@ import Character from './character';
 import CharacterDictionary from './character-dictionary';
 import BitArray, { bit } from './bit-array';
 
+/**
+ * The board creates the link between the dictionnary and the input. 
+ * It's role is to create the matrix reprentation of the entire board
+ */
 export default class Board {
   private _characters: Array<Character>;
   private _spacing: number;

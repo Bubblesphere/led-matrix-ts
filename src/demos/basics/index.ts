@@ -3,9 +3,10 @@ import Panel, { PanelParameters } from '../../lib/panel';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
-import { Alphabet } from '../../custom/fonts/alphabet';
-import AsciiRenderer from '../../custom/appearance/ascii-renderer';
+import { Alphabet } from '../../lib/characterArray/alphabet';
+import AsciiRenderer from '../../lib/appearance/ascii-renderer';
 import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
+
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);

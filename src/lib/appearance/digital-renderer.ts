@@ -2,7 +2,7 @@ import { PanelRenderer } from "../../lib/types";
 import { bit } from "../../lib/bit-array";
 
 const DigitalRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
-  const canva = document.getElementById("myCanvas") as HTMLCanvasElement
+  const canva = document.getElementById("digital-canva") as HTMLCanvasElement
   const ctx = canva.getContext("2d");
 
   for(var i = 0; i < display.length; i++) {

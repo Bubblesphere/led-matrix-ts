@@ -20,6 +20,11 @@ export interface PanelParameters {
   height?: number
 }
 
+/**
+ * The panel deals with the displaying logic. 
+ * You can see it as a viewport moving through a board. 
+ * It has control over starting, stopping, pausing, resuming, seeking.
+ */
 export default abstract class Panel {
   protected index: number;
   protected width: number;
@@ -94,6 +99,9 @@ export default abstract class Panel {
     this.setIndex(frame);
   }
 
+  /**
+   * Moves the panel a single step
+   */
   private _step(): void {
     this._resetPanel();
     this._generateDisplay();
