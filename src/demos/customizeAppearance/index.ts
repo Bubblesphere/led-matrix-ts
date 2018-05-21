@@ -2,9 +2,9 @@ import Board from '../../lib/board';
 import Panel from '../../lib/panel';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
-import { Alphabet } from '../../custom/fonts/alphabet';
 import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
-import FuturisticRenderer from '../../custom/appearance/futuristic-renderer';
+import { Alphabet } from '../../lib/characterArray/alphabet';
+import DigitalRenderer from '../../lib/appearance/digital-renderer';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -17,7 +17,7 @@ const panel = new SideScrollingPanel({
 });
 
 panel.events({
-  onPanelUpdate: FuturisticRenderer
+  onPanelUpdate: DigitalRenderer
 });
 
 panel.play();

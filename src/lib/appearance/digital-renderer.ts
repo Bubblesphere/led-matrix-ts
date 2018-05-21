@@ -1,7 +1,7 @@
 import { PanelRenderer } from "../../lib/types";
 import { bit } from "../../lib/bit-array";
 
-const FuturisticRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
+const DigitalRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
   const canva = document.getElementById("myCanvas") as HTMLCanvasElement
   const ctx = canva.getContext("2d");
 
@@ -18,4 +18,4 @@ const FuturisticRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
   }
 };
 
-export default FuturisticRenderer;
+export default DigitalRenderer;
