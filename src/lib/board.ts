@@ -33,7 +33,7 @@ export default class Board {
    * Gets the column of the board at the specified index
    * @param index The index of the column to fetch
    */
-  public getAtIndex(index: number): Array<bit> {
+  public getColumnAtIndex(index: number): Array<bit> {
     index %= this.width;
     return this._characters[this._getCharacterAtIndex(index)]
             .getColumn(this._getCharacterOffsetAtIndex(index));

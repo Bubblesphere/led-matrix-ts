@@ -23,12 +23,13 @@ const settings: PanelParameters = {
 const panel = new SideScrollingPanel(settings);
 
 panel.events({
-  onPanelUpdate: AsciiRenderer
+  onPanelUpdate: AsciiRenderer,
   /*
   onPanelUpdateBit: (x, y, value) => {
 
   }
   */
+  
 });
 
 panel.play();

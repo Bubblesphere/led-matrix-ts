@@ -6,7 +6,9 @@ interface PanelEvents {
   /** Triggered for every bit of every new frame the panel produces */
   onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
   /** Triggered for every new frame the panel produces */
-  onPanelUpdate?: PanelRenderer
+  onPanelUpdate?: PanelRenderer,
+  /** Triggered when the index reaches the lower or the upperbound */
+  onReachingBoundary?: () => any
 }
 
 export interface PanelParameters {
@@ -17,7 +19,9 @@ export interface PanelParameters {
   /** The width of the panel in bits displayed */
   width?: number,
   /** The height of the panel in bits displayed */
-  height?: number
+  height?: number,
+  /** Whether the panel animation should be reverse */
+  reverse?: boolean
 }
 
 /**
@@ -32,6 +36,7 @@ export default abstract class Panel {
   protected display: Array<Array<bit>>;
   protected board: Board;
   abstract indexUpperBound: number;
+  abstract reverse: boolean;
   private _fps: number;
   private _interval: number;
   private _events: PanelEvents;
@@ -59,6 +64,8 @@ export default abstract class Panel {
       this._events.onPanelUpdateBit = params.onPanelUpdateBit;
     if (params.onPanelUpdate)
       this._events.onPanelUpdate = params.onPanelUpdate;
+    if (params.onReachingBoundary)
+      this._events.onReachingBoundary = params.onReachingBoundary;
   }
 
   /**
@@ -110,7 +117,7 @@ export default abstract class Panel {
     this._fireOnPanelUpdateBit();
     this._fireOnPanelUpdate();
 
-    this.incrementIndex();
+    this.reverse ? this.decrementIndex() : this.incrementIndex();
   }
 
   /**
@@ -133,11 +140,20 @@ export default abstract class Panel {
    */
   private incrementIndex() {
     if (this.index > this.indexUpperBound) {
+      this._fireOnReachingBoundary();
       this.index = 0;
     } else {
       this.index++;
     }
-    
+  }
+
+  private decrementIndex() {
+    if (this.index === 0) {
+      this._fireOnReachingBoundary();
+      this.index = this.indexUpperBound;
+    } else {
+      this.index--;
+    }
   }
 
   /**
@@ -172,6 +188,15 @@ export default abstract class Panel {
   private _fireOnPanelUpdate() {
     if (this._events.onPanelUpdate) {
       this._events.onPanelUpdate(this.display);
+    }
+  }
+
+  /**
+   * Handles the firing of OnPanelUpdate
+   */
+  private _fireOnReachingBoundary() {
+    if (this._events.onReachingBoundary) {
+      this._events.onReachingBoundary();
     }
   }
 

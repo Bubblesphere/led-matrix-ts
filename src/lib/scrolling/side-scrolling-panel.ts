@@ -1,18 +1,7 @@
-import Panel from "../panel";
 import { bit } from "../bit-array";
+import SideScrollingPanelBase from "./side-scrolling-panel-base";
 
 
-export default class SideScrollingPanel extends Panel {
-  indexUpperBound: number = this.board.width;
-  
-  protected _generateDisplay(): void {
-    for(let i = 0; i < this.width; i++) {
-      let column: Array<bit>;
-      column = this.board.getAtIndex(this.index + i);
-      
-      for(let j = 0; j < this.height; j++) {
-        this.display[j][i] = column[j];
-      }
-    }
-  }
+export default class SideScrollingPanel extends SideScrollingPanelBase {
+  reverse: boolean = false;
 }
