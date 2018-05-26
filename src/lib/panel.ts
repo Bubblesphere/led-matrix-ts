@@ -1,15 +1,7 @@
 import Board from './board';
 import BitArray, { bit } from './bit-array';
-import { PanelRenderer } from './types';
-
-interface PanelEvents {
-  /** Triggered for every bit of every new frame the panel produces */
-  onPanelUpdateBit?: (x: number, y: number, value: bit) => any,
-  /** Triggered for every new frame the panel produces */
-  onPanelUpdate?: PanelRenderer,
-  /** Triggered when the index reaches the lower or the upperbound */
-  onReachingBoundary?: () => any
-}
+import Event from './event';
+import { Display } from './types';
 
 export interface PanelParameters {
   /** The board for which the panel operates on */
@@ -39,7 +31,17 @@ export default abstract class Panel {
   abstract reverse: boolean;
   private _fps: number;
   private _interval: number;
-  private _events: PanelEvents;
+
+  /** Triggered for every bit of every new frame the panel produces */
+  protected readonly onPanelUpdateBit = new Event<{x: number, y: number, value: bit}>();
+  /** Triggered for every new frame the panel produces */
+  protected readonly onPanelUpdate = new Event<{display: Display}>();
+  /** Triggered when the index reaches the lower or the upperbound */
+  protected readonly onReachingBoundary = new Event<void>();
+
+  public get PanelUpdateBit() { return this.onPanelUpdateBit.expose(); }
+  public get PanelUpdate() { return this.onPanelUpdate.expose(); }
+  public get ReachingBoundary() { return this.onReachingBoundary.expose(); }
   
   /**
    * Creates a Panel
@@ -52,20 +54,6 @@ export default abstract class Panel {
     this.board = params.board;
     this.index = 0;
     this.display = [];
-    this._events = {};
-  }
-
-  /**
-   * Binds callback methods for whenever an event is triggered
-   * @param params The events callbacks
-   */
-  public events(params: PanelEvents) {
-    if (params.onPanelUpdateBit)
-      this._events.onPanelUpdateBit = params.onPanelUpdateBit;
-    if (params.onPanelUpdate)
-      this._events.onPanelUpdate = params.onPanelUpdate;
-    if (params.onReachingBoundary)
-      this._events.onReachingBoundary = params.onReachingBoundary;
   }
 
   /**
@@ -114,8 +102,17 @@ export default abstract class Panel {
     this._resetPanel();
     this._generateDisplay();
 
-    this._fireOnPanelUpdateBit();
-    this._fireOnPanelUpdate();
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
+        this.onPanelUpdateBit.trigger({
+          x: i,
+          y: j,
+          value: this.display[i][j] == 1 ? 1 : 0
+        });
+      }
+    }
+
+    this.onPanelUpdate.trigger({ display: this.display });
 
     this.reverse ? this.decrementIndex() : this.incrementIndex();
   }
@@ -140,7 +137,7 @@ export default abstract class Panel {
    */
   private incrementIndex() {
     if (this.index > this.indexUpperBound) {
-      this._fireOnReachingBoundary();
+      this.onReachingBoundary.trigger();
       this.index = 0;
     } else {
       this.index++;
@@ -149,7 +146,7 @@ export default abstract class Panel {
 
   private decrementIndex() {
     if (this.index === 0) {
-      this._fireOnReachingBoundary();
+      this.onReachingBoundary.trigger();
       this.index = this.indexUpperBound;
     } else {
       this.index--;
@@ -165,38 +162,6 @@ export default abstract class Panel {
       this.index = 0;
     } else {
       this.index = value;
-    }
-  }
-
-  /**
-   * Handles the firing of OnPanelUpdateBit
-   */
-  private _fireOnPanelUpdateBit() {
-    // Only run if a callback method is provided
-    if (this._events.onPanelUpdateBit) {
-      for (let i = 0; i < this.height; i++) {
-        for (let j = 0; j < this.width; j++) {
-          this._events.onPanelUpdateBit(i, j, this.display[i][j] == 1 ? 1 : 0);
-        }
-      }
-    }
-  }
-
-  /**
-   * Handles the firing of OnPanelUpdate
-   */
-  private _fireOnPanelUpdate() {
-    if (this._events.onPanelUpdate) {
-      this._events.onPanelUpdate(this.display);
-    }
-  }
-
-  /**
-   * Handles the firing of OnPanelUpdate
-   */
-  private _fireOnReachingBoundary() {
-    if (this._events.onReachingBoundary) {
-      this._events.onReachingBoundary();
     }
   }
 

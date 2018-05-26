@@ -16,8 +16,8 @@ const panel = new SideScrollingPanel({
   fps: 10
 });
 
-panel.events({
-  onPanelUpdate: DigitalRenderer
-});
+panel.PanelUpdate.on((parameters) => {
+  DigitalRenderer(parameters.display);
+})
 
 panel.play();

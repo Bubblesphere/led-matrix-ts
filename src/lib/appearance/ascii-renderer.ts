@@ -1,7 +1,7 @@
-import { PanelRenderer } from "../../lib/types";
+import { Display } from "../../lib/types";
 import { bit } from "../../lib/bit-array";
 
-const AsciiRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
+const AsciiRenderer = (display: Display) => {
   let output = "";
   for(var i = 0; i < display.length; i++) {
       for(var j = 0; j < display[i].length; j++) {

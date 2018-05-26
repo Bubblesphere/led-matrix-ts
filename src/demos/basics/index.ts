@@ -22,15 +22,9 @@ const settings: PanelParameters = {
 }
 const panel = new SideScrollingPanel(settings);
 
-panel.events({
-  onPanelUpdate: AsciiRenderer,
-  /*
-  onPanelUpdateBit: (x, y, value) => {
-
-  }
-  */
-  
-});
+panel.PanelUpdate.on((parameters) => {
+  AsciiRenderer(parameters.display);
+})
 
 panel.play();
 panel.seek(20);
