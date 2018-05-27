@@ -1,7 +1,7 @@
 import Board from './board';
 import BitArray, { bit } from './bit-array';
 import Event from './event';
-import { Display } from './types';
+import { PanelDisplay } from './types';
 
 export interface PanelParameters {
   /** The board for which the panel operates on */

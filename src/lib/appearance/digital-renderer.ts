@@ -1,7 +1,7 @@
-import { PanelRenderer } from "../../lib/types";
+import { PanelRenderer, PanelDisplay } from "../../lib/types";
 import { bit } from "../../lib/bit-array";
 
-const DigitalRenderer: PanelRenderer = (display: Array<Array<bit>>) => {
+const DigitalRenderer: PanelRenderer = (display: PanelDisplay) => {
   const canva = document.getElementById("digital-canva") as HTMLCanvasElement
   const ctx = canva.getContext("2d");
 
