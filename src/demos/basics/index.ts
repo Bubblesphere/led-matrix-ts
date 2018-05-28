@@ -8,22 +8,29 @@ import AsciiRenderer from '../../lib/appearance/ascii-renderer';
 import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 
 
+
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
 
 // input your customized message which can be changed at any time
 board.load("HELLO WORLD ", dictionary);
 
-const settings: PanelParameters = {
-    board: board,
-    // fps: 24,
-    // height: 8,
-    // width: 60,
-}
-const panel = new SideScrollingPanel(settings);
+const renderer: AsciiRenderer = new AsciiRenderer({
+  element: document.getElementById("root"),
+  characterBitOn: "X",
+  characterBitOff: " "
+})
+ 
+const panel = new SideScrollingPanel({
+  board: board,
+  renderer: renderer
+  // fps: 24,
+  // height: 8,
+  // width: 60,
+});
 
 panel.PanelUpdate.on((parameters) => {
-  AsciiRenderer(parameters.display);
+
 })
 
 panel.play();

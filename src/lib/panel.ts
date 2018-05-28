@@ -2,10 +2,13 @@ import Board from './board';
 import BitArray, { bit } from './bit-array';
 import Event from './event';
 import { PanelDisplay } from './types';
+import Renderer from './appearance/renderer';
 
 export interface PanelParameters {
   /** The board for which the panel operates on */
   board: Board,
+  /**  */
+  renderer: Renderer,
   /** Frames of the panel scrolled per second */
   fps?: number,
   /** The width of the panel in bits displayed */
@@ -25,8 +28,9 @@ export default abstract class Panel {
   protected index: number;
   protected width: number;
   protected height: number;
-  protected display: Array<Array<bit>>;
+  protected display: PanelDisplay;
   protected board: Board;
+  protected renderer: Renderer;
   abstract indexUpperBound: number;
   abstract reverse: boolean;
   private _fps: number;
@@ -35,7 +39,7 @@ export default abstract class Panel {
   /** Triggered for every bit of every new frame the panel produces */
   protected readonly onPanelUpdateBit = new Event<{x: number, y: number, value: bit}>();
   /** Triggered for every new frame the panel produces */
-  protected readonly onPanelUpdate = new Event<{display: Display}>();
+  protected readonly onPanelUpdate = new Event<{display: PanelDisplay}>();
   /** Triggered when the index reaches the lower or the upperbound */
   protected readonly onReachingBoundary = new Event<void>();
 
@@ -54,6 +58,7 @@ export default abstract class Panel {
     this.board = params.board;
     this.index = 0;
     this.display = [];
+    this.renderer = params.renderer;
   }
 
   /**
@@ -113,6 +118,7 @@ export default abstract class Panel {
     }
 
     this.onPanelUpdate.trigger({ display: this.display });
+    this.renderer.render(this.display);
 
     this.reverse ? this.decrementIndex() : this.incrementIndex();
   }

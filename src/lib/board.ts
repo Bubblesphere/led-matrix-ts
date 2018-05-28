@@ -65,10 +65,10 @@ export default class Board {
   }
   
   private _addSpacing(): void {
+    // TODO: change 8 to height
     this._characters.push(new Character(
       ['[space]'], 
-      new BitArray(Array.apply(null, Array(this._spacing)) 
-      .map(Number.prototype.valueOf,0)), 
+      new BitArray(Array.apply(null, Array(8 * this._spacing)).map(Number.prototype.valueOf,0)), 
       this._spacing));
   }
 
