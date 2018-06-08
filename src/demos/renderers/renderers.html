@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>led-matrix-ts</title>
+  </head>
+  <body>
+    <h1>LED Matrix Typescript Renderers</h1>
+    <h2>Choose your own renderer</h2>
+    <h3>ASCII</h3>
+    <xmp>
+        const asciiRenderer: AsciiRenderer = new AsciiRenderer({
+          element: document.getElementById("ascii-renderer"),
+          characterBitOn: 'X', // Default: 'X',
+          characterBitOff: ' ' // Default: ' '
+        })        
+    </xmp>
+    <div id="ascii-renderer" style="font-family: monospace; white-space: pre; font-size: 20px;"></div>
+    <h3>Rectangle</h3>
+    <xmp>
+        const rectRenderer = new CanvaRenderers.Rect({
+          canva: document.getElementById("rect-renderer") as HTMLCanvasElement,
+        })
+    </xmp>
+    <canvas id="rect-renderer" width="960" height="128"></canvas>
+
+    <h3>Ellipse</h3>
+    <xmp>
+        const ellipseRederer = new CanvaRenderers.Ellipse({
+          canva: document.getElementById("ellipse-renderer") as HTMLCanvasElement
+          // Other parameters available to every CanvaRenderers
+          colorBitOn: '#9B59B6',
+          colorBitOff: '#67809F',
+          colorStroke: '#5C97BF' 
+        })
+    </xmp>
+    <canvas id="ellipse-renderer" width="960" height="128"></canvas>
+
+    <script src="common-bundle.js"></script>
+    <script src="renderers-bundle.js"></script>
+  </body>
+</html>

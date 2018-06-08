@@ -10,7 +10,7 @@ module.exports = {
   },
   entry: {
     basics: "./src/demos/basics/index.ts",
-    customizeAppearance: "./src/demos/customizeAppearance/index.ts"
+    renderers: "./src/demos/renderers/index.ts"
   },
   output: {
     filename: "[name]-bundle.js",
