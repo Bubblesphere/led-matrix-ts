@@ -98,6 +98,7 @@ export default abstract class Panel {
    */
   public seek(frame: number) {
     this.setIndex(frame);
+    this._step();
   }
 
   /**
