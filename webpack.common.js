@@ -10,6 +10,7 @@ module.exports = {
   },
   entry: {
     basics: "./src/demos/basics/index.ts",
+    controls: "./src/demos/controls/index.ts",
     renderers: "./src/demos/renderers/index.ts"
   },
   output: {

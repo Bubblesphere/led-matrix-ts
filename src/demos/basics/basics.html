@@ -3,7 +3,28 @@
     <title>led-matrix-ts</title>
   </head>
   <body>
+    <ul>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="controls.html">Controls</a></li>
+      <li><a href="renderers.html">Rendering</a></li>
+    </ul>
+
+    <h1>LED Matrix Typescript Basics</h1>
+    <xmp>
+        const board = new Board();
+        const dictionary = new CharacterDictionary(Alphabet);
+
+        board.load("HELLO WORLD ", dictionary);
+        
+        const panel = new SideScrollingPanel({
+          board: board,
+          renderer: new AsciiRenderer({ element: document.getElementById("root") })
+        });
+
+        panel.play();
+    </xmp>
     <div id="root" style="font-family: monospace; white-space: pre;"></div>
+    
     <script src="common-bundle.js"></script>
     <script src="basics-bundle.js"></script>
   </body>

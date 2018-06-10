@@ -4,10 +4,8 @@ import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import { Alphabet } from '../../lib/characterArray/alphabet';
-import AsciiRenderer from '../../lib/appearance/ascii-renderer';
+import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
-
-
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -15,18 +13,11 @@ const dictionary = new CharacterDictionary(Alphabet);
 // input your customized message which can be changed at any time
 board.load("HELLO WORLD ", dictionary);
 
-const renderer: AsciiRenderer = new AsciiRenderer({
-  element: document.getElementById("root"),
-  characterBitOn: "X",
-  characterBitOff: " "
-})
- 
 const panel = new SideScrollingPanel({
   board: board,
-  renderer: renderer
-  // fps: 24,
-  // height: 8,
-  // width: 60,
+  renderer: new AsciiRenderer({
+    element: document.getElementById("root")
+  })
 });
 
 panel.PanelUpdate.on((parameters) => {
@@ -34,15 +25,3 @@ panel.PanelUpdate.on((parameters) => {
 })
 
 panel.play();
-panel.seek(20);
-// panel.pause()
-// panel.resume()
-// panel.stop()
-
-/*
-setTimeout(function(){ panel.pause() }, 3000);
-setTimeout(function(){ panel.resume() }, 4000);
-setTimeout(function(){ board.load("a", dictionary); }, 4500);
-setTimeout(function(){ panel.stop() }, 6000);
-setTimeout(function(){ panel.play() }, 7000);
-*/

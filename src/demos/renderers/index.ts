@@ -4,8 +4,8 @@ import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 import { Alphabet } from '../../lib/characterArray/alphabet';
-import { CanvaRenderers } from '../../lib/appearance/canva-renderers';
-import AsciiRenderer from '../../lib/appearance/ascii-renderer';
+import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
+import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);

@@ -2,7 +2,7 @@ import Board from './board';
 import BitArray, { bit } from './bit-array';
 import Event from './event';
 import { PanelDisplay } from './types';
-import Renderer from './appearance/renderer';
+import Renderer from './rendering/renderer';
 
 export interface PanelParameters {
   /** The board for which the panel operates on */

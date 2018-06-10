@@ -15,6 +15,10 @@ export default class AsciiRenderer extends Renderer {
     this.parameter = parameter;
   }
 
+  public get Parameter() {
+    return this.parameter;
+  }
+
   render(display: PanelDisplay): void {
     let output = "";
     for(var i = 0; i < display.length; i++) {
