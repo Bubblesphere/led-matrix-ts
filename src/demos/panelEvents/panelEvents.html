@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>led-matrix-ts</title>
+  </head>
+  <body>
+    <h1>LED Matrix Typescript Panel Events</h1>
+    <ul>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="controls.html">Controls</a></li>
+      <li><a href="panelEvents.html">Events</a></li>
+      <li><a href="renderers.html">Rendering</a></li>
+    </ul>
+
+    <div id="root" style="font-family: monospace; white-space: pre;"></div>
+    <h2>PanelUpdate</h2>
+    <xmp>
+      panel.PanelUpdate.on((parameters) => {
+        const formattedDisplay = parameters.display.toString().replace(/,/g, '');
+        document.getElementById("panel-update").innerHTML = formattedDisplay;
+      });
+    </xmp>
+    <textarea id="panel-update" cols="64" rows="8" style="overflow-y: scroll; overflow-x: hidden; resize: none"></textarea>
+    <h2>PanelUpdateBit</h2>
+    <xmp>
+      panel.PanelUpdateBit.on((parameters) => {
+        document.getElementById("panel-update-bit").innerHTML = `Position ${parameters.x},${parameters.y} updated to value ${parameters.value}`;
+      });
+    </xmp>
+    <p>Triggered for every value in the PanelUpdate event</p>
+    <p id="panel-update-bit"></p>
+    <h2>ReachingBoundary</h2>
+    <xmp>
+      panel.ReachingBoundary.on((parameters) => {
+        document.getElementById("reaching-boundary").innerHTML = `${document.getElementById("reaching-boundary").innerHTML}X`;
+      });
+    </xmp>
+    <p id="reaching-boundary">Reached Boundary: </p>
+    <script src="common-bundle.js"></script>
+    <script src="panelEvents-bundle.js"></script>
+  </body>
+</html>

@@ -11,7 +11,8 @@ module.exports = {
   entry: {
     basics: "./src/demos/basics/index.ts",
     controls: "./src/demos/controls/index.ts",
-    renderers: "./src/demos/renderers/index.ts"
+    renderers: "./src/demos/renderers/index.ts",
+    panelEvents: "./src/demos/panelEvents/index.ts"
   },
   output: {
     filename: "[name]-bundle.js",
