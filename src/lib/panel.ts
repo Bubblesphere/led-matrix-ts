@@ -97,6 +97,9 @@ export default abstract class Panel {
    * @param frame The frame to seek to
    */
   public seek(frame: number) {
+    if (frame < 0 || frame > this.board.width) {
+      throw `Seek expects a value between 0 and ${this.board.width}`;
+    }
     this.setIndex(frame);
     this._step();
   }
