@@ -38,25 +38,21 @@ const ellipseRederer = new CanvaRenderers.Ellipse({
 const panelAsciiRenderer = new SideScrollingPanel({
   board: board,
   renderer: asciiRenderer,
-  fps: 10
 });
 
 const panelAsciiAdvancedRenderer = new SideScrollingPanel({
   board: board,
   renderer: asciiRenderer,
-  fps: 10
 });
 
 const panelRectRenderer = new SideScrollingPanel({
   board: board,
   renderer: rectRenderer,
-  fps: 10
 });
 
 const panelEllipseRenderer = new SideScrollingPanel({
   board: board,
   renderer: ellipseRederer,
-  fps: 10
 });
 
 panelAsciiRenderer.play();
