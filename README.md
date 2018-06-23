@@ -16,6 +16,7 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 ## Size
 12.97 KB
+
 2.96 KB (Gzipped)
 
 ## Installation
