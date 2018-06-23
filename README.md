@@ -115,6 +115,7 @@ The board creates the link between the dictionnary and the input. It's role is t
 Method | Description
 --- | ---
 **`load(input: String, dictionnary: CharacterDictionary)`** | Stiches up the different characters of the dictionnary based on the input onto the board.
+
 NB: Actual representation is in the form of a 0/1 matrix. Used black/white squares for visualization purposes only.
 **Empty board**
 ![Empty board](https://i.imgur.com/GTP4tFm.png)
