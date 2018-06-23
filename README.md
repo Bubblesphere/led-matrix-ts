@@ -14,6 +14,10 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 ![Demo gif](https://i.imgur.com/bT8uZPN.gif)
 ![Demo gif 2](https://i.imgur.com/08NQXUR.gif)
 
+## Size
+12.97 KB
+2.96 KB (Gzipped)
+
 ## Installation
 **via npm**
 

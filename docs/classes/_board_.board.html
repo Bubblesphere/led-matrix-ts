@@ -67,6 +67,14 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The board creates the link between the dictionnary and the input.
+						It&#39;s role is to create the matrix reprentation of the entire board</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -88,7 +96,6 @@
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_board_.board.html#_charactercount" class="tsd-kind-icon">_character<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_board_.board.html#_characters" class="tsd-kind-icon">_characters</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_board_.board.html#_spacing" class="tsd-kind-icon">_spacing</a></li>
 							</ul>
@@ -105,7 +112,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_board_.board.html#_addspacing" class="tsd-kind-icon">_add<wbr>Spacing</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_board_.board.html#_getcharacteratindex" class="tsd-kind-icon">_get<wbr>Character<wbr>AtIndex</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_board_.board.html#_getcharacteroffsetatindex" class="tsd-kind-icon">_get<wbr>Character<wbr>Offset<wbr>AtIndex</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_board_.board.html#getatindex" class="tsd-kind-icon">get<wbr>AtIndex</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_board_.board.html#getcolumnatindex" class="tsd-kind-icon">get<wbr>Column<wbr>AtIndex</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_board_.board.html#load" class="tsd-kind-icon">load</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_board_.board.html#reset" class="tsd-kind-icon">reset</a></li>
 							</ul>
@@ -125,7 +132,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L8">board.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L11">board.ts:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -152,22 +159,12 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_charactercount" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _character<wbr>Count</h3>
-					<div class="tsd-signature tsd-kind-icon">_character<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L8">board.ts:8</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_characters" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _characters</h3>
 					<div class="tsd-signature tsd-kind-icon">_characters<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="_character_.character.html" class="tsd-signature-type">Character</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L6">board.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L10">board.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -177,7 +174,7 @@
 					<div class="tsd-signature tsd-kind-icon">_spacing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L7">board.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L11">board.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -194,7 +191,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L48">board.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L25">board.ts:25</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +216,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L19">board.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L66">board.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -236,7 +233,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L27">board.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L74">board.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -259,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L36">board.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L83">board.ts:83</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -273,16 +270,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getatindex" class="tsd-anchor"></a>
-					<h3>get<wbr>AtIndex</h3>
+					<a name="getcolumnatindex" class="tsd-anchor"></a>
+					<h3>get<wbr>Column<wbr>AtIndex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>AtIndex<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_bit_array_.html#bit" class="tsd-signature-type">bit</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Column<wbr>AtIndex<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_bit_array_.html#bit" class="tsd-signature-type">bit</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L58">board.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L35">board.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,7 +310,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L76">board.ts:76</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L53">board.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,7 +347,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/board.ts#L67">board.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/board.ts#L44">board.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -383,7 +380,34 @@
 						<a href="../modules/_character_dictionary_.html">"character-<wbr>dictionary"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_characterarray_alphabet_.html">"character<wbr>Array/alphabet"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_event_.html">"event"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_panel_.html">"panel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_rendering_ascii_renderer_.html">"rendering/ascii-<wbr>renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_rendering_canva_renderer_.html">"rendering/canva-<wbr>renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_rendering_canva_renderers_.html">"rendering/canva-<wbr>renderers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_rendering_renderer_.html">"rendering/renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_scrolling_reverse_side_scrolling_panel_.html">"scrolling/reverse-<wbr>side-<wbr>scrolling-<wbr>panel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_scrolling_side_scrolling_panel_.html">"scrolling/side-<wbr>scrolling-<wbr>panel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_scrolling_side_scrolling_panel_base_.html">"scrolling/side-<wbr>scrolling-<wbr>panel-<wbr>base"</a>
 					</li>
 				</ul>
 			</nav>
@@ -396,9 +420,6 @@
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="_board_.board.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_board_.board.html#_charactercount" class="tsd-kind-icon">_character<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_board_.board.html#_characters" class="tsd-kind-icon">_characters</a>
@@ -419,7 +440,7 @@
 								<a href="_board_.board.html#_getcharacteroffsetatindex" class="tsd-kind-icon">_get<wbr>Character<wbr>Offset<wbr>AtIndex</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_board_.board.html#getatindex" class="tsd-kind-icon">get<wbr>AtIndex</a>
+								<a href="_board_.board.html#getcolumnatindex" class="tsd-kind-icon">get<wbr>Column<wbr>AtIndex</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_board_.board.html#load" class="tsd-kind-icon">load</a>

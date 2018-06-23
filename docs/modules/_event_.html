@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Events | led-matrix-ts</title>
+	<title>&quot;event&quot; | led-matrix-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,115 +54,68 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_panel_.html">&quot;panel&quot;</a>
-				</li>
-				<li>
-					<a href="_panel_.events.html">Events</a>
+					<a href="_event_.html">&quot;event&quot;</a>
 				</li>
 			</ul>
-			<h1>Interface Events</h1>
+			<h1>External module &quot;event&quot;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">Events</span>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Properties</h3>
+						<section class="tsd-index-section ">
+							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_panel_.events.html#onpanelupdate" class="tsd-kind-icon">on<wbr>Panel<wbr>Update</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_panel_.events.html#onpanelupdatebit" class="tsd-kind-icon">on<wbr>Panel<wbr>Update<wbr>Bit</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../classes/_event_.event.html" class="tsd-kind-icon">Event</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported"><a href="../interfaces/_event_.ievent.html" class="tsd-kind-icon">IEvent</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported"><a href="_event_.html#handler" class="tsd-kind-icon">Handler</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="onpanelupdate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Panel<wbr>Update</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Panel<wbr>Update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+					<a name="handler" class="tsd-anchor"></a>
+					<h3>Handler</h3>
+					<div class="tsd-signature tsd-kind-icon">Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/panel.ts#L8">panel.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/event.ts#L1">event.ts:1</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Triggered for every new frame the panel produces</p>
-						</div>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>display<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>display: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+												<h5><span class="tsd-flag ts-flagOptional">Optional</span> data: <span class="tsd-signature-type">T</span></h5>
 											</li>
 										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="onpanelupdatebit" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Panel<wbr>Update<wbr>Bit</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Panel<wbr>Update<wbr>Bit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/ec74bba/src/lib/panel.ts#L6">panel.ts:6</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Triggered for every bit of every new frame the panel produces</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, value<span class="tsd-signature-symbol">: </span><a href="../modules/_bit_array_.html#bit" class="tsd-signature-type">bit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>x: <span class="tsd-signature-type">number</span></h5>
-											</li>
-											<li>
-												<h5>y: <span class="tsd-signature-type">number</span></h5>
-											</li>
-											<li>
-												<h5>value: <a href="../modules/_bit_array_.html#bit" class="tsd-signature-type">bit</a></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 									</li>
 								</ul>
 							</li>
@@ -178,44 +131,59 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_bit_array_.html">"bit-<wbr>array"</a>
+						<a href="_bit_array_.html">"bit-<wbr>array"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_board_.html">"board"</a>
+						<a href="_board_.html">"board"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_character_.html">"character"</a>
+						<a href="_character_.html">"character"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_character_dictionary_.html">"character-<wbr>dictionary"</a>
+						<a href="_character_dictionary_.html">"character-<wbr>dictionary"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_characterarray_alphabet_.html">"character<wbr>Array/alphabet"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_panel_.html">"panel"</a>
+						<a href="_event_.html">"event"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_panel_.html">"panel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_rendering_ascii_renderer_.html">"rendering/ascii-<wbr>renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_rendering_canva_renderer_.html">"rendering/canva-<wbr>renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_rendering_canva_renderers_.html">"rendering/canva-<wbr>renderers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_rendering_renderer_.html">"rendering/renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_scrolling_reverse_side_scrolling_panel_.html">"scrolling/reverse-<wbr>side-<wbr>scrolling-<wbr>panel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_scrolling_side_scrolling_panel_.html">"scrolling/side-<wbr>scrolling-<wbr>panel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_scrolling_side_scrolling_panel_base_.html">"scrolling/side-<wbr>scrolling-<wbr>panel-<wbr>base"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_panel_.panel.html" class="tsd-kind-icon">Panel</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../classes/_event_.event.html" class="tsd-kind-icon">Event</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_panel_.events.html" class="tsd-kind-icon">Events</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="_panel_.events.html#onpanelupdate" class="tsd-kind-icon">on<wbr>Panel<wbr>Update</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="_panel_.events.html#onpanelupdatebit" class="tsd-kind-icon">on<wbr>Panel<wbr>Update<wbr>Bit</a>
-							</li>
-						</ul>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="../interfaces/_event_.ievent.html" class="tsd-kind-icon">IEvent</a>
 					</li>
-				</ul>
-				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_panel_.panelparameters.html" class="tsd-kind-icon">Panel<wbr>Parameters</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="_event_.html#handler" class="tsd-kind-icon">Handler</a>
 					</li>
 				</ul>
 			</nav>

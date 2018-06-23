@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PanelParameters | led-matrix-ts</title>
+	<title>Rect | led-matrix-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,16 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_panel_.html">&quot;panel&quot;</a>
+					<a href="../modules/_rendering_canva_renderers_.html">&quot;rendering/canva-renderers&quot;</a>
 				</li>
 				<li>
-					<a href="_panel_.panelparameters.html">PanelParameters</a>
+					<a href="../modules/_rendering_canva_renderers_.canvarenderers.html">CanvaRenderers</a>
+				</li>
+				<li>
+					<a href="_rendering_canva_renderers_.canvarenderers.rect.html">Rect</a>
 				</li>
 			</ul>
-			<h1>Interface PanelParameters</h1>
+			<h1>Class Rect</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +74,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PanelParameters</span>
+						<a href="_rendering_canva_renderer_.canvarenderer.html" class="tsd-signature-type">CanvaRenderer</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">Rect</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -80,105 +88,110 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_panel_.panelparameters.html#board" class="tsd-kind-icon">board</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_panel_.panelparameters.html#fps" class="tsd-kind-icon">fps</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_panel_.panelparameters.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_panel_.panelparameters.html#renderer" class="tsd-kind-icon">renderer</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_panel_.panelparameters.html#reverse" class="tsd-kind-icon">reverse</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_panel_.panelparameters.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_rendering_canva_renderers_.canvarenderers.rect.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_rendering_canva_renderers_.canvarenderers.rect.html#drawbit" class="tsd-kind-icon">draw<wbr>Bit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_rendering_canva_renderers_.canvarenderers.rect.html#render" class="tsd-kind-icon">render</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="board" class="tsd-anchor"></a>
-					<h3>board</h3>
-					<div class="tsd-signature tsd-kind-icon">board<span class="tsd-signature-symbol">:</span> <a href="../classes/_board_.board.html" class="tsd-signature-type">Board</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/panel.ts#L9">panel.ts:9</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The board for which the panel operates on</p>
-						</div>
-					</div>
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Rect<span class="tsd-signature-symbol">(</span>parameters<span class="tsd-signature-symbol">: </span><a href="../modules/_rendering_canva_renderer_.html#canvarendererparameter" class="tsd-signature-type">CanvaRendererParameter</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_rendering_canva_renderers_.canvarenderers.rect.html" class="tsd-signature-type">Rect</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_rendering_canva_renderer_.canvarenderer.html">CanvaRenderer</a>.<a href="_rendering_canva_renderer_.canvarenderer.html#constructor">constructor</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/rendering/canva-renderers.ts#L16">rendering/canva-renderers.ts:16</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>parameters: <a href="../modules/_rendering_canva_renderer_.html#canvarendererparameter" class="tsd-signature-type">CanvaRendererParameter</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_rendering_canva_renderers_.canvarenderers.rect.html" class="tsd-signature-type">Rect</a></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="fps" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> fps</h3>
-					<div class="tsd-signature tsd-kind-icon">fps<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/panel.ts#L13">panel.ts:13</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Frames of the panel scrolled per second</p>
-						</div>
-					</div>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="drawbit" class="tsd-anchor"></a>
+					<h3>draw<wbr>Bit</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">draw<wbr>Bit<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="_rendering_canva_renderer_.canvarenderer.html">CanvaRenderer</a>.<a href="_rendering_canva_renderer_.canvarenderer.html#drawbit">drawBit</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/rendering/canva-renderers.ts#L21">rendering/canva-renderers.ts:21</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>width: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="height" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> height</h3>
-					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/panel.ts#L17">panel.ts:17</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The height of the panel in bits displayed</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="renderer" class="tsd-anchor"></a>
-					<h3>renderer</h3>
-					<div class="tsd-signature tsd-kind-icon">renderer<span class="tsd-signature-symbol">:</span> <a href="../classes/_rendering_renderer_.renderer.html" class="tsd-signature-type">Renderer</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/panel.ts#L11">panel.ts:11</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="reverse" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> reverse</h3>
-					<div class="tsd-signature tsd-kind-icon">reverse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/panel.ts#L19">panel.ts:19</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether the panel animation should be reverse</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="width" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> width</h3>
-					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/panel.ts#L15">panel.ts:15</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The width of the panel in bits displayed</p>
-						</div>
-					</div>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+					<a name="render" class="tsd-anchor"></a>
+					<h3>render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>display<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PanelDisplay</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_rendering_canva_renderer_.canvarenderer.html">CanvaRenderer</a>.<a href="_rendering_canva_renderer_.canvarenderer.html#render">render</a></p>
+								<p>Overrides <a href="_rendering_renderer_.renderer.html">Renderer</a>.<a href="_rendering_renderer_.renderer.html#render">render</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/rendering/canva-renderer.ts#L25">rendering/canva-renderer.ts:25</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>display: <span class="tsd-signature-type">PanelDisplay</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -206,7 +219,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_event_.html">"event"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_panel_.html">"panel"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -215,8 +228,13 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_rendering_canva_renderer_.html">"rendering/canva-<wbr>renderer"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_rendering_canva_renderers_.html">"rendering/canva-<wbr>renderers"</a>
+						<ul>
+							<li class="current tsd-kind-module tsd-parent-kind-external-module">
+								<a href="../modules/_rendering_canva_renderers_.canvarenderers.html">Canva<wbr>Renderers</a>
+							</li>
+						</ul>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_rendering_renderer_.html">"rendering/renderer"</a>
@@ -234,31 +252,22 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_panel_.panel.html" class="tsd-kind-icon">Panel</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="_rendering_canva_renderers_.canvarenderers.ellipse.html" class="tsd-kind-icon">Ellipse</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_panel_.panelparameters.html" class="tsd-kind-icon">Panel<wbr>Parameters</a>
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="_rendering_canva_renderers_.canvarenderers.rect.html" class="tsd-kind-icon">Rect</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_panel_.panelparameters.html#board" class="tsd-kind-icon">board</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_rendering_canva_renderers_.canvarenderers.rect.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_panel_.panelparameters.html#fps" class="tsd-kind-icon">fps</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_rendering_canva_renderers_.canvarenderers.rect.html#drawbit" class="tsd-kind-icon">draw<wbr>Bit</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_panel_.panelparameters.html#height" class="tsd-kind-icon">height</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_panel_.panelparameters.html#renderer" class="tsd-kind-icon">renderer</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_panel_.panelparameters.html#reverse" class="tsd-kind-icon">reverse</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_panel_.panelparameters.html#width" class="tsd-kind-icon">width</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="_rendering_canva_renderers_.canvarenderers.rect.html#render" class="tsd-kind-icon">render</a>
 							</li>
 						</ul>
 					</li>

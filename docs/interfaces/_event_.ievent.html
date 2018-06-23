@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;character-dictionary&quot; | led-matrix-ts</title>
+	<title>IEvent | led-matrix-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,27 +54,102 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_character_dictionary_.html">&quot;character-dictionary&quot;</a>
+					<a href="../modules/_event_.html">&quot;event&quot;</a>
+				</li>
+				<li>
+					<a href="_event_.ievent.html">IEvent</a>
 				</li>
 			</ul>
-			<h1>External module &quot;character-dictionary&quot;</h1>
+			<h1>Interface IEvent&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">IEvent</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/_event_.event.html" class="tsd-signature-type">Event</a></li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Classes</h3>
+						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_character_dictionary_.characterdictionary.html" class="tsd-kind-icon">Character<wbr>Dictionary</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported"><a href="_event_.ievent.html#off" class="tsd-kind-icon">off</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported"><a href="_event_.ievent.html#on" class="tsd-kind-icon">on</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="off" class="tsd-anchor"></a>
+					<h3>off</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">off<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><a href="../modules/_event_.html#handler" class="tsd-signature-type">Handler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/event.ts#L5">event.ts:5</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>handler: <a href="../modules/_event_.html#handler" class="tsd-signature-type">Handler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="on" class="tsd-anchor"></a>
+					<h3>on</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><a href="../modules/_event_.html#handler" class="tsd-signature-type">Handler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Bubblesphere/scrolling-matrix-js/blob/12d2b8a/src/lib/event.ts#L4">event.ts:4</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>handler: <a href="../modules/_event_.html#handler" class="tsd-signature-type">Handler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -85,53 +160,71 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_bit_array_.html">"bit-<wbr>array"</a>
+						<a href="../modules/_bit_array_.html">"bit-<wbr>array"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_board_.html">"board"</a>
+						<a href="../modules/_board_.html">"board"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_character_.html">"character"</a>
+						<a href="../modules/_character_.html">"character"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_character_dictionary_.html">"character-<wbr>dictionary"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_characterarray_alphabet_.html">"character<wbr>Array/alphabet"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_character_dictionary_.html">"character-<wbr>dictionary"</a>
+						<a href="../modules/_event_.html">"event"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_characterarray_alphabet_.html">"character<wbr>Array/alphabet"</a>
+						<a href="../modules/_panel_.html">"panel"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_event_.html">"event"</a>
+						<a href="../modules/_rendering_ascii_renderer_.html">"rendering/ascii-<wbr>renderer"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_panel_.html">"panel"</a>
+						<a href="../modules/_rendering_canva_renderer_.html">"rendering/canva-<wbr>renderer"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_rendering_ascii_renderer_.html">"rendering/ascii-<wbr>renderer"</a>
+						<a href="../modules/_rendering_canva_renderers_.html">"rendering/canva-<wbr>renderers"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_rendering_canva_renderer_.html">"rendering/canva-<wbr>renderer"</a>
+						<a href="../modules/_rendering_renderer_.html">"rendering/renderer"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_rendering_canva_renderers_.html">"rendering/canva-<wbr>renderers"</a>
+						<a href="../modules/_scrolling_reverse_side_scrolling_panel_.html">"scrolling/reverse-<wbr>side-<wbr>scrolling-<wbr>panel"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_rendering_renderer_.html">"rendering/renderer"</a>
+						<a href="../modules/_scrolling_side_scrolling_panel_.html">"scrolling/side-<wbr>scrolling-<wbr>panel"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_scrolling_reverse_side_scrolling_panel_.html">"scrolling/reverse-<wbr>side-<wbr>scrolling-<wbr>panel"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_scrolling_side_scrolling_panel_.html">"scrolling/side-<wbr>scrolling-<wbr>panel"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_scrolling_side_scrolling_panel_base_.html">"scrolling/side-<wbr>scrolling-<wbr>panel-<wbr>base"</a>
+						<a href="../modules/_scrolling_side_scrolling_panel_base_.html">"scrolling/side-<wbr>scrolling-<wbr>panel-<wbr>base"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_character_dictionary_.characterdictionary.html" class="tsd-kind-icon">Character<wbr>Dictionary</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../classes/_event_.event.html" class="tsd-kind-icon">Event</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="_event_.ievent.html" class="tsd-kind-icon">IEvent</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_event_.ievent.html#off" class="tsd-kind-icon">off</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_event_.ievent.html#on" class="tsd-kind-icon">on</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="../modules/_event_.html#handler" class="tsd-kind-icon">Handler</a>
 					</li>
 				</ul>
 			</nav>
