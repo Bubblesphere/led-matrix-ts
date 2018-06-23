@@ -6,8 +6,8 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 - [Basics](#basics)
 - [API](#api)
   * [Character Dictionary](#character-dictionary)
-  * [Board](#character-dictionary)
-  * [Panel](#character-dictionary)
+  * [Board](#board)
+  * [Panel](#panel)
   * [Renderers](#renderers)
 - [License](#license)
 
@@ -76,7 +76,7 @@ panel.play();
 ```
 
 ## API
-### character-dictionnary
+### character-dictionary
 The character dictionnary contains the matrix representation of the different characters available. You can create your own alphabet and pass it to the constructor of the character dictionnary.
 
 #### Create your own alphabet
