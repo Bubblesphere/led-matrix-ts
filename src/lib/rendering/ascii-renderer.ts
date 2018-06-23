@@ -8,15 +8,19 @@ type AsciiRendererParameter = {
 }
 
 export default class AsciiRenderer extends Renderer {
-  private parameter: AsciiRendererParameter;
+  private parameters: AsciiRendererParameter;
 
-  constructor(parameter: AsciiRendererParameter) {
+  constructor(parameters: AsciiRendererParameter) {
     super();
-    this.parameter = parameter;
+    this.parameters = {
+      element: parameters.element,
+      characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
+      characterBitOff: parameters.characterBitOff ? parameters.characterBitOff : " "
+    };
   }
 
   public get Parameter() {
-    return this.parameter;
+    return this.parameters;
   }
 
   render(display: PanelDisplay): void {
@@ -24,11 +28,11 @@ export default class AsciiRenderer extends Renderer {
     for(var i = 0; i < display.length; i++) {
         for(var j = 0; j < display[i].length; j++) {
           output += display[i][j] == 1 ? 
-            this.parameter.characterBitOn ? this.parameter.characterBitOn[0] : 'X' : 
-            this.parameter.characterBitOff ? this.parameter.characterBitOff[0] : ' ';
+            this.parameters.characterBitOn: 
+            this.parameters.characterBitOff;
         }
       output += '\n';
     }
-    this.parameter.element.innerHTML = output; 
+    this.parameters.element.innerHTML = output; 
   }
 }

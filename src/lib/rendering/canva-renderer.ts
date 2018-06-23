@@ -11,8 +11,6 @@ export type CanvaRendererParameter = {
 
 export default abstract class CanvaRenderer extends Renderer {
   private parameters: CanvaRendererParameter;
-  private widthEachBit: number;
-  private heightEachBit: number;
 
   constructor(parameters: CanvaRendererParameter) {
     super();

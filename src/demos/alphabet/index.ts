@@ -1,7 +1,6 @@
 import Board from '../../lib/board';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
-import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 import { ICharacterArray } from '../../lib/types';
 import BitArray from '../../lib/bit-array';
@@ -25,8 +24,6 @@ const Alphabet: ICharacterArray = [
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
-
-// input your customized message which can be changed at any time
 board.load("S", dictionary);
 
 const panel = new SideScrollingPanel({

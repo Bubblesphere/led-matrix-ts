@@ -1,6 +1,4 @@
 import Board from '../../lib/board';
-import Panel, { PanelParameters } from '../../lib/panel';
-import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import { Alphabet } from '../../lib/characterArray/alphabet';

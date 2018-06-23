@@ -9,7 +9,6 @@ import BitArray, { bit } from './bit-array';
 export default class Board {
   private _characters: Array<Character>;
   private _spacing: number;
-  private _characterCount: number;
 
   /**
    * Creates a board
