@@ -1,5 +1,5 @@
 import Board from './board';
-import BitArray, { bit } from './bit-array';
+import { bit } from './bit-array';
 import Event from './event';
 import { PanelDisplay } from './types';
 import Renderer from './rendering/renderer';
@@ -32,7 +32,7 @@ export default abstract class Panel {
   protected board: Board;
   protected renderer: Renderer;
   abstract indexUpperBound: number;
-  abstract reverse: boolean;
+  private reverse: boolean;
   private _fps: number;
   private _interval: number;
 
@@ -59,6 +59,7 @@ export default abstract class Panel {
     this.index = 0;
     this.display = [];
     this.renderer = params.renderer;
+    this.reverse = params.reverse ? params.reverse : false;
   }
 
   /**
@@ -97,8 +98,8 @@ export default abstract class Panel {
    * @param frame The frame to seek to
    */
   public seek(frame: number) {
-    if (frame < 0 || frame > this.board.width) {
-      throw `Seek expects a value between 0 and ${this.board.width}`;
+    if (frame < 0 || frame > this.indexUpperBound) {
+      throw `Seek expects a value between 0 and ${this.indexUpperBound}`;
     }
     this.setIndex(frame);
     this._step();

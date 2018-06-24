@@ -130,11 +130,12 @@ The panel deals with the displaying logic. You can see it as a viewport moving t
 #### Parameters
 Parameters | Default | Description 
 --- | --- | ---
-**`board`** |  | The board upon which the panel should be hooked up
-**`renderer`** |  | The panel renderer
-**`fps`** | 24 | The amount of updates to the panel per second
-**`height`** | 8 | The height of the viewport
-**`width`** | 60 | The width of the viewport
+**`board: Board`** |  | The board upon which the panel should be hooked up
+**`renderer: Renderer`** |  | The panel renderer
+**`fps: number`** | 24 | The amount of updates to the panel per second
+**`height: number`** | 8 | The height of the viewport
+**`width: number`** | 60 | The width of the viewport
+**`reverse: boolean`** | false | Whether the scrolling sequence should be reversed
 
 #### Methods
 Method | Description

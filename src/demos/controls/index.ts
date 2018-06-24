@@ -1,11 +1,9 @@
 import Board from '../../lib/board';
-import Panel, { PanelParameters } from '../../lib/panel';
-import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import { Alphabet } from '../../lib/characterArray/alphabet';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
-import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
+import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);

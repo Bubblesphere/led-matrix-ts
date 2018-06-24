@@ -1,10 +1,10 @@
 import Board from '../../lib/board';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
-import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 import { ICharacterArray } from '../../lib/types';
 import BitArray from '../../lib/bit-array';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
+import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 
 
 const Alphabet: ICharacterArray = [

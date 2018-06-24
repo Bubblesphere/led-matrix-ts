@@ -1,11 +1,9 @@
 import Board from '../../lib/board';
-import Panel from '../../lib/panel';
-import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
-import SideScrollingPanel from '../../lib/scrolling/side-scrolling-panel';
 import { Alphabet } from '../../lib/characterArray/alphabet';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
+import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);
@@ -15,12 +13,6 @@ board.load("Hello WORLD ", dictionary);
 const asciiRenderer = new AsciiRenderer({
   element: document.getElementById("ascii-renderer"),
   characterBitOn: 'X', // Default: 'X'
-  characterBitOff: ' ' // Default: ' '
-})
-
-const asciiAdvancedRenderer = new AsciiRenderer({
-  element: document.getElementById("ascii-renderer"),
-  characterBitOn: '.', // Default: 'X'
   characterBitOff: ' ' // Default: ' '
 })
 

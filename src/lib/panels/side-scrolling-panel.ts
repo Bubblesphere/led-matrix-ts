@@ -1,8 +1,7 @@
-import Panel from "../panel";
 import { bit } from "../bit-array";
+import Panel from "../panel";
 
-export default abstract class SideScrollingPanelBase extends Panel {
-  abstract reverse: boolean;
+export default class SideScrollingPanel extends Panel {
   indexUpperBound: number = this.board.width;
 
   protected _generateDisplay(): void {
