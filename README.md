@@ -79,8 +79,17 @@ const panel = new SideScrollingPanel({
 
 panel.play();
 ```
+---
 
 ## API
+
+- [Character Dictionary](#character-dictionary)
+- [Board](#board)
+- [Panel](#panel)
+- [Renderers](#renderers)
+
+---
+
 ### character-dictionary
 The character dictionnary contains the matrix representation of the different characters available. You can create your own alphabet and pass it to the constructor of the character dictionnary.
 
@@ -109,7 +118,9 @@ The character dictionnary contains the matrix representation of the different ch
 ```
 ![Custom Alphabet](https://i.imgur.com/6RypEMT.gif)
 
-### board
+---
+
+### Board
 The board creates the link between the dictionnary and the input. It's role is to create the matrix reprentation of the entire board
 
 #### Method
@@ -123,6 +134,7 @@ NB: Actual representation is in the form of a 0/1 matrix. Used black/white squar
 **Loaded board**
 ![Loaded board](https://i.imgur.com/cQbTJzz.png)
 
+---
 
 ### Panel
 The panel deals with the displaying logic. You can see it as a viewport moving through a board. It has control over starting, stopping, pausing, resuming and seeking. 
@@ -162,6 +174,8 @@ Event | Description
 **Here the panel moves through 4 panel updates before the gif restarts**
 NB: Actual representation is in the form of a 0/1 matrix. Used black/white squares for visualization purposes only.
 ![Moving Panel](https://i.imgur.com/8irA5GI.gif)
+
+---
 
 ### Renderers
 
@@ -207,6 +221,8 @@ const ellipseRederer = new CanvaRenderers.Ellipse({
 })
 ```
 ![CanvaRenderer.Ellipse](https://i.imgur.com/IPVDphn.gif)
+
+---
 
 ## License
 ```
