@@ -7,7 +7,6 @@ import { ICharacterArray } from './types';
  */
 export default class CharacterDictionary {
   private _characters: ICharacterArray;
-  private _output: Array<number>;
 
   /**
    * Creates a character dictionary
