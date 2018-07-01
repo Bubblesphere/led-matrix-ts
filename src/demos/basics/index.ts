@@ -4,6 +4,7 @@ import CharacterDictionary from '../../lib/character-dictionary';
 import { Alphabet } from '../../lib/characterArray/alphabet';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
+import VerticalScrollingPanel from '../../lib/panels/vertical-scrolling-panel';
 
 const board = new Board();
 const dictionary = new CharacterDictionary(Alphabet);

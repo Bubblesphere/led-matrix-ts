@@ -13,7 +13,8 @@ module.exports = {
     controls: "./src/demos/controls/index.ts",
     renderers: "./src/demos/renderers/index.ts",
     panelEvents: "./src/demos/panelEvents/index.ts",
-    alphabet: "./src/demos/alphabet/index.ts"
+    alphabet: "./src/demos/alphabet/index.ts",
+    panels: "./src/demos/panels/index.ts"
   },
   output: {
     filename: "[name]-bundle.js",

@@ -46,6 +46,23 @@ export default class Character {
   } 
 
   /**
+   * Gets a row of the character at an index
+   * @param index The index of the row
+   */
+  public getRow(index: number): bit[] {
+    if (index > this._height) {
+      throw `Index (${index}) is greater than the height of the character (${this._height})`;
+    }
+
+    let row: bit[] = [];
+    for(let i = 0; i < this._width; i++) {
+      row.push(this._output.atIndex(index * this._width + i));
+    }
+
+    return row;
+  }
+
+  /**
    * Gets the width of the character
    */
   public get width() {

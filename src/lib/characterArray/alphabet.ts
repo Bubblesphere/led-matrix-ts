@@ -257,7 +257,7 @@ export const Alphabet: ICharacterArray = [
     5
   ),
   new Character(
-    ['u', 'U'], 
+    ['v', 'V'], 
     new BitArray([1, 0, 0, 0, 1,
                   1, 0, 0, 0, 1,
                   1, 0, 0, 0, 1,

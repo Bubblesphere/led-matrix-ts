@@ -147,7 +147,7 @@ export default abstract class Panel {
    * Increments the panel index
    */
   private incrementIndex() {
-    if (this.index >= this.indexUpperBound - 1) {
+    if (this.index > this.indexUpperBound - 1) {
       this.onReachingBoundary.trigger();
       this.index = 0;
     } else {

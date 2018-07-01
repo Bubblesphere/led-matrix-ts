@@ -139,6 +139,26 @@ NB: Actual representation is in the form of a 0/1 matrix. Used black/white squar
 ### Panel
 The panel deals with the displaying logic. You can see it as a viewport moving through a board. It has control over starting, stopping, pausing, resuming and seeking. 
 
+### Choose between
+**Demo: Check out `src/demos/panels` for more details**
+##### Side scrolling panel
+``` typescript
+const sideScrollingPanel = new SideScrollingPanel({
+  ...
+});
+```
+![Horizontal scrolling](https://i.imgur.com/hajLuk3.gif)
+##### Vertical scrolling panel
+``` typescript
+const verticalScrollingPanel = new VerticalScrollingPanel({
+  ...
+});
+```
+![Vertical scrolling](https://i.imgur.com/WGCbCES.gif)
+
+##### Make your own
+To implement your own scrolling logic, extend the Panel abstract class situated at `src/lib/panel`.
+
 #### Parameters
 Parameters | Default | Description 
 --- | --- | ---
@@ -221,6 +241,9 @@ const ellipseRederer = new CanvaRenderers.Ellipse({
 })
 ```
 ![CanvaRenderer.Ellipse](https://i.imgur.com/IPVDphn.gif)
+
+##### Make your own
+To implement your own renderer, extend the Renderer abstract class situated at `src/lib/rendering/renderer`.
 
 ---
 
