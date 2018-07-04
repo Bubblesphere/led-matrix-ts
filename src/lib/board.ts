@@ -73,6 +73,7 @@ export default class Board {
       const character = dictionnary.find(input[i]);
       if (character) {
         this._characters.push(character);
+        // TODO: Fill character height void with 0s
         this._addSpacing();
       } else {
         throw `Could not find any match for ${input[i]} within the provided dictionnary`;
@@ -81,10 +82,9 @@ export default class Board {
   }
   
   private _addSpacing(): void {
-    // TODO: change 8 to height
     this._characters.push(new Character(
       ['[space]'], 
-      new BitArray(Array.apply(null, Array(8 * this._spacing)).map(Number.prototype.valueOf,0)), 
+      new BitArray(Array.apply(null, Array(this.height * this._spacing)).map(Number.prototype.valueOf,0)), 
       this._spacing));
   }
 
