@@ -6,7 +6,7 @@ import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 
 const board = new Board();
-const dictionary = new CharacterDictionary(Alphabet);
+const dictionary = new CharacterDictionary([Alphabet]);
 
 // input your customized message which can be changed at any time
 board.load("HELLO WORLD ", dictionary);

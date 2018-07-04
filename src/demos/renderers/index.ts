@@ -6,7 +6,7 @@ import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 
 const board = new Board();
-const dictionary = new CharacterDictionary(Alphabet);
+const dictionary = new CharacterDictionary([Alphabet]);
 
 board.load("Hello WORLD ", dictionary);
 

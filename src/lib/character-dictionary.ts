@@ -12,8 +12,21 @@ export default class CharacterDictionary {
    * Creates a character dictionary
    * @param characters The characters within the dictionary
    */
-  constructor(characters: ICharacterArray) {
-    this._characters = characters;
+  constructor(characters: ICharacterArray[]) {
+    this._characters = [].concat.apply([], characters);
+    
+    if (characters.length > 1) {
+      const allPatterns: string[] = [].concat.apply([], this._characters.map(x => x.Patterns));
+
+      const duplicatedPatterns = allPatterns.filter((value, index, array) => {
+        return array.indexOf(value) != index;
+      })
+
+      if (duplicatedPatterns.length > 0) {
+        throw `Different characters cannot have the same patterns. The following patterns were identified as duplicates: ${duplicatedPatterns.join(", ")}`;
+      }
+
+    }
   }
   
   /**
@@ -24,3 +37,4 @@ export default class CharacterDictionary {
     return this._characters.filter(x => x.hasPattern(input))[0];
   } 
 };
+

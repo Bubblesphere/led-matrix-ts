@@ -8,7 +8,7 @@ import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
 const board = new Board();
 const boardVertical = new Board();
-const dictionary = new CharacterDictionary(Alphabet);
+const dictionary = new CharacterDictionary([Alphabet]);
 
 // input your customized message which can be changed at any time
 board.load("HORIZONTAL ", dictionary);

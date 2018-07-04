@@ -76,6 +76,10 @@ export default class Character {
     return this._height;
   }
 
+  public get Patterns() {
+    return this._patterns;
+  }
+
   /**
    * Matches the character against a string to determine whether the input produces this character
    * @param input The input string to match the character against
