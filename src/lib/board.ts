@@ -69,14 +69,31 @@ export default class Board {
    */
   public load(input: String, dictionnary: CharacterDictionary): void {
     this.reset();
+    
     for(let i = 0; i < input.length; i++) {
-      const character = dictionnary.find(input[i]);
+      let characterBuffer = input[i];
+
+      if (characterBuffer === "~") {
+        if (i == input.length - 1) {
+          throw `No character escaped at the end of the string input`;
+        }
+        characterBuffer = input[++i];
+      } else if (characterBuffer === "[" && (i === 0 || input[i-1] !== "~")) {
+        do {
+          characterBuffer += input[++i];
+          if (i == input.length) {
+            throw `Could not find the end bracket for pattern ${characterBuffer}. To escape the bracket, use \\`;
+          }
+        } while(input[i] != "]");
+      }
+
+      const character = dictionnary.find(characterBuffer);
       if (character) {
         this._characters.push(character);
         // TODO: Fill character height void with 0s
         this._addSpacing();
       } else {
-        throw `Could not find any match for ${input[i]} within the provided dictionnary`;
+        throw `Could not find any match for ${characterBuffer} within the provided dictionnary`;
       }
     }
   }

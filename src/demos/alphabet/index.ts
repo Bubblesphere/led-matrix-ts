@@ -10,7 +10,7 @@ import { Alphabet } from '../../lib/characterArray/alphabet';
 
 const Smiley: ICharacterArray = [
   new Character(
-    ['1'], 
+    ['[test]'], 
     new BitArray([0, 0, 1, 1, 1, 1, 1, 0, 0,
                   0, 1, 0, 0, 0, 0, 0, 1, 0,
                   1, 0, 0, 1, 0, 1, 0, 0, 1,
@@ -20,12 +20,24 @@ const Smiley: ICharacterArray = [
                   0, 1, 0, 0, 0, 0, 0, 1, 0,
                   0, 0, 1, 1, 1, 1, 1, 0, 0]),
     9
+  ),
+  new Character(
+    ['['], 
+    new BitArray([0, 0, 1, 1, 1, 1, 1, 0, 0,
+                  0, 1, 0, 0, 0, 0, 0, 1, 0,
+                  1, 0, 0, 1, 0, 1, 0, 0, 1,
+                  1, 0, 0, 0, 0, 0, 0, 0, 1,
+                  1, 0, 0, 1, 1, 1, 0, 0, 1,
+                  1, 0, 1, 0, 0, 0, 1, 0, 1,
+                  0, 1, 0, 0, 0, 0, 0, 1, 0,
+                  0, 0, 1, 1, 1, 1, 1, 0, 0]),
+    9
   )
 ];
 
 const board = new Board();
 const dictionary = new CharacterDictionary([Alphabet, Smiley]);
-board.load("1", dictionary);
+board.load("H~[[test]", dictionary);
 
 const panel = new SideScrollingPanel({
   board: board,
