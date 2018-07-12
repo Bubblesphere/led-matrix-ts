@@ -11,6 +11,7 @@ module.exports = {
   entry: {
     basics: "./src/demos/basics/index.ts",
     controls: "./src/demos/controls/index.ts",
+    fun: "./src/demos/fun/index.ts",
     renderers: "./src/demos/renderers/index.ts",
     panelEvents: "./src/demos/panelEvents/index.ts",
     alphabet: "./src/demos/alphabet/index.ts",
