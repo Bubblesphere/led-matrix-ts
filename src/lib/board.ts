@@ -99,10 +99,12 @@ export default class Board {
   }
   
   private _addSpacing(): void {
-    this._characters.push(new Character(
-      ['[space]'], 
-      new BitArray(Array.apply(null, Array(this.height * this._spacing)).map(Number.prototype.valueOf,0)), 
-      this._spacing));
+    if (this._spacing > 0) {
+      this._characters.push(new Character(
+        ['[space]'], 
+        new BitArray(Array.apply(null, Array(this.height * this._spacing)).map(Number.prototype.valueOf,0)), 
+        this._spacing));
+    }
   }
 
   /**
