@@ -164,6 +164,7 @@ Parameters | Default | Description
 --- | --- | ---
 **`board: Board`** |  | The board upon which the panel should be hooked up
 **`renderer: Renderer`** |  | The panel renderer
+**`increment: number`** | 1 | The amount of step to do every frame
 **`fps: number`** | 24 | The amount of updates to the panel per second
 **`height: number`** | 8 | The height of the viewport
 **`width: number`** | 60 | The width of the viewport
@@ -198,7 +199,7 @@ NB: Actual representation is in the form of a 0/1 matrix. Used black/white squar
 ---
 
 ### Renderers
-
+**Demo: Check out `src/demos/renderers` for more details**
 #### AsciiRenderer
 Parameters | Default | Description 
 --- | --- | ---
@@ -214,7 +215,6 @@ Parameters | Default | Description
 **`colorStroke?: string`** | "#67809F" | The color of the stroke around each bit
 
 #### Usage
-**Demo: Check out `src/demos/renderers` for more details**
 ##### AsciiRenderer
 ```typescript
 const asciiRenderer: AsciiRenderer = new AsciiRenderer({

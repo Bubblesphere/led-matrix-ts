@@ -9,6 +9,8 @@ export interface PanelParameters {
   board: Board,
   /**  */
   renderer: Renderer,
+  /** Increment at each frame */
+  increment?: number,
   /** Frames of the panel scrolled per second */
   fps?: number,
   /** The width of the panel in bits displayed */
@@ -26,6 +28,7 @@ export interface PanelParameters {
  */
 export default abstract class Panel {
   protected index: number;
+  protected increment: number;
   protected width: number;
   protected height: number;
   protected display: PanelDisplay;
@@ -57,6 +60,7 @@ export default abstract class Panel {
     this._fps = params.fps ? params.fps : 24;
     this.board = params.board;
     this.index = 0;
+    this.increment = params.increment ? params.increment : 1;
     this.display = [];
     this.renderer = params.renderer;
     this.reverse = params.reverse ? params.reverse : false;
@@ -151,7 +155,7 @@ export default abstract class Panel {
       this.onReachingBoundary.trigger();
       this.index = 0;
     } else {
-      this.index++;
+      this.index += this.increment;
     }
   }
 
@@ -160,7 +164,7 @@ export default abstract class Panel {
       this.onReachingBoundary.trigger();
       this.index = this.indexUpperBound;
     } else {
-      this.index--;
+      this.index -= this.increment;
     }
   }
 
