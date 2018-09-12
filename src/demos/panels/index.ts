@@ -6,7 +6,9 @@ import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 import VerticalScrollingPanel from '../../lib/panels/vertical-scrolling-panel';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
-const board = new Board(2, [1,2,3,4]);
+const board = new Board();
+board.spacing = 5;
+board.padding = [8];
 const boardVertical = new Board(2, [4,2]);
 const dictionary = new CharacterDictionary([Alphabet]);
 
