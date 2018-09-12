@@ -17,22 +17,57 @@ export default class Board {
    * @param spacing The spacing between characters
    */
   constructor(spacing: number = 2, padding: Padding = [0]) {
-    this._spacing = spacing;
     this._characters = [];
-    if (padding.length == 1) {
-      this._padding = [padding[0], padding[0], padding[0], padding[0]];
-    } else if (padding.length == 2) {
-      this._padding = [padding[0], padding[1], padding[0], padding[1]];
+    this.spacing = spacing;
+    this.padding = padding;
+  }
+
+  /**
+   * Sets the spacing between characters on the board
+   */
+  public set spacing(value: number) {
+    // validation
+    if (value == null) {
+      throw `Board's spacing cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Board's spacing cannot be set to a negative number (${value})`;
+    }
+
+    this._spacing = value;
+  }
+
+  /**
+   * Sets the spacing around the board
+   */
+  public set padding(value: Padding) {
+    // validation
+    value.forEach(x => {
+      if (x == null) {
+        throw `Board's padding cannot set to null`;
+      }
+
+      if (x < 0) {
+        throw `Board's padding cannot be set to a negative number (${value})`;
+      }
+    });
+
+    // convert from 1,2 or 4 value number array to a 4 value number array
+    if (value.length == 1) {
+      this._padding = [value[0], value[0], value[0], value[0]];
+    } else if (value.length == 2) {
+      this._padding = [value[0], value[1], value[0], value[1]];
     } else {
-      this._padding = padding;
+      this._padding = value;
     }
   }
 
     /**
-   * Returns the total width of all characters on the board
+   * Returns the total width of the board
    */
   public get width() {
-    return this._totalPaddingWidth() + 
+    // horizontal padding + space between characters + characters width
+    return this._horizontalPaddingWidth() + 
       this._totalSpacingWidth() +
       this._characters
         .map(character => character.width)
@@ -43,7 +78,8 @@ export default class Board {
    * Return the total height of the board
    */
   public get height() {
-    return this._totalPaddingHeight() + 
+    // vertical padding + size of tallest character
+    return this._verticalPaddingWidth() + 
       this._characters
         .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
   }
@@ -66,8 +102,9 @@ export default class Board {
       accumulator += character.width;
       if (accumulator > index) {
         // Column is character
+        const characterColumn = character.getColumn(index - (accumulator - character.width));
         toReturn =  this._emptyArrayOfLength(this._padding[0])
-          .concat(character.getColumn(index - (accumulator - character.width)))
+          .concat(characterColumn)
           .concat(this._emptyArrayOfLength(this._padding[2]));
         return true;
       }
@@ -78,6 +115,7 @@ export default class Board {
         return true;
       }
     });
+
     return toReturn;
   }
 
@@ -93,9 +131,11 @@ export default class Board {
       return this._emptyArrayOfLength(this.width);
     }
 
+    // left padding + iterate[character + space] - space + right padding
+    const charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
     return this._emptyArrayOfLength(this._padding[3])
-      .concat([].concat.apply([],this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing)))))
-      .concat(this._emptyArrayOfLength(this._padding[1]))
+      .concat(charactersWithSpace)
+      .concat(this._emptyArrayOfLength(this._padding[1]));
       
   }
 
@@ -139,8 +179,7 @@ export default class Board {
       }
     }
   }
-
-  private _totalPaddingWidth(): number {
+  private _horizontalPaddingWidth(): number {
     return this._padding[1] + this._padding[3];
   }
 
@@ -149,7 +188,7 @@ export default class Board {
     return (this._characters.length - 1) * this._spacing;
   }
 
-  private _totalPaddingHeight(): number {
+  private _verticalPaddingWidth(): number {
     return this._padding[0] + this._padding[2];
   }
 
