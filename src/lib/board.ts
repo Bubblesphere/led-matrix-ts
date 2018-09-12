@@ -1,6 +1,7 @@
 import Character from './character';
 import CharacterDictionary from './character-dictionary';
 import BitArray, { bit } from './bit-array';
+import { Padding, DetailedPadding } from './types';
 
 /**
  * The board creates the link between the dictionnary and the input. 
@@ -9,31 +10,42 @@ import BitArray, { bit } from './bit-array';
 export default class Board {
   private _characters: Array<Character>;
   private _spacing: number;
+  private _padding: DetailedPadding;
 
   /**
    * Creates a board
    * @param spacing The spacing between characters
    */
-  constructor(spacing: number = 2) {
+  constructor(spacing: number = 2, padding: Padding = [0]) {
     this._spacing = spacing;
     this._characters = [];
+    if (padding.length == 1) {
+      this._padding = [padding[0], padding[0], padding[0], padding[0]];
+    } else if (padding.length == 2) {
+      this._padding = [padding[0], padding[1], padding[0], padding[1]];
+    } else {
+      this._padding = padding;
+    }
   }
 
     /**
    * Returns the total width of all characters on the board
    */
   public get width() {
-    return this._characters
-      .map(character => character.width)
-      .reduce((accumulator, current) => accumulator + current);
+    return this._totalPaddingWidth() + 
+      this._totalSpacingWidth() +
+      this._characters
+        .map(character => character.width)
+        .reduce((accumulator, current) => accumulator + current);
   }
 
   /**
    * Return the total height of the board
    */
   public get height() {
-    return this._characters
-      .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
+    return this._totalPaddingHeight() + 
+      this._characters
+        .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
   }
 
   /**
@@ -42,8 +54,31 @@ export default class Board {
    */
   public getColumnAtIndex(index: number): Array<bit> {
     index %= this.width;
-    return this._characters[this._getCharacterAtColumnIndex(index)]
-            .getColumn(this._getCharacterOffsetAtColumnIndex(index));
+
+    if (index < this._padding[3] || index >= this.width - this._padding[1]) {
+      // Column is padding
+      return this._emptyArrayOfLength(this.height);
+    }
+
+    let accumulator = this._padding[3];
+    let toReturn;
+    this._characters.some((character) => {
+      accumulator += character.width;
+      if (accumulator > index) {
+        // Column is character
+        toReturn =  this._emptyArrayOfLength(this._padding[0])
+          .concat(character.getColumn(index - (accumulator - character.width)))
+          .concat(this._emptyArrayOfLength(this._padding[2]));
+        return true;
+      }
+      accumulator += this._spacing;
+      if (accumulator > index) {
+        // Column is space
+        toReturn = this._emptyArrayOfLength(this.height);
+        return true;
+      }
+    });
+    return toReturn;
   }
 
     /**
@@ -52,7 +87,16 @@ export default class Board {
    */
   public getRowAtIndex(index: number): Array<bit> {
     index %= this.height;
-    return [].concat.apply([], this._characters.map(x => x.getRow(index)));
+
+    if (index < this._padding[0] || index >= this.height - this._padding[2]) {
+      // Column is padding
+      return this._emptyArrayOfLength(this.width);
+    }
+
+    return this._emptyArrayOfLength(this._padding[3])
+      .concat([].concat.apply([],this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing)))))
+      .concat(this._emptyArrayOfLength(this._padding[1]))
+      
   }
 
   /**
@@ -90,46 +134,26 @@ export default class Board {
       const character = dictionnary.find(characterBuffer);
       if (character) {
         this._characters.push(character);
-        // TODO: Fill character height void with 0s
-        this._addSpacing();
       } else {
         throw `Could not find any match for ${characterBuffer} within the provided dictionnary`;
       }
     }
   }
-  
-  private _addSpacing(): void {
-    if (this._spacing > 0) {
-      this._characters.push(new Character(
-        ['[space]'], 
-        new BitArray(Array.apply(null, Array(this.height * this._spacing)).map(Number.prototype.valueOf,0)), 
-        this._spacing));
-    }
+
+  private _totalPaddingWidth(): number {
+    return this._padding[1] + this._padding[3];
   }
 
-  /**
-   * Gets the character at a column index
-   * @param index The column index
-   */
-  private _getCharacterAtColumnIndex(index: number): number {
-    let sum = 0;
-    let i = 0;
-    while (sum <= index) {
-      sum += this._characters[i++].width;
-    }
-    return --i;
+  private _totalSpacingWidth(): number {
+    // There's a space between each character
+    return (this._characters.length - 1) * this._spacing;
   }
 
-  /**
-   * Gets the index within the character for a column index
-   * @param index The column index
-   */
-  private _getCharacterOffsetAtColumnIndex(index: number) {
-    let sum = 0;
-    let i = 0;
-    while (sum <= index) {
-      sum += this._characters[i++].width;
-    }
-    return index - (sum - this._characters[--i].width);
+  private _totalPaddingHeight(): number {
+    return this._padding[0] + this._padding[2];
+  }
+
+  private _emptyArrayOfLength(length: number) {
+    return Array.apply(null, Array(length)).map(() => 0);
   }
 };

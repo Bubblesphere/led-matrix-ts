@@ -6,16 +6,18 @@ import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 import VerticalScrollingPanel from '../../lib/panels/vertical-scrolling-panel';
 
-const board = new Board();
+const board = new Board(2, [4]);
 const dictionary = new CharacterDictionary([Alphabet]);
 
 // input your customized message which can be changed at any time
-board.load("HELLO WORLD ", dictionary);
+board.load("Hello World ", dictionary);
 
 const panel = new SideScrollingPanel({
   board: board,
   renderer: new AsciiRenderer({
-    element: document.getElementById("root")
+    element: document.getElementById("root"),
+    characterBitOn: 'X',
+    characterBitOff: '-'
   })
 });
 

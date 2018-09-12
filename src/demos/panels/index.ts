@@ -6,12 +6,12 @@ import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
 import VerticalScrollingPanel from '../../lib/panels/vertical-scrolling-panel';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
-const board = new Board();
-const boardVertical = new Board();
+const board = new Board(2, [1,2,3,4]);
+const boardVertical = new Board(2, [4,2]);
 const dictionary = new CharacterDictionary([Alphabet]);
 
 // input your customized message which can be changed at any time
-board.load("HORIZONTAL ", dictionary);
+board.load("HORIZONTAL", dictionary);
 
 const sideScrollingPanel = new SideScrollingPanel({
   board: board,
