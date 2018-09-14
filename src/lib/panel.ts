@@ -60,8 +60,8 @@ export default abstract class Panel {
    * @param params The panel parameters
    */
   constructor(params: PanelParameters) {
-    this.width =  params.width ? params.width : 60;
-    this.height = params.height ? params.height : 8;
+    this.width =  params.width ? params.width : params.board.width;
+    this.height = params.height ? params.height : params.board.height;
     this.fps = params.fps ? params.fps : 24;
     this.board = params.board;
     this.index = 0;
