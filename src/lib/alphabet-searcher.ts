@@ -1,18 +1,18 @@
 import Character from './character';
-import { ICharacters } from './types';
+import { Alphabet } from './types';
 
 /**
  * The character dictionnary contains the matrix representation of the different characters available. 
  * You can create your own character array and pass it to the constructor.
  */
-export default class CharacterDictionary {
+export default class AlphabetSearcher {
   private _characters: Character[];
   private _height: number;
   /**
    * Creates a character dictionary
    * @param characters The characters within the dictionary
    */
-  constructor(characters: ICharacters[]) {
+  constructor(characters: Alphabet[]) {
     this._characters = [].concat.apply([], characters.map(x => x.characters));
     this._height = Math.max.apply(Math, characters.map(x => x.height));
     

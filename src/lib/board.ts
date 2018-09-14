@@ -1,5 +1,5 @@
 import Character from './character';
-import CharacterDictionary from './character-dictionary';
+import CharacterDictionary from './alphabet-searcher';
 import BitArray, { bit } from './bit-array';
 import { Padding, DetailedPadding } from './types';
 
@@ -133,6 +133,7 @@ export default class Board {
 
     // left padding + iterate[character + space] - space + right padding
     const charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
+    
     return this._emptyArrayOfLength(this._padding[3])
       .concat(charactersWithSpace)
       .concat(this._emptyArrayOfLength(this._padding[1]));

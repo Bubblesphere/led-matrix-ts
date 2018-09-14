@@ -219,5 +219,4 @@ export default abstract class Panel {
         callback();
     }
   }
-
 };

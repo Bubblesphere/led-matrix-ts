@@ -1,7 +1,7 @@
 import Character from "./character";
 import { bit } from "./bit-array";
 
-export type CharactersJSON = {
+export type AlphabetJSONSchema = {
     height: number,
     characters: Array<{
         patterns: Array<string>,
@@ -9,7 +9,12 @@ export type CharactersJSON = {
         width: number
     }>
 }
-export type ICharacters = { height: number, characters: Array<Character> };
+
+export type Alphabet = { 
+    height: number, 
+    characters: Array<Character> 
+};
+
 export type PanelDisplay = Array<Array<bit>>;
 export type PanelRenderer = (display: PanelDisplay, ...other: any[]) => any
 
