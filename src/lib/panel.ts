@@ -81,9 +81,7 @@ export default abstract class Panel {
    */
   public play() {
     this.setIndex(0);
-    this._then = Date.now();
-    this._startTime = this._then;
-    this._loop();
+    this._startLoop();
   }
 
   /**
@@ -99,9 +97,7 @@ export default abstract class Panel {
    * Resumes the panel
    */
   public resume() {
-    this._then = Date.now();
-    this._startTime = this._then;
-    this._loop();
+    this._startLoop();
   }
 
   /**
@@ -194,17 +190,25 @@ export default abstract class Panel {
     }
   }
 
+  private _startLoop() {
+    this._then = Date.now();
+    this._startTime = this._then;
+    this._loop();
+  }
+
   /**
    * Steps at an interval of the panel's fps
    */
   private _loop(): void {
-    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this)); 
-    
+    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));  
+    this._onNextFrame(this._step.bind(this));
+  }
+
+  private _onNextFrame(callback: () => any) {
     this._now = Date.now();
     this._elapsed = this._now - this._then;
 
     // if enough time has elapsed, draw the next frame
-
     if (this._elapsed > this._fpsInterval) {
 
         // Get ready for next frame by setting then=now, but also adjust for your
@@ -212,7 +216,7 @@ export default abstract class Panel {
         this._then = this._now - (this._elapsed % this._fpsInterval);
 
         // Put your drawing code here
-        this._step();
+        callback();
     }
   }
 
