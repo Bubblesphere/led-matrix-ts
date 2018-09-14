@@ -11,6 +11,9 @@ export type CanvaRendererParameter = {
 
 export default abstract class CanvaRenderer extends Renderer {
   private parameters: CanvaRendererParameter;
+  private _prerenderedOn: HTMLCanvasElement;
+  private _prerenderedOff: HTMLCanvasElement;
+
 
   constructor(parameters: CanvaRendererParameter) {
     super();
@@ -20,6 +23,8 @@ export default abstract class CanvaRenderer extends Renderer {
       colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
       colorStroke: parameters.colorStroke ? parameters.colorStroke : "#67809F"
     };
+    this._prerenderedOn = document.createElement('canvas');
+    this._prerenderedOff = document.createElement('canvas');
   }
 
   render(display: PanelDisplay): void {
@@ -28,8 +33,8 @@ export default abstract class CanvaRenderer extends Renderer {
     const heightEachBit = Math.floor(this.parameters.canva.height / display.length);
     
     // Render the different canvas once before instead of recalculating every loop
-    const prerenderedBitOn = this._prerenderBit(widthEachBit, heightEachBit, this.parameters.colorBitOn);
-    const prerenderedBitOff = this._prerenderBit(widthEachBit, heightEachBit, this.parameters.colorBitOff);
+    const prerenderedBitOn = this._prerenderBit(this._prerenderedOn, widthEachBit, heightEachBit, this.parameters.colorBitOn);
+    const prerenderedBitOff = this._prerenderBit(this._prerenderedOff, widthEachBit, heightEachBit, this.parameters.colorBitOff);
 
     for(var i = 0; i < display.length; i++) {
       for(var j = 0; j < display[i].length; j++) {
@@ -40,15 +45,14 @@ export default abstract class CanvaRenderer extends Renderer {
     }
   }
 
-  private _prerenderBit(widthEachBit: number, heightEachBit: number, color: string) {
-    const canvas = document.createElement('canvas');
+  private _prerenderBit(canvas: HTMLCanvasElement, widthEachBit: number, heightEachBit: number, color: string) {
     canvas.width = widthEachBit;
     canvas.height = heightEachBit;
     const ctx = canvas.getContext('2d');
 
     ctx.beginPath();
     ctx.fillStyle = color;
-    this.drawBit(ctx, 0, 0, widthEachBit, heightEachBit);
+    ctx.rect(0, 0, widthEachBit, heightEachBit);
     ctx.fill();
     ctx.lineWidth = 1;
     ctx.strokeStyle = this.parameters.colorStroke;
