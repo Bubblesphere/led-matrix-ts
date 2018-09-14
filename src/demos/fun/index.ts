@@ -1,4 +1,4 @@
-import Board from '../../lib/board';
+/*import Board from '../../lib/board';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
@@ -65,3 +65,4 @@ setInterval(function(){
   i = (i + 1) % 6;
   sideScrollingPanel.seek(i*7); 
 }, 100);
+*/

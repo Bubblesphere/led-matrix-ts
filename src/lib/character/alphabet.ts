@@ -1,4 +1,4 @@
-import { ICharacterArray } from "../../lib/types";
+/*import { ICharacterArray } from "../../lib/types";
 import Character from "../../lib/character";
 import BitArray from "../../lib/bit-array";
 
@@ -232,8 +232,78 @@ export const Alphabet: ICharacterArray = [
                   1, 1, 1, 1, 0]),
     5
   ),
+  new Chara  new Character(
+    ['a', 'A'], 
+    new BitArray([0, 0, 1, 0, 0,
+                  0, 1, 0, 1, 0,
+                  0, 1, 0, 1, 0,
+                  0, 1, 0, 1, 0,
+                  1, 0, 0, 0, 1,
+                  1, 1, 1, 1, 1,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1]),
+    5
+  ),
   new Character(
-    ['t', 'T'], 
+    ['b', 'B'], 
+    new BitArray([1, 1, 1, 1, 0,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1,
+                  1, 1, 1, 1, 0,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1,
+                  1, 1, 1, 1, 0]),
+    5
+  ),
+  new Character(
+    ['c', 'C'], 
+    new BitArray([0, 0, 1, 1, 1,
+                  0, 1, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 1, 0, 0, 0,
+                  0, 1, 1, 1, 1]),
+    5
+  ),cter(
+    ['t', '  new Character(
+    ['a', 'A'], 
+    new BitArray([0, 0, 1, 0, 0,
+                  0, 1, 0, 1, 0,
+                  0, 1, 0, 1, 0,
+                  0, 1, 0, 1, 0,
+                  1, 0, 0, 0, 1,
+                  1, 1, 1, 1, 1,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1]),
+    5
+  ),
+  new Character(
+    ['b', 'B'], 
+    new BitArray([1, 1, 1, 1, 0,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1,
+                  1, 1, 1, 1, 0,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1,
+                  1, 0, 0, 0, 1,
+                  1, 1, 1, 1, 0]),
+    5
+  ),
+  new Character(
+    ['c', 'C'], 
+    new BitArray([0, 0, 1, 1, 1,
+                  0, 1, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 0, 0, 0, 0,
+                  1, 1, 0, 0, 0,
+                  0, 1, 1, 1, 1]),
+    5
+  ),T'], 
     new BitArray([1, 1, 1, 1, 1,
                   0, 0, 1, 0, 0,
                   0, 0, 1, 0, 0,
@@ -329,3 +399,4 @@ export const Alphabet: ICharacterArray = [
     5
   ),
 ];
+*/

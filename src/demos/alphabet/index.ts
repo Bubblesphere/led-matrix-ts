@@ -1,4 +1,4 @@
-import Board from '../../lib/board';
+/*import Board from '../../lib/board';
 import Character from '../../lib/character';
 import CharacterDictionary from '../../lib/character-dictionary';
 import { ICharacterArray } from '../../lib/types';
@@ -47,3 +47,4 @@ const panel = new SideScrollingPanel({
 });
 
 panel.play();
+*/

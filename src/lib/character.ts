@@ -76,8 +76,12 @@ export default class Character {
     return this._height;
   }
 
-  public get Patterns() {
+  public get patterns() {
     return this._patterns;
+  }
+
+  public get output() {
+    return this._output;
   }
 
   /**

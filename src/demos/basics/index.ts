@@ -1,28 +1,48 @@
 import Board from '../../lib/board';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
-import { Alphabet } from '../../lib/characterArray/alphabet';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
-import VerticalScrollingPanel from '../../lib/panels/vertical-scrolling-panel';
+import CharactersParser from '../../lib/character/characters-parser';
 
 const board = new Board();
-const dictionary = new CharacterDictionary([Alphabet]);
+const customJSON = new CharactersParser();
+// -------------------
+var rawFile = new XMLHttpRequest();
+rawFile.open("GET", "test.json", false);
+rawFile.onreadystatechange = function ()
+{
+    if(rawFile.readyState === 4) {
+        if(rawFile.status === 200 || rawFile.status == 0) {
+            var value = rawFile.responseText;
+            
+            // ++++++
 
-// input your customized message which can be changed at any time
-board.load("Hello World ", dictionary);
+            const dictionary = new CharacterDictionary([customJSON.parse(value)]);
 
-const panel = new SideScrollingPanel({
-  board: board,
-  renderer: new AsciiRenderer({
-    element: document.getElementById("root"),
-    characterBitOn: 'X',
-    characterBitOff: '-'
-  })
-});
+            // input your customized message which can be changed at any time
+            board.load("ABC", dictionary);
 
-panel.PanelUpdate.on((parameters) => {
+            const panel = new SideScrollingPanel({
+              board: board,
+              renderer: new AsciiRenderer({
+                element: document.getElementById("root"),
+                characterBitOn: 'X',
+                characterBitOff: '-'
+              })
+            });
 
-})
+            panel.PanelUpdate.on((parameters) => {
 
-panel.play();
+            })
+
+            panel.play();
+
+            // ++++++
+
+        }
+    }
+}
+rawFile.send(null);
+// -------------------
+

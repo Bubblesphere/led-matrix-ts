@@ -1,22 +1,23 @@
 import Character from './character';
-import { ICharacterArray } from './types';
+import { ICharacters } from './types';
 
 /**
  * The character dictionnary contains the matrix representation of the different characters available. 
  * You can create your own character array and pass it to the constructor.
  */
 export default class CharacterDictionary {
-  private _characters: ICharacterArray;
-
+  private _characters: Character[];
+  private _height: number;
   /**
    * Creates a character dictionary
    * @param characters The characters within the dictionary
    */
-  constructor(characters: ICharacterArray[]) {
-    this._characters = [].concat.apply([], characters);
+  constructor(characters: ICharacters[]) {
+    this._characters = [].concat.apply([], characters.map(x => x.characters));
+    this._height = Math.max.apply(Math, characters.map(x => x.height));
     
     if (characters.length > 1) {
-      const allPatterns: string[] = [].concat.apply([], this._characters.map(x => x.Patterns));
+      const allPatterns: string[] = [].concat.apply([], this._characters.map(x => x.patterns));
 
       const duplicatedPatterns = allPatterns.filter((value, index, array) => {
         return array.indexOf(value) != index;

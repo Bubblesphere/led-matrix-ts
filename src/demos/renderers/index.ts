@@ -1,12 +1,14 @@
-import Board from '../../lib/board';
+/*import Board from '../../lib/board';
 import CharacterDictionary from '../../lib/character-dictionary';
-import { Alphabet } from '../../lib/characterArray/alphabet';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
+import CharactersParser from '../../lib/character/characters-parser';
+import '../../lib/character/test.json';
 
 const board = new Board();
-const dictionary = new CharacterDictionary([Alphabet]);
+const customJSON = new CharactersParser();
+const dictionary = new CharacterDictionary([customJSON.parse("")]);
 
 board.load("Hello WORLD ", dictionary);
 
@@ -51,3 +53,4 @@ panelAsciiRenderer.play();
 panelAsciiAdvancedRenderer.play();
 panelRectRenderer.play();
 panelEllipseRenderer.play();
+*/
