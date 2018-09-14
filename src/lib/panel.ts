@@ -36,9 +36,13 @@ export default abstract class Panel {
   protected renderer: Renderer;
   abstract indexUpperBound: number;
   private reverse: boolean;
-  private _fps: number;
-  private _interval: number;
   private _loopingRequestAnimationFrame: number;
+  private _fps: number;
+  private _fpsInterval: number
+  private _startTime: number
+  private _now: number
+  private _then: number
+  private _elapsed: number;
 
   /** Triggered for every bit of every new frame the panel produces */
   protected readonly onPanelUpdateBit = new Event<{x: number, y: number, value: bit}>();
@@ -58,7 +62,7 @@ export default abstract class Panel {
   constructor(params: PanelParameters) {
     this.width =  params.width ? params.width : 60;
     this.height = params.height ? params.height : 8;
-    this._fps = params.fps ? params.fps : 24;
+    this.fps = params.fps ? params.fps : 24;
     this.board = params.board;
     this.index = 0;
     this.increment = params.increment ? params.increment : 1;
@@ -67,12 +71,19 @@ export default abstract class Panel {
     this.reverse = params.reverse ? params.reverse : false;
   }
 
+  public set fps(value: number) {
+    this._fps = value;
+    this._fpsInterval = 1000 / this._fps;
+  }
+
   /**
    * Starts the panel
    */
   public play() {
     this.setIndex(0);
-    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));
+    this._then = Date.now();
+    this._startTime = this._then;
+    this._loop();
   }
 
   /**
@@ -88,7 +99,9 @@ export default abstract class Panel {
    * Resumes the panel
    */
   public resume() {
-    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));
+    this._then = Date.now();
+    this._startTime = this._then;
+    this._loop();
   }
 
   /**
@@ -185,8 +198,22 @@ export default abstract class Panel {
    * Steps at an interval of the panel's fps
    */
   private _loop(): void {
-    this._step();
-    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));   
+    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this)); 
+    
+    this._now = Date.now();
+    this._elapsed = this._now - this._then;
+
+    // if enough time has elapsed, draw the next frame
+
+    if (this._elapsed > this._fpsInterval) {
+
+        // Get ready for next frame by setting then=now, but also adjust for your
+        // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+        this._then = this._now - (this._elapsed % this._fpsInterval);
+
+        // Put your drawing code here
+        this._step();
+    }
   }
 
 };
