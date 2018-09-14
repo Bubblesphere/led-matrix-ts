@@ -38,6 +38,7 @@ export default abstract class Panel {
   private reverse: boolean;
   private _fps: number;
   private _interval: number;
+  private _loopingRequestAnimationFrame: number;
 
   /** Triggered for every bit of every new frame the panel produces */
   protected readonly onPanelUpdateBit = new Event<{x: number, y: number, value: bit}>();
@@ -71,7 +72,7 @@ export default abstract class Panel {
    */
   public play() {
     this.setIndex(0);
-    this._loop();
+    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));
   }
 
   /**
@@ -80,21 +81,21 @@ export default abstract class Panel {
   public stop() {
     this.setIndex(0);
     this._step();
-    this._clearExistingLoop();
+    cancelAnimationFrame(this._loopingRequestAnimationFrame);
   }
 
   /**
    * Resumes the panel
    */
   public resume() {
-    this._loop();
+    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));
   }
 
   /**
    * Pauses the panel
    */
   public pause() {
-    this._clearExistingLoop();
+    cancelAnimationFrame(this._loopingRequestAnimationFrame);
   }
 
   /**
@@ -184,19 +185,8 @@ export default abstract class Panel {
    * Steps at an interval of the panel's fps
    */
   private _loop(): void {
-    const intervalRate = Math.floor(1000 / this._fps);
-    this._clearExistingLoop();
-    this._interval = window.setInterval(function() {
-      this._step();
-    }.bind(this), intervalRate);    
+    this._step();
+    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));   
   }
 
-  /**
-   * Removes any existing interval
-   */
-  private _clearExistingLoop(): void {
-    if (this._interval) {
-      clearInterval(this._interval);
-    }
-  }
 };
