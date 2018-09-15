@@ -1,14 +1,15 @@
 import Board from '../../lib/board';
-import CharacterDictionary from '../../lib/alphabet-searcher';
+import CharacterDictionary from '../../lib/alphabet';
 // import your own font
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
-import AlphabetJSONParser from '../../lib/alphabet-json';
+import AlphabetJSON from '../../lib/alphabet-json';
 
-AlphabetJSONParser.load("test.json", (content) => {
+AlphabetJSON.import("test.json", (characters) => {
   const board = new Board();
+  const dictionary = new CharacterDictionary();
 
-  const dictionary = new CharacterDictionary([AlphabetJSONParser.parse(content)]);
+  dictionary.add(characters);
 
   // input your customized message which can be changed at any time
   board.load("ABC", dictionary);

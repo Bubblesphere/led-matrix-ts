@@ -1,19 +1,16 @@
 import Character from "./character";
 import { bit } from "./bit-array";
 
-export type AlphabetJSONSchema = {
+export interface AlphabetJSONSchema {
     height: number,
-    characters: Array<{
-        patterns: Array<string>,
-        output: Array<number>,
-        width: number
-    }>
+    characters: CharacterJSONSchema[]
 }
 
-export type Alphabet = { 
-    height: number, 
-    characters: Array<Character> 
-};
+export interface CharacterJSONSchema {
+    patterns: Array<string>,
+    output: Array<number>,
+    width: number
+}
 
 export type PanelDisplay = Array<Array<bit>>;
 export type PanelRenderer = (display: PanelDisplay, ...other: any[]) => any

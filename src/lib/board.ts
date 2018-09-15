@@ -1,6 +1,6 @@
 import Character from './character';
-import CharacterDictionary from './alphabet-searcher';
-import BitArray, { bit } from './bit-array';
+import CharacterDictionary from './alphabet';
+import { bit } from './bit-array';
 import { Padding, DetailedPadding } from './types';
 
 /**

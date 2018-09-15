@@ -1,16 +1,16 @@
-import { Alphabet, AlphabetJSONSchema } from "./types";
+import { AlphabetJSONSchema } from "./types";
 import Character from "./character";
 import BitArray, { bit } from "./bit-array";
 
 export default class AlphabetJSON {
-    static load(path: string, success: (content: string) => any) {
+    static import(path: string, success: (content: Character[]) => any) {
         const file = new XMLHttpRequest();
         file.open("GET", "test.json", false);
         file.onreadystatechange = () =>
         {
             if(file.readyState === 4) {
                 if(file.status === 200 || file.status == 0) {
-                    success(file.responseText);
+                    success(AlphabetJSON.parse(file.responseText));
                 }
             }
             // TODO: Error management
@@ -18,21 +18,20 @@ export default class AlphabetJSON {
         file.send(null);
     }
 
-    static parse(json: string): Alphabet {
-        // TODO: Validation
-        const data = JSON.parse(json) as AlphabetJSONSchema;
-        
-        return {
-            height: data.height,
-            characters: data.characters.map(x => new Character(x.patterns, new BitArray(x.output.map(x => x as bit)), x.width))
-        }
+    static export() {
+        // TODO: Implement
     }
 
-    static stringify(characters: Alphabet): string {
+    static parse(json: string): Character[] {
+        // TODO: Validation
+        const data = JSON.parse(json) as AlphabetJSONSchema;
+        return data.characters.map(x => new Character(x.patterns, new BitArray(x.output.map(x => x as bit)), x.width))
+    }
+
+    static stringify(characters: Character[]): string {
         // TODO: Validation
         return JSON.stringify({
-            height: characters.height,
-            characters: characters.characters.map(x => {
+            characters: characters.map(x => {
                 return {
                     patterns: x.patterns,
                     output: x.output.atIndexRange(0, x.output.size),
