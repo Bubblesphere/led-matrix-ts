@@ -5,7 +5,7 @@ import BitArray, { bit } from "./bit-array";
 export default class AlphabetJSON {
     static import(path: string, success: (content: Character[]) => any) {
         const file = new XMLHttpRequest();
-        file.open("GET", "test.json", false);
+        file.open("GET", path, false);
         file.onreadystatechange = () =>
         {
             if(file.readyState === 4) {
