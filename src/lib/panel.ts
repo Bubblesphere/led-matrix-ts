@@ -3,6 +3,7 @@ import { bit } from './bit-array';
 import Event from './event';
 import { PanelDisplay } from './types';
 import Renderer from './rendering/renderer';
+import { PanelType } from './panel-builder';
 
 export interface PanelParameters {
   /** The board for which the panel operates on */
@@ -15,10 +16,22 @@ export interface PanelParameters {
   fps?: number,
   /** The width of the panel in bits displayed */
   width?: number,
-  /** The height of the panel in bits displayed */
-  height?: number,
   /** Whether the panel animation should be reverse */
   reverse?: boolean
+}
+
+export interface ExposedPanelParameters {
+    panelType: PanelType
+    /**  */
+    renderer: Renderer,
+    /** Increment at each frame */
+    increment?: number,
+    /** Frames of the panel scrolled per second */
+    fps?: number,
+    /** The width of the panel in bits displayed */
+    width?: number,
+    /** Whether the panel animation should be reverse */
+    reverse?: boolean
 }
 
 /**
@@ -61,7 +74,6 @@ export default abstract class Panel {
    */
   constructor(params: PanelParameters) {
     this.width =  params.width ? params.width : params.board.width;
-    this.height = params.height ? params.height : params.board.height;
     this.fps = params.fps ? params.fps : 24;
     this.board = params.board;
     this.index = 0;
