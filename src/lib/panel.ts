@@ -11,19 +11,19 @@ export interface PanelParameters {
   /**  */
   renderer: Renderer,
   /** Increment at each frame */
-  increment?: number,
+  increment: number,
   /** Frames of the panel scrolled per second */
-  fps?: number,
+  fps: number,
   /** The width of the panel in bits displayed */
-  width?: number,
+  width: number,
   /** Whether the panel animation should be reverse */
-  reverse?: boolean
+  reverse: boolean
 }
 
 export interface ExposedPanelParameters {
-    panelType: PanelType
+    panelType?: PanelType
     /**  */
-    renderer: Renderer,
+    renderer?: Renderer,
     /** Increment at each frame */
     increment?: number,
     /** Frames of the panel scrolled per second */
@@ -73,14 +73,14 @@ export default abstract class Panel {
    * @param params The panel parameters
    */
   constructor(params: PanelParameters) {
-    this.width =  params.width ? params.width : params.board.width;
-    this.fps = params.fps ? params.fps : 24;
+    this.width =  params.width;
+    this.fps = params.fps;
     this.board = params.board;
     this.index = 0;
-    this.increment = params.increment ? params.increment : 1;
+    this.increment = params.increment;
     this.display = [];
     this.renderer = params.renderer;
-    this.reverse = params.reverse ? params.reverse : false;
+    this.reverse = params.reverse;
   }
 
   public set fps(value: number) {
@@ -138,7 +138,7 @@ export default abstract class Panel {
     this._resetPanel();
     this._generateDisplay();
 
-    for (let i = 0; i < this.height; i++) {
+    for (let i = 0; i < this.board.height; i++) {
       for (let j = 0; j < this.width; j++) {
         this.onPanelUpdateBit.trigger({
           x: i,
@@ -159,7 +159,7 @@ export default abstract class Panel {
    */
   private _resetPanel(): void {
     this.display.splice(0, this.display.length);
-    for(let i = 0; i < this.height; i++) {
+    for(let i = 0; i < this.board.height; i++) {
       this.display.push(Array.apply(null, Array(this.width)).map(Number.prototype.valueOf,0));
     }
   }
@@ -172,7 +172,7 @@ export default abstract class Panel {
   /**
    * Increments the panel index
    */
-  private incrementIndex() {
+  private _incrementIndex() {
     if (this.index > this.indexUpperBound - 1) {
       this.onReachingBoundary.trigger();
       this.index = 0;
@@ -181,7 +181,7 @@ export default abstract class Panel {
     }
   }
 
-  private decrementIndex() {
+  private _decrementIndex() {
     if (this.index === 0) {
       this.onReachingBoundary.trigger();
       this.index = this.indexUpperBound;

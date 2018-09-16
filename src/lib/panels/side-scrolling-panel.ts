@@ -9,7 +9,7 @@ export default class SideScrollingPanel extends Panel {
       let column: Array<bit>;
       column = this.board.getColumnAtIndex(this.index + i);
       
-      for(let j = 0; j < this.height; j++) {
+      for(let j = 0; j < this.board.height; j++) {
         this.display[j][i] = column[j];
       }
     }
