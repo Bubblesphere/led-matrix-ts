@@ -1,34 +1,127 @@
-import Board from '../../lib/board';
-import CharacterDictionary from '../../lib/alphabet';
-// import your own font
+import LedMatrix from '../../lib/led-matrix';
+import { PanelType } from '../../lib/panel-builder';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
-import SideScrollingPanel from '../../lib/panels/side-scrolling-panel';
-import AlphabetJSON from '../../lib/alphabet-json';
+import CanvaRenderer from '../../lib/rendering/canva-renderer';
+import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
-AlphabetJSON.import("test.json", (characters) => {
-  const board = new Board();
-  const dictionary = new CharacterDictionary();
 
-  dictionary.add(characters);
-
-  // input your customized message which can be changed at any time
-  board.load("ABC", dictionary);
-
-  const panel = new SideScrollingPanel({
-    board: board,
-    renderer: new AsciiRenderer({
-      element: document.getElementById("root"),
-      characterBitOn: 'X',
-      characterBitOff: '-'
-    })
+const ledMatrix = new LedMatrix();
+ledMatrix.init({
+  input: "ABCABABC",
+  options: {
+    board: {
+      spacing: 6,
+      padding: [0, 6, 0, 0]
+    }
+  }
+}, () => {
+  ledMatrix.event.panelUpdate.on((param) => {
+    console.log("update");
   });
+})
 
-  panel.PanelUpdate.on((parameters) => {
 
-  })
+document.getElementById("input-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("input-value") as HTMLInputElement).value;
+  ledMatrix.input = value;
+});
 
-  panel.play();
+document.getElementById("spacing-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("spacing-value") as HTMLInputElement).value;
+  ledMatrix.spacing = Number(value);
+});
+
+document.getElementById("padding-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("padding-value") as HTMLInputElement).value;
+  const padding = value.split(",").map(x => Number(x));
+  ledMatrix.padding = [padding[0], padding[1], padding[2], padding[3]];
+});
+
+document.getElementById("play-button").addEventListener("click", (e) => {
+  ledMatrix.play();
+});
+
+document.getElementById("stop-button").addEventListener("click", (e) => {
+  ledMatrix.stop();
+});
+
+document.getElementById("resume-button").addEventListener("click", (e) => {
+  ledMatrix.resume();
+});
+
+document.getElementById("pause-button").addEventListener("click", (e) => {
+  ledMatrix.pause();
+});
+
+document.getElementById("fps-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("fps-value") as HTMLInputElement).value;
+  ledMatrix.fps = Number(value);
+});
+
+document.getElementById("increment-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("increment-value") as HTMLInputElement).value;
+  ledMatrix.increment = Number(value);
+});
+
+document.getElementById("viewportWidth-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("viewportWidth-value") as HTMLInputElement).value;
+  ledMatrix.viewportWidth = Number(value);
+});
+
+document.getElementById("reverse-checkbox").addEventListener("click", (e) => {
+  const value = (document.getElementById("reverse-checkbox") as HTMLInputElement).checked;
+  ledMatrix.reverse = Boolean(value);
 });
 
 
 
+document.getElementById("panelType-select").addEventListener("click", (e) => {
+  const value = (document.getElementById("panelType-select") as HTMLInputElement).value;
+  switch (value) {
+    case "SideScrollingPanel":
+      ledMatrix.panelType = PanelType.SideScrollingPanel;
+      break;
+    case "VerticalScrollingPanel":
+      ledMatrix.panelType = PanelType.VerticalScrollingPanel;
+      break;
+  }
+});
+
+document.getElementById("renderer-select").addEventListener("click", (e) => {
+  const value = (document.getElementById("renderer-select") as HTMLInputElement).value;
+  switch (value) {
+    case "AsciiRenderer":
+      document.getElementById("led-matrix-canvas").hidden = true;
+      document.getElementById("led-matrix").hidden = false;
+      ledMatrix.renderer = new AsciiRenderer({
+        element: document.getElementById("led-matrix"),
+        characterBitOn: 'X',
+        characterBitOff: ' '
+      });
+      break;
+    case "Rect":
+      document.getElementById("led-matrix-canvas").hidden = false;
+      document.getElementById("led-matrix").hidden = true;
+      ledMatrix.renderer = new CanvaRenderers.Rect({
+        canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
+      })
+      break;
+    case "Ellipse":
+      document.getElementById("led-matrix-canvas").hidden = false;
+      document.getElementById("led-matrix").hidden = true;
+      ledMatrix.renderer = new CanvaRenderers.Ellipse({
+        canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
+        colorBitOn: '#9B59B6',
+        colorBitOff: '#DADFE1',
+        colorStroke: '#674172' 
+      });
+      break;
+  }
+});
+/*
+renderer: new AsciiRenderer({
+  element: document.getElementById("led-matrix"),
+  characterBitOn: 'X',
+  characterBitOff: ' '
+})
+*/

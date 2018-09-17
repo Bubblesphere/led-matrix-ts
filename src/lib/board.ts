@@ -3,6 +3,16 @@ import CharacterDictionary from './alphabet';
 import { bit } from './bit-array';
 import { Padding, DetailedPadding } from './types';
 
+export interface BoardParameters {
+  spacing: number
+  padding: Padding,
+}
+
+export interface ExposedBoardParameters {
+  spacing?: number
+  padding?: Padding,
+}
+
 /**
  * The board creates the link between the dictionnary and the input. 
  * It's role is to create the matrix reprentation of the entire board
@@ -16,10 +26,10 @@ export default class Board {
    * Creates a board
    * @param spacing The spacing between characters
    */
-  constructor(spacing: number = 2, padding: Padding = [0]) {
+  constructor(params: BoardParameters) {
     this._characters = [];
-    this.spacing = spacing;
-    this.padding = padding;
+    this.spacing = params.spacing;
+    this.padding = params.padding;
   }
 
   /**
@@ -35,6 +45,10 @@ export default class Board {
     }
 
     this._spacing = value;
+  }
+
+  public get spacing() {
+    return this._spacing;
   }
 
   /**
@@ -60,6 +74,10 @@ export default class Board {
     } else {
       this._padding = value;
     }
+  }
+
+  public get padding() {
+    return this._padding;
   }
 
     /**
