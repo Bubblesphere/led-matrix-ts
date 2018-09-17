@@ -1,4 +1,4 @@
-import Board from '../../lib/board';
+/*import Board from '../../lib/board';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import { Alphabet } from '../../lib/characterArray/alphabet';
@@ -41,3 +41,4 @@ verticalScrollingPanel.ReachingBoundary.on((parameters) => {
 
 sideScrollingPanel.play();
 verticalScrollingPanel.play();
+*/

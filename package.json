@@ -26,7 +26,7 @@
     "ts-loader": "^4.1.0",
     "typedoc": "^0.11.1",
     "typedoc-webpack-plugin": "^1.1.4",
-    "typescript": "^2.7.2",
+    "typescript": "^3.0.3",
     "webpack": "^4.1.1",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.12",
