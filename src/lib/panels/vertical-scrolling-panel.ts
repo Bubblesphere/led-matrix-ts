@@ -2,7 +2,9 @@ import { bit } from "../bit-array";
 import Panel from "../panel";
 
 export default class VerticalScrollingPanel extends Panel {
-  indexUpperBound: number = this.board.height;
+  protected _indexUpperBound(): number {
+    return this.board.height;
+  }
 
   protected _generateDisplay(): void {
     for(let i = 0; i < this.board.height; i++) {

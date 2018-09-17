@@ -47,6 +47,10 @@ export default class Board {
     this._spacing = value;
   }
 
+  public get spacing() {
+    return this._spacing;
+  }
+
   /**
    * Sets the spacing around the board
    */
@@ -70,6 +74,10 @@ export default class Board {
     } else {
       this._padding = value;
     }
+  }
+
+  public get padding() {
+    return this._padding;
   }
 
     /**
