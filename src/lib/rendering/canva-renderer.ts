@@ -20,6 +20,7 @@ export default abstract class CanvaRenderer extends Renderer {
       colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
       colorStroke: parameters.colorStroke ? parameters.colorStroke : "#67809F"
     };
+    this.parameters.canva.getContext('2d').clearRect(0, 0, this.parameters.canva.width, this.parameters.canva.height);
   }
 
   render(display: PanelDisplay): void {
