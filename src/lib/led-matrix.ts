@@ -140,6 +140,7 @@ export default class LedMatrix implements LedMatrixParameters {
     // Board
     public set spacing(value: number) {
         this._board.spacing = value;
+        // Any changes to the board requires to reassign it to the panel
         this._panel.board = this._board;
     }
 
@@ -149,6 +150,7 @@ export default class LedMatrix implements LedMatrixParameters {
 
     public set padding(value: Padding) {
         this._board.padding = value;
+        // Any changes to the board requires to reassign it to the panel
         this._panel.board = this._board;
     }
 
