@@ -1,4 +1,8 @@
 import LedMatrix from '../../lib/led-matrix';
+import { PanelType } from '../../lib/panel-builder';
+import AsciiRenderer from '../../lib/rendering/ascii-renderer';
+import CanvaRenderer from '../../lib/rendering/canva-renderer';
+import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
 
 const ledMatrix = new LedMatrix();
@@ -64,12 +68,60 @@ document.getElementById("viewportWidth-button").addEventListener("click", (e) =>
   ledMatrix.viewportWidth = Number(value);
 });
 
+document.getElementById("reverse-checkbox").addEventListener("click", (e) => {
+  const value = (document.getElementById("reverse-checkbox") as HTMLInputElement).checked;
+  ledMatrix.reverse = Boolean(value);
+});
+
+
+
+document.getElementById("panelType-select").addEventListener("click", (e) => {
+  const value = (document.getElementById("panelType-select") as HTMLInputElement).value;
+  switch (value) {
+    case "SideScrollingPanel":
+      ledMatrix.panelType = PanelType.SideScrollingPanel;
+      break;
+    case "VerticalScrollingPanel":
+      ledMatrix.panelType = PanelType.VerticalScrollingPanel;
+      break;
+  }
+});
+
+document.getElementById("renderer-select").addEventListener("click", (e) => {
+  const value = (document.getElementById("renderer-select") as HTMLInputElement).value;
+  switch (value) {
+    case "AsciiRenderer":
+      document.getElementById("led-matrix-canvas").hidden = true;
+      document.getElementById("led-matrix").hidden = false;
+      ledMatrix.renderer = new AsciiRenderer({
+        element: document.getElementById("led-matrix"),
+        characterBitOn: 'X',
+        characterBitOff: ' '
+      });
+      break;
+    case "Rect":
+      document.getElementById("led-matrix-canvas").hidden = false;
+      document.getElementById("led-matrix").hidden = true;
+      ledMatrix.renderer = new CanvaRenderers.Rect({
+        canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
+      })
+      break;
+    case "Ellipse":
+      document.getElementById("led-matrix-canvas").hidden = false;
+      document.getElementById("led-matrix").hidden = true;
+      ledMatrix.renderer = new CanvaRenderers.Ellipse({
+        canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
+        colorBitOn: '#9B59B6',
+        colorBitOff: '#DADFE1',
+        colorStroke: '#674172' 
+      });
+      break;
+  }
+});
 /*
-panelType: PanelType.SideScrollingPanel,
 renderer: new AsciiRenderer({
   element: document.getElementById("led-matrix"),
   characterBitOn: 'X',
   characterBitOff: ' '
-}),
-reverse: false
+})
 */

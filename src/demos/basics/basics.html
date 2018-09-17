@@ -56,8 +56,25 @@
     <label>viewportWidth</label>
     <input id="viewportWidth-value" type="text" />
     <input id="viewportWidth-button" type="button" value="Apply viewportWidth" />
-
+    <br>
+    <label>reverse</label>
+    <input id="reverse-checkbox" type="checkbox" />
+    <br>
+    <label>panelType</label>
+    <select id="panelType-select">
+      <option value="SideScrollingPanel">SideScrollingPanel</option>
+      <option value="VerticalScrollingPanel">VerticalScrollingPanel</option>
+    </select>
+    <br>
+    <label>renderer</label>
+    <select id="renderer-select">
+      <option value="AsciiRenderer">AsciiRenderer</option>
+      <option value="Rect">Rect</option>
+      <option value="Ellipse">Ellipse</option>
+    </select>
+    <br>
     <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
+    <canvas id="led-matrix-canvas" width="960" height="128"></canvas>
     
     <script src="common-bundle.js"></script>
     <script src="basics-bundle.js"></script>
