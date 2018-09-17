@@ -193,6 +193,7 @@ export default class LedMatrix implements LedMatrixParameters {
 
     public set panelType(value: PanelType) {
         this._panelType = value;
+        this._panel.stop();
         this._panel = PanelBuilder.build(this._panelType,
             { 
                 board: this._board, 
@@ -203,6 +204,7 @@ export default class LedMatrix implements LedMatrixParameters {
                 width: this._panel.width
             }
         );
+        this._panel.play();
     }
 
     public get panelType() {
