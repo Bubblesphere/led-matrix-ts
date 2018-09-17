@@ -1,4 +1,4 @@
-import Board from '../../lib/board';
+/*import Board from '../../lib/board';
 import CharacterDictionary from '../../lib/character-dictionary';
 // import your own font
 import { Alphabet } from '../../lib/characterArray/alphabet';
@@ -43,3 +43,4 @@ document.getElementById("resume").addEventListener("click", (ev) => {
 document.getElementById("seek").addEventListener("click", (ev) => {
   panel.seek(Number((document.getElementById("seek-text") as HTMLInputElement).value));
 });
+*/

@@ -34,6 +34,9 @@ module.exports = {
     new CopyWebpackPlugin([{ 
       from: 'src/demos/**/*.html',
       flatten: true
+    },{ 
+      from: 'src/demos/**/*.json',
+      flatten: true
     }])
   ],
   module: {
