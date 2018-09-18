@@ -10,10 +10,7 @@ export type CanvaRendererParameter = {
 }
 
 export default abstract class CanvaRenderer extends Renderer {
-  private parameters: CanvaRendererParameter;
-  private _prerenderedOn: HTMLCanvasElement;
-  private _prerenderedOff: HTMLCanvasElement;
-
+  protected parameters: CanvaRendererParameter;
 
   constructor(parameters: CanvaRendererParameter) {
     super();
@@ -24,43 +21,43 @@ export default abstract class CanvaRenderer extends Renderer {
       colorStroke: parameters.colorStroke ? parameters.colorStroke : "#67809F"
     };
     this.parameters.canva.getContext('2d').clearRect(0, 0, this.parameters.canva.width, this.parameters.canva.height);
-    this._prerenderedOn = document.createElement('canvas');
-    this._prerenderedOff = document.createElement('canvas');
-  }
+ }
 
   render(display: PanelDisplay): void {
     const ctx = this.parameters.canva.getContext("2d");
     const widthEachBit = Math.floor(this.parameters.canva.width / display[0].length);
     const heightEachBit = Math.floor(this.parameters.canva.height / display.length);
-    
-    // Render the different canvas once before instead of recalculating every loop
-    const prerenderedBitOn = this._prerenderBit(this._prerenderedOn, widthEachBit, heightEachBit, this.parameters.colorBitOn);
-    const prerenderedBitOff = this._prerenderBit(this._prerenderedOff, widthEachBit, heightEachBit, this.parameters.colorBitOff);
-
-    for(var i = 0; i < display.length; i++) {
-      for(var j = 0; j < display[i].length; j++) {
-        const x = j*widthEachBit;
-        const y = i*heightEachBit;
-        ctx.drawImage(display[i][j] == 1 ? prerenderedBitOn : prerenderedBitOff, x, y);
-      }
-    }
-  }
-
-  private _prerenderBit(canvas: HTMLCanvasElement, widthEachBit: number, heightEachBit: number, color: string) {
-    canvas.width = widthEachBit;
-    canvas.height = heightEachBit;
-    const ctx = canvas.getContext('2d');
-
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.rect(0, 0, widthEachBit, heightEachBit);
-    ctx.fill();
+    this.parameters.canva.getContext('2d').clearRect(0, 0, this.parameters.canva.width, this.parameters.canva.height);
+ 
     ctx.lineWidth = 1;
     ctx.strokeStyle = this.parameters.colorStroke;
+
+    ctx.fillStyle = this.parameters.colorBitOff;
+    ctx.beginPath();
+    for(var i = 0; i < display.length; i++) {
+      for(var j = 0; j < display[i].length; j++) {
+        this.moveToNextBit(ctx, i, j, widthEachBit, heightEachBit);
+        this.drawBit(ctx, i, j, widthEachBit, heightEachBit);
+      }
+    }
+    ctx.fill();
     ctx.stroke();
 
-    return canvas;
+    ctx.fillStyle = this.parameters.colorBitOn;
+    ctx.beginPath();
+    for(var i = 0; i < display.length; i++) {
+      for(var j = 0; j < display[i].length; j++) {
+        if (display[i][j] == 1) {
+          this.moveToNextBit(ctx, i, j, widthEachBit, heightEachBit);
+          this.drawBit(ctx, i, j, widthEachBit, heightEachBit);
+        }
+      }
+    }
+    ctx.fill();
+    ctx.stroke();
+
   }
 
+  abstract moveToNextBit(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void;
   abstract drawBit(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void;
 }
