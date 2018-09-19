@@ -8,11 +8,6 @@ export interface BoardParameters {
   padding: Padding,
 }
 
-export interface ExposedBoardParameters {
-  spacing?: number
-  padding?: Padding,
-}
-
 /**
  * The board creates the link between the dictionnary and the input. 
  * It's role is to create the matrix reprentation of the entire board

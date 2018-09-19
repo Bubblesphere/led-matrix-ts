@@ -1,24 +1,23 @@
 import LedMatrix from '../../lib/led-matrix';
 import { PanelType } from '../../lib/panel-builder';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
-import CanvaRenderer from '../../lib/rendering/canva-renderer';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
 
-const ledMatrix = new LedMatrix();
-ledMatrix.init({
+const ledMatrix = new LedMatrix({
   input: "ABCABABC",
-  options: {
-    board: {
-      spacing: 6,
-      padding: [0, 6, 0, 0]
-    }
-  }
-}, () => {
-  ledMatrix.event.panelUpdate.on((param) => {
-    console.log("update");
-  });
-})
+  spacing: 6,
+  padding: [0, 6, 0, 0]
+});
+
+ledMatrix.event.ready.on(() => {
+  ledMatrix.input = "test";
+  console.log("update");
+});
+
+ledMatrix.init();
+
+
 
 
 document.getElementById("input-button").addEventListener("click", (e) => {

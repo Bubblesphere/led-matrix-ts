@@ -1,140 +1,89 @@
-import Board, { ExposedBoardParameters } from "./board";
+import Board from "./board";
 import CharacterDictionary from './alphabet';
 import AlphabetJSON from "./alphabet-json";
-import Panel, { ExposedPanelParameters } from "./panel";
+import Panel from "./panel";
 import PanelBuilder, { PanelType } from "./panel-builder";
 import AsciiRenderer from "./rendering/ascii-renderer";
 import { Padding } from "./types";
 import Renderer from "./rendering/renderer";
-import { IEvent } from "./event";
+import Event, { IEvent } from "./event";
 import { bit } from "./bit-array";
 
-export interface LedMatrixParameters {
-    pathCharacters?: string;
-    input?: string;
-    options?: {
-        board?: ExposedBoardParameters;
-        panel?: ExposedPanelParameters;
-    }
+interface ExposedBoardParameters {
+    spacing?: number
+    padding?: Padding,
+    input?: string
 }
 
+interface ExposedPanelParameters {
+    panelType?: PanelType,
+    /**  */
+    renderer?: Renderer,
+    /** Increment at each frame */
+    increment?: number,
+    /** Frames of the panel scrolled per second */
+    fps?: number,
+    /** The width of the panel in bits displayed */
+    width?: number,
+    /** Whether the panel animation should be reverse */
+    reverse?: boolean
+}
+
+export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParameters & ExposedPanelParameters;
+
 export default class LedMatrix implements LedMatrixParameters {
+    private _params: LedMatrixParameters;
     private _board: Board;
     private _dictionary: CharacterDictionary;
     private _panel: Panel;
     private _panelType: PanelType;
+    private readonly onReady = new Event<void>();
     public event: {
-        panelUpdate: IEvent<{
-            display: bit[][];
-          }>,
-        panelUpdateBit: IEvent<{
-            x: number;
-            y: number;
-            value: bit;
-          }>,
+        panelUpdate: IEvent<{ display: bit[][]; }>,
+        panelUpdateBit: IEvent<{ x: number; y: number; value: bit; }>,
         reachingBoundary: IEvent<void>
+        ready: IEvent<void>
     };
 
-    public init(params?: LedMatrixParameters, onReady?: () => any) {
-        params = this._validateParameters(params);
+    constructor(params?: LedMatrixParameters) {
+        this._params = this._validateParameters(params);
 
-        AlphabetJSON.import(params.pathCharacters, (characters) => {
-            this._board = new Board({
-                spacing: params.options.board.spacing,
-                padding: params.options.board.padding
-            });
-
-            this._dictionary = new CharacterDictionary();
-            this._dictionary.add(characters);
-
-            this._board.load(params.input, this._dictionary);
-
-            this._panel = PanelBuilder.build(
-                params.options.panel.panelType, 
-                { 
-                    board: this._board, 
-                    renderer: params.options.panel.renderer,
-                    fps: params.options.panel.fps,
-                    increment: params.options.panel.increment,
-                    reverse: params.options.panel.reverse,
-                    width: params.options.panel.width
-                }
-            );
-            
-            this.event = {
-                panelUpdate: this._panel.PanelUpdate,
-                panelUpdateBit: this._panel.PanelUpdateBit,
-                reachingBoundary: this._panel.ReachingBoundary
-            }
-
-            this._panel.play();
-
-            if (onReady) {
-                onReady();
-            }
+        this._board = new Board({
+            spacing: params.spacing,
+            padding: params.padding
         });
+
+        this._dictionary = new CharacterDictionary();
+
+        this._panel = PanelBuilder.build(
+            params.panelType, 
+            { 
+                board: this._board, 
+                renderer: params.renderer,
+                fps: params.fps,
+                increment: params.increment,
+                reverse: params.reverse,
+                width: params.width
+            }
+        );
+
+        this.event = {
+            panelUpdate: this._panel.PanelUpdate,
+            panelUpdateBit: this._panel.PanelUpdateBit,
+            reachingBoundary: this._panel.ReachingBoundary,
+            ready: this.Ready
+        };
     }
 
-    private _validateParameters(params: LedMatrixParameters) {
-        const defaultParams: LedMatrixParameters = {
-            input: "Hello World",
-            pathCharacters: "test.json",
-            options: {
-                panel: {
-                    fps: 30,
-                    increment: 1,
-                    panelType: PanelType.SideScrollingPanel,
-                    renderer: new AsciiRenderer({
-                        element: document.getElementById("led-matrix"),
-                        characterBitOn: 'X',
-                        characterBitOff: ' '
-                    }),
-                    reverse: false,
-                    width: 80
-                },
-                board: {
-                    spacing: 2,
-                    padding: [0]
-                }
-            }
-        }
+    public get Ready() { return this.onReady.expose(); }
 
-        if (params) {
-            params.input = this._valueOrDefault(params.input, defaultParams.input);
-            params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
-            if (params.options) {
-                if (params.options.board) {
-                    params.options.board =  {
-                        spacing: this._valueOrDefault(params.options.board.spacing, defaultParams.options.board.spacing),
-                        padding: this._valueOrDefault(params.options.board.padding, defaultParams.options.board.padding),
-                    }
-                } else {
-                    params.options.board = defaultParams.options.board;
-                }
-
-                if (params.options.panel) {
-                    params.options.panel =  {
-                        fps: this._valueOrDefault(params.options.panel.fps, defaultParams.options.panel.fps),
-                        increment: this._valueOrDefault(params.options.panel.increment, defaultParams.options.panel.increment),
-                        panelType: this._valueOrDefault(params.options.panel.panelType, defaultParams.options.panel.panelType),
-                        renderer: this._valueOrDefault(params.options.panel.renderer, defaultParams.options.panel.renderer),
-                        reverse: this._valueOrDefault(params.options.panel.reverse, defaultParams.options.panel.reverse),
-                        width: this._valueOrDefault(params.options.panel.width, defaultParams.options.panel.width),
-                    }
-                } else {
-                    params.options.panel = defaultParams.options.panel;
-                }
-            } else {
-                params.options = defaultParams.options;
-            }
-            return params;
-        }
-
-        return defaultParams;
-    }
-
-    private _valueOrDefault<T>(value: T, defaultValue: T) {
-        return value ? value : defaultValue;
+    public init() {
+        AlphabetJSON.import(this._params.pathCharacters, (characters) => {
+            this._dictionary.add(characters);
+            this._board.load(this._params.input, this._dictionary);
+            this._panel.play();
+            this.onReady.trigger();
+        });
     }
 
     // Board
@@ -251,5 +200,45 @@ export default class LedMatrix implements LedMatrixParameters {
         return this._panel.width;
     }
 
+    // LedMatrix private
+    private _validateParameters(params: LedMatrixParameters) {
+        const defaultParams: LedMatrixParameters = {
+            input: "Hello World",
+            pathCharacters: "test.json",
+            fps: 30,
+            increment: 1,
+            panelType: PanelType.SideScrollingPanel,
+            renderer: new AsciiRenderer({
+                element: document.getElementById("led-matrix"),
+                characterBitOn: 'X',
+                characterBitOff: ' '
+            }),
+            reverse: false,
+            width: 80,
+            spacing: 2,
+            padding: [0]
+            
+        }
 
+        if (params) {
+            params.input = this._valueOrDefault(params.input, defaultParams.input);
+            params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
+            params.spacing = this._valueOrDefault(params.spacing, defaultParams.spacing);
+            params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
+            params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
+            params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
+            params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
+            params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
+            params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
+            params.width = this._valueOrDefault(params.width, defaultParams.width);
+
+            return params;
+        }
+
+        return defaultParams;
+    }
+
+    private _valueOrDefault<T>(value: T, defaultValue: T) {
+        return value ? value : defaultValue;
+    }
 }

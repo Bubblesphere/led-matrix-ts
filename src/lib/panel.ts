@@ -1,32 +1,9 @@
 import Board from './board';
 import { bit } from './bit-array';
-import Event, { IEvent } from './event';
+import Event from './event';
 import { PanelDisplay } from './types';
 import Renderer from './rendering/renderer';
 import { PanelType } from './panel-builder';
-
-export interface IPanel {
-  board: Board,
-  renderer: Renderer,
-  increment: number,
-  fps: number,
-  width: number,
-  reverse: boolean
-  play: () => void,
-  stop: () => void,
-  resume: () => void,
-  pause: () => void,
-  seek: (frame: number) => void,
-  PanelUpdate: IEvent<{
-    display: bit[][];
-  }>,
-  PanelUpdateBit: IEvent<{
-    x: number;
-    y: number;
-    value: bit;
-  }>,
-  ReachingBoundary: IEvent<void>
-}
 
 export interface PanelParameters  {
   /** The board for which the panel operates on */
@@ -41,20 +18,6 @@ export interface PanelParameters  {
   width: number,
   /** Whether the panel animation should be reverse */
   reverse: boolean
-}
-
-export interface ExposedPanelParameters {
-    panelType?: PanelType,
-    /**  */
-    renderer?: Renderer,
-    /** Increment at each frame */
-    increment?: number,
-    /** Frames of the panel scrolled per second */
-    fps?: number,
-    /** The width of the panel in bits displayed */
-    width?: number,
-    /** Whether the panel animation should be reverse */
-    reverse?: boolean
 }
 
 /**
