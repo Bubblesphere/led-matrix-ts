@@ -39,6 +39,6 @@
   "scripts": {
     "start": "webpack-dev-server --open-page dist/basics.html --config webpack.dev.js --mode development ",
     "build": "webpack --config webpack.prod.js --mode production",
-    "test": "jest"
+    "test": "jest --coverage"
   }
 }
