@@ -16,7 +16,11 @@ export default class Alphabet {
    * @param input The input corresponding
    */
   public find(input: string): Character {
-    return this._characters.filter(x => x.hasPattern(input))[0];
+    const character = this._characters.filter(x => x.hasPattern(input));
+    if (character && character.length > 0) {
+      return character[0];
+    }
+    throw 'Could not find character ${input} in the alphabet';
   }
 
   /**
