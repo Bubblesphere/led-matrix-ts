@@ -30,6 +30,10 @@ export default class Alphabet {
     return Math.max.apply(Math, this._characters.map(x => x.height))
   }
 
+  public get length() {
+    return this._characters.length;
+  }
+
   /**
    * Adds characters to the alphabet
    * @param pendingCharacters Characters pending to be added to the alphabet
