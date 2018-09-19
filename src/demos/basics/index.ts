@@ -111,9 +111,10 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
       document.getElementById("led-matrix").hidden = true;
       ledMatrix.renderer = new CanvaRenderers.Ellipse({
         canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
-        colorBitOn: '#9B59B6',
-        colorBitOff: '#DADFE1',
-        colorStroke: '#674172' 
+        colorBitOn: '#e74c3c',
+        colorBitOff: '#ecf0f1',
+        colorStrokeOn: '#c0392b',
+        colorStrokeOff: '#bdc3c7' 
       });
       break;
   }

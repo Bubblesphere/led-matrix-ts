@@ -1,5 +1,4 @@
 import CanvaRenderer, { CanvaRendererParameter } from "./canva-renderer";
-import { PanelDisplay } from "../types";
 
 export namespace CanvaRenderers {
   export class Ellipse extends CanvaRenderer {
