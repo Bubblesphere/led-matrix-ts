@@ -1,7 +1,7 @@
 import Character from './character';
-import CharacterDictionary from './alphabet';
 import { bit } from './bit-array';
 import { Padding, DetailedPadding } from './types';
+import Alphabet from './alphabet';
 
 export interface BoardParameters {
   spacing: number
@@ -165,7 +165,7 @@ export default class Board {
    * @param input The input to load on the board
    * @param dictionnary The dictionnary for which the input is tested against
    */
-  public load(input: String, dictionnary: CharacterDictionary): void {
+  public load(input: String, dictionnary: Alphabet): void {
     this.reset();
     
     for(let i = 0; i < input.length; i++) {

@@ -1,5 +1,4 @@
 import Board from "./board";
-import CharacterDictionary from './alphabet';
 import AlphabetJSON from "./alphabet-json";
 import Panel from "./panel";
 import PanelBuilder, { PanelType } from "./panel-builder";
@@ -8,6 +7,7 @@ import { Padding } from "./types";
 import Renderer from "./rendering/renderer";
 import Event, { IEvent } from "./event";
 import { bit } from "./bit-array";
+import Alphabet from "./alphabet";
 
 interface ExposedBoardParameters {
     spacing?: number
@@ -34,7 +34,7 @@ export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParame
 export default class LedMatrix implements LedMatrixParameters {
     private _params: LedMatrixParameters;
     private _board: Board;
-    private _dictionary: CharacterDictionary;
+    private _dictionary: Alphabet;
     private _panel: Panel;
     private _panelType: PanelType;
     private readonly onReady = new Event<void>();
@@ -53,7 +53,7 @@ export default class LedMatrix implements LedMatrixParameters {
             padding: params.padding
         });
 
-        this._dictionary = new CharacterDictionary();
+        this._dictionary = new Alphabet();
 
         this._panel = PanelBuilder.build(
             params.panelType, 
