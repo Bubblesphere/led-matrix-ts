@@ -158,7 +158,7 @@ describe('testing getRowAtIndex', () => {
         const paddingRight = 1;
         const spacing = 1;
         const character = [1, 1] as bit[];
-        
+
         board.padding = [0, paddingRight, 0 , paddingLeft];
         board.spacing = spacing;
         const alphabet = new Alphabet();
@@ -168,5 +168,69 @@ describe('testing getRowAtIndex', () => {
         board.load('aa', alphabet);
 
         expect(board.getRowAtIndex(0)).toEqual([0, 1, 1, 0, 1, 1, 0]);
+    });
+});
+
+describe('testing load', () => {
+    test('Should throw an error if there\'s no ending bracket in a multicharacter input', () => {
+        const alphabet = new Alphabet();
+        alphabet.add([
+            new Character(['a'], new BitArray([0]), 1),
+            new Character(['[long]'], new BitArray([0]), 1)
+        ])
+
+        expect(() => {
+            board.load('[long', alphabet);
+        }).toThrow();
+
+        expect(() => {
+            board.load('a[long', alphabet);
+        }).toThrow();
+    });
+
+    test('Should be able to retrieve multicharacter pattern character', () => {
+        const alphabet = new Alphabet();
+        alphabet.add([
+            new Character(['[long]'], new BitArray([0]), 1)
+        ])
+
+        board.load('[long]', alphabet);
+        expect(board.width).toBeGreaterThan(0);
+    });
+
+    test('Should be able to retrieve a character', () => {
+        const alphabet = new Alphabet();
+        alphabet.add([
+            new Character(['a'], new BitArray([0]), 1)
+        ])
+
+        board.load('a', alphabet);
+        expect(board.width).toBeGreaterThan(0);
+    });
+
+    test('Should be able to escape bracket using tilde', () => {
+        const alphabet = new Alphabet();
+        alphabet.add([
+            new Character(['['], new BitArray([0, 0]), 2),
+            new Character(['a'], new BitArray([0, 0]), 2),
+            new Character([']'], new BitArray([0, 0]), 2),
+            new Character(['[a]'], new BitArray([0]), 1)
+        ])
+
+        board.load('~[a]', alphabet);
+        expect(board.width).toBe(6);
+    });
+
+
+    test('Should throw an error if the last character is a tilde and it\'s not escaped', () => {
+        const alphabet = new Alphabet();
+        alphabet.add([
+            new Character(['~'], new BitArray([0, 0]), 2),
+            new Character(['a'], new BitArray([0, 0]), 2)
+        ])
+
+        expect(() => {
+            board.load('a~', alphabet);
+        }).toThrow();
     });
 });
