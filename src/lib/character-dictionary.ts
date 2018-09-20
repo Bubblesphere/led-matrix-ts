@@ -1,9 +1,9 @@
 import Character from './character';
 
 /**
- * The alphabet contains different characters which are accessible
+ * The dictionary contains different characters which are accessible via the find method
  */
-export default class Alphabet {
+export default class CharacterDictionary {
   private _characters: Character[];
 
   constructor() {
@@ -11,7 +11,7 @@ export default class Alphabet {
   }
 
   /**
-   * Finds an input within the alphabet 
+   * Finds an input within the dictionary 
    * @param input The input corresponding
    */
   public find(input: string): Character {
@@ -23,22 +23,22 @@ export default class Alphabet {
   }
 
   /**
-   * Returns the height of the tallest character within the alphabet
+   * Returns the height of the tallest character within the dictionary
    */
   public get height() {
     return Math.max.apply(Math, this._characters.map(x => x.height))
   }
 
   /**
-   * Returns the length of the alphabet
+   * Returns the length of the dictionary
    */
   public get length() {
     return this._characters.length;
   }
 
   /**
-   * Adds characters to the alphabet
-   * @param pendingCharacters Characters pending to be added to the alphabet
+   * Adds characters to the dictionary
+   * @param pendingCharacters Characters pending to be added to the dictionary
    */
   public add(pendingCharacters: Character[]) {
     // Make sure no pending characters have the same pattern

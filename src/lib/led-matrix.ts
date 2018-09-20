@@ -1,5 +1,4 @@
 import Board from "./board";
-import AlphabetJSON from "./alphabet-json";
 import Panel from "./panel";
 import PanelBuilder, { PanelType } from "./panel-builder";
 import AsciiRenderer from "./rendering/ascii-renderer";
@@ -7,7 +6,8 @@ import { Padding } from "./types";
 import Renderer from "./rendering/renderer";
 import Event, { IEvent } from "./event";
 import { bit } from "./bit-array";
-import Alphabet from "./alphabet";
+import CharacterDictionary from "./character-dictionary";
+import CharactersJSON from "./character-json";
 
 interface ExposedBoardParameters {
     spacing?: number
@@ -34,7 +34,7 @@ export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParame
 export default class LedMatrix implements LedMatrixParameters {
     private _params: LedMatrixParameters;
     private _board: Board;
-    private _dictionary: Alphabet;
+    private _dictionary: CharacterDictionary;
     private _panel: Panel;
     private _panelType: PanelType;
     private readonly onReady = new Event<void>();
@@ -53,7 +53,7 @@ export default class LedMatrix implements LedMatrixParameters {
             padding: params.padding
         });
 
-        this._dictionary = new Alphabet();
+        this._dictionary = new CharacterDictionary();
 
         this._panel = PanelBuilder.build(
             params.panelType, 
@@ -78,7 +78,7 @@ export default class LedMatrix implements LedMatrixParameters {
     public get Ready() { return this.onReady.expose(); }
 
     public init() {
-        AlphabetJSON.import(this._params.pathCharacters, (characters) => {
+        CharactersJSON.import(this._params.pathCharacters, (characters) => {
             this._dictionary.add(characters);
             this._board.load(this._params.input, this._dictionary);
             this._panel.play();

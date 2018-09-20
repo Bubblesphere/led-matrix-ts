@@ -1,7 +1,7 @@
 import Board from './board';
-import Alphabet from './alphabet';
 import Character from './character';
 import BitArray, { bit } from './bit-array';
+import CharacterDictionary from './character-dictionary';
 
 let board: Board;
 
@@ -70,12 +70,12 @@ describe('testing width', () => {
 
         board.padding = [0, paddingRight, 0, paddingLeft];
         board.spacing = spacing;
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([0]), characterWidth),
             new Character(['b'], new BitArray([0]), characterWidth)
         ])
-        board.load('ab', alphabet);
+        board.load('ab', dictionary);
 
         expect(board.width).toBe(paddingLeft + characterWidth + spacing + characterWidth + paddingRight);
     });
@@ -88,12 +88,12 @@ describe('testing height', () => {
         const tallestCharacter = 2;
 
         board.padding = [paddingTop, 0, paddingBottom, 0];
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([0,0]), 1), // tallest character
             new Character(['b'], new BitArray([0]), 1)
         ])
-        board.load('ab', alphabet);
+        board.load('ab', dictionary);
         
         expect(board.height).toBe(paddingBottom + tallestCharacter + paddingTop);
     });
@@ -105,11 +105,11 @@ describe('testing getColumnAtIndex', () => {
         const paddingRight = 1;
 
         board.padding = [0, paddingRight, 0, paddingLeft];
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([1, 1]), 1)
         ])
-        board.load('a', alphabet);
+        board.load('a', dictionary);
         
         expect(board.getColumnAtIndex(0)).toEqual([0, 0]);
         expect(board.getColumnAtIndex(2)).toEqual([0, 0]);
@@ -117,21 +117,21 @@ describe('testing getColumnAtIndex', () => {
 
     test('Should return an array of 0 the size of height when column is spacing', () => {
         board.spacing = 1;
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([1, 1]), 1)
         ])
-        board.load('aa', alphabet);
+        board.load('aa', dictionary);
         
         expect(board.getColumnAtIndex(1)).toEqual([0, 0]);
     });
 
     test('Should return an array of bit corresponding to the character when column is a character', () => {
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([1, 1, 0]), 1)
         ])
-        board.load('aa', alphabet);
+        board.load('aa', dictionary);
         
         expect(board.getColumnAtIndex(0)).toEqual([1, 1, 0]);
     });
@@ -143,11 +143,11 @@ describe('testing getRowAtIndex', () => {
         const paddingBottom = 1;
 
         board.padding = [paddingTop, 0, paddingBottom, 0];
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([1, 1]), 2)
         ])
-        board.load('a', alphabet);
+        board.load('a', dictionary);
         
         expect(board.getRowAtIndex(0)).toEqual([0, 0]);
         expect(board.getRowAtIndex(2)).toEqual([0, 0]);
@@ -161,11 +161,11 @@ describe('testing getRowAtIndex', () => {
 
         board.padding = [0, paddingRight, 0 , paddingLeft];
         board.spacing = spacing;
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray(character), character.length)
         ])
-        board.load('aa', alphabet);
+        board.load('aa', dictionary);
 
         expect(board.getRowAtIndex(0)).toEqual([0, 1, 1, 0, 1, 1, 0]);
     });
@@ -173,64 +173,64 @@ describe('testing getRowAtIndex', () => {
 
 describe('testing load', () => {
     test('Should throw an error if there\'s no ending bracket in a multicharacter input', () => {
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([0]), 1),
             new Character(['[long]'], new BitArray([0]), 1)
         ])
 
         expect(() => {
-            board.load('[long', alphabet);
+            board.load('[long', dictionary);
         }).toThrow();
 
         expect(() => {
-            board.load('a[long', alphabet);
+            board.load('a[long', dictionary);
         }).toThrow();
     });
 
     test('Should be able to retrieve multicharacter pattern character', () => {
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['[long]'], new BitArray([0]), 1)
         ])
 
-        board.load('[long]', alphabet);
+        board.load('[long]', dictionary);
         expect(board.width).toBeGreaterThan(0);
     });
 
     test('Should be able to retrieve a character', () => {
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['a'], new BitArray([0]), 1)
         ])
 
-        board.load('a', alphabet);
+        board.load('a', dictionary);
         expect(board.width).toBeGreaterThan(0);
     });
 
     test('Should be able to escape bracket using tilde', () => {
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['['], new BitArray([0, 0]), 2),
             new Character(['a'], new BitArray([0, 0]), 2),
             new Character([']'], new BitArray([0, 0]), 2),
             new Character(['[a]'], new BitArray([0]), 1)
         ])
 
-        board.load('~[a]', alphabet);
+        board.load('~[a]', dictionary);
         expect(board.width).toBe(6);
     });
 
 
     test('Should throw an error if the last character is a tilde and it\'s not escaped', () => {
-        const alphabet = new Alphabet();
-        alphabet.add([
+        const dictionary = new CharacterDictionary();
+        dictionary.add([
             new Character(['~'], new BitArray([0, 0]), 2),
             new Character(['a'], new BitArray([0, 0]), 2)
         ])
 
         expect(() => {
-            board.load('a~', alphabet);
+            board.load('a~', dictionary);
         }).toThrow();
     });
 });
