@@ -145,7 +145,8 @@ export default class Board {
     }
 
     // left padding + iterate[character + space] - space + right padding
-    const charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
+    let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
+    charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._spacing);
     
     return this._emptyArrayOfLength(this._padding[3])
       .concat(charactersWithSpace)
