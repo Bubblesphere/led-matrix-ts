@@ -155,19 +155,12 @@ export default class Board {
   }
 
   /**
-   * Clears the board
-   */
-  public reset() {
-    this._characters = [];
-  }
-
-  /**
    * Loads a new input onto the board
    * @param input The input to load on the board
    * @param dictionnary The dictionnary for which the input is tested against
    */
   public load(input: String, dictionnary: Alphabet): void {
-    this.reset();
+    this._characters = [];
     
     for(let i = 0; i < input.length; i++) {
       let characterBuffer = input[i];
@@ -186,12 +179,7 @@ export default class Board {
         } while(input[i] != "]");
       }
 
-      const character = dictionnary.find(characterBuffer);
-      if (character) {
-        this._characters.push(character);
-      } else {
-        throw `Could not find any match for ${characterBuffer} within the provided dictionnary`;
-      }
+      this._characters.push(dictionnary.find(characterBuffer));
     }
   }
   private _horizontalPaddingWidth(): number {
