@@ -1,8 +1,7 @@
 import Character from './character';
 
 /**
- * The character dictionnary contains the matrix representation of the different characters available. 
- * You can create your own character array and pass it to the constructor.
+ * The alphabet contains different characters which are accessible
  */
 export default class Alphabet {
   private _characters: Character[];
@@ -30,6 +29,9 @@ export default class Alphabet {
     return Math.max.apply(Math, this._characters.map(x => x.height))
   }
 
+  /**
+   * Returns the length of the alphabet
+   */
   public get length() {
     return this._characters.length;
   }
