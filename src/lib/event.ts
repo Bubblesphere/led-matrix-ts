@@ -1,6 +1,6 @@
 type Handler<T> = (data?: T) => void;
 
-interface IEvent<T> {
+export interface IEvent<T> {
   on(handler: Handler<T>) : void;
   off(handler: Handler<T>) : void;
 }

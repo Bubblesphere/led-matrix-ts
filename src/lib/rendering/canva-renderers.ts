@@ -6,10 +6,15 @@ export namespace CanvaRenderers {
       super(parameters)
     }
     
-    drawBit(context: CanvasRenderingContext2D, x: any, y: any, width: any, height: any): void {
-      const halfWBit = width / 2;
-      const halfHBit = height / 2;
-      context.ellipse(x +  halfWBit, y + halfHBit, halfWBit, halfHBit, 0, 0, 2 * Math.PI);
+    moveToNextBit(ctx: CanvasRenderingContext2D, i: any, j: any, w: any, h: any): void {
+      ctx.moveTo(w*(j+1), h*(i+1) - h / 2);
+    }
+
+    drawBit(ctx: CanvasRenderingContext2D, i: any, j: any, w: any, h: any): void {
+      const radW = w / 2;
+      const radH = h / 2;
+
+      ctx.ellipse(w * j + radW, h * i + radH, radW, radH, 0, 0, 2 * Math.PI);
     }
   }
 
@@ -18,8 +23,11 @@ export namespace CanvaRenderers {
       super(parameters)
     }
     
-    drawBit(context: CanvasRenderingContext2D, x: any, y: any, width: any, height: any): void {
-      return context.rect(x, y, width, height);
+    drawBit(context: CanvasRenderingContext2D, i: any, j: any, w: any, h: any): void {
+      return context.rect(w * j, h * i, w, h);
+    }
+
+    moveToNextBit(ctx: CanvasRenderingContext2D, i: any, j: any, w: any, h: any): void {
     }
   }
 }

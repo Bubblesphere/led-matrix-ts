@@ -5,30 +5,22 @@
   <body>
 
     <h1>LED Matrix Typescript Basics</h1>
+    
     <ul>
-      <li><a href="basics.html">Basics</a></li>
-      <li><a href="controls.html">Controls</a></li>
-      <li><a href="panels.html">Panels</a></li>
-      <li><a href="panelEvents.html">Events</a></li>
-      <li><a href="renderers.html">Rendering</a></li>
       <li><a href="alphabet.html">Alphabet</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="playground.html">Playground</a></li>
     </ul>
 
     <xmp>
-        const board = new Board();
-        const dictionary = new CharacterDictionary(Alphabet);
+      import LedMatrix from '../../lib/led-matrix';
 
-        board.load("HELLO WORLD ", dictionary);
-        
-        const panel = new SideScrollingPanel({
-          board: board,
-          renderer: new AsciiRenderer({ element: document.getElementById("root") })
-        });
-
-        panel.play();
+      const ledMatrix = new LedMatrix();
+      ledMatrix.init();
     </xmp>
-    <div id="root" style="font-family: monospace; white-space: pre;"></div>
-    
+
+    <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
+
     <script src="common-bundle.js"></script>
     <script src="basics-bundle.js"></script>
   </body>

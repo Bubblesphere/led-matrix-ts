@@ -2,12 +2,14 @@ import { bit } from "../bit-array";
 import Panel from "../panel";
 
 export default class VerticalScrollingPanel extends Panel {
-  indexUpperBound: number = 8;
+  public get indexUpperBound(): number {
+    return this.board.height - 1;
+  }
 
-  protected _generateDisplay(): void {
-    for(let i = 0; i < this.height; i++) {
+  protected _generateDisplay(currentIndex: number): void {
+    for(let i = 0; i < this.board.height; i++) {
       let row: Array<bit>;
-      row = this.board.getRowAtIndex(this.index + i);
+      row = this.board.getRowAtIndex(currentIndex + i);
       this.display[i] = row.slice(0, this.width);
     }
   }

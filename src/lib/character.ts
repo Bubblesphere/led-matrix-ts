@@ -1,5 +1,8 @@
 import BitArray, { bit } from "./bit-array";
 
+/**
+ * The character holds information about the visual representation of a character
+ */
 export default class Character {
   private _patterns: Array<string>;
   private _output: BitArray;
@@ -33,7 +36,11 @@ export default class Character {
    * @param index The index of the column
    */
   public getColumn(index: number): bit[] {
-    if (index > this._width) {
+    if (index < 0) {
+      throw `Index (${index}) cannot be negative`;
+    }
+
+    if (index >= this._width) {
       throw `Index (${index}) is greater than the width of the character (${this._width})`;
     }
 
@@ -50,7 +57,11 @@ export default class Character {
    * @param index The index of the row
    */
   public getRow(index: number): bit[] {
-    if (index > this._height) {
+    if (index < 0) {
+      throw `Index (${index}) cannot be negative`;
+    }
+
+    if (index >= this._height) {
       throw `Index (${index}) is greater than the height of the character (${this._height})`;
     }
 
@@ -76,8 +87,18 @@ export default class Character {
     return this._height;
   }
 
-  public get Patterns() {
+  /**
+   * Gets the patterns of the character
+   */
+  public get patterns() {
     return this._patterns;
+  }
+
+  /**
+   * Gets the output of the character
+   */
+  public get output() {
+    return this._output;
   }
 
   /**

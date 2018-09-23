@@ -9,13 +9,9 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js']
   },
   entry: {
-    basics: "./src/demos/basics/index.ts",
-    controls: "./src/demos/controls/index.ts",
-    fun: "./src/demos/fun/index.ts",
-    renderers: "./src/demos/renderers/index.ts",
-    panelEvents: "./src/demos/panelEvents/index.ts",
     alphabet: "./src/demos/alphabet/index.ts",
-    panels: "./src/demos/panels/index.ts"
+    basics: "./src/demos/basics/index.ts",
+    playground: "./src/demos/playground/index.ts",
   },
   output: {
     filename: "[name]-bundle.js",
@@ -33,6 +29,9 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([{ 
       from: 'src/demos/**/*.html',
+      flatten: true
+    },{ 
+      from: 'src/demos/**/*.json',
       flatten: true
     }])
   ],
