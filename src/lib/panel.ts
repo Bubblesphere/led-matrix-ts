@@ -26,7 +26,7 @@ export interface PanelParameters  {
  */
 export default abstract class Panel {
   protected display: PanelDisplay;
-  protected index: number;
+  public index: number;
   private _increment: number;
   private _width: number;
   private _board: Board;
@@ -59,7 +59,7 @@ export default abstract class Panel {
     this.width =  params.width;
     this.fps = params.fps;
     this._board = params.board;
-    this.index = 0;
+    this.index = 1;
     this._increment = params.increment;
     this.display = [];
     this._renderer = params.renderer;
@@ -67,6 +67,13 @@ export default abstract class Panel {
   }
 
   public set width(value: number) {
+    // validation
+    if (value == null) {
+      throw `Panel's width cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Panel's width cannot be set to a negative number (${value})`;
+    }
     this._width = value;
   }
 
@@ -75,6 +82,17 @@ export default abstract class Panel {
   }
 
   public set fps(value: number) {
+    // validation
+    if (value == null) {
+      throw `Panel's fps cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Panel's fps cannot be set to a negative number (${value})`;
+    }
+    const maxFps = 60;
+    if (value > maxFps) {
+      throw `Panel's fps has to be lower than ${maxFps}`;
+    }
     this._fps = value;
     this._fpsInterval = 1000 / this._fps;
   }
@@ -84,6 +102,10 @@ export default abstract class Panel {
   }
 
   public set board(value: Board) {
+    // validation
+    if (value == null) {
+      throw `Panel's board cannot be set to null`;
+    }
     this._board = value;
   }
 
@@ -92,6 +114,13 @@ export default abstract class Panel {
   }
 
   public set increment(value: number) {
+    // validation
+    if (value == null) {
+      throw `Panel's fps cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Panel's fps cannot be set to a negative number (${value})`;
+    }
     this._increment = value;
   }
 
@@ -100,6 +129,10 @@ export default abstract class Panel {
   }
 
   public set renderer(value: Renderer) {
+    // validation
+    if (value == null) {
+      throw `Panel's renderer cannot be set to null`;
+    }
     this._renderer = value;
   }
 
@@ -108,6 +141,10 @@ export default abstract class Panel {
   }
 
   public set reverse(value: boolean) {
+    // validation
+    if (value == null) {
+      throw `Panel's reverse cannot be set to null`;
+    }
     this._reverse = value;
   }
 
