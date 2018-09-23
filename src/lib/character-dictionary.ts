@@ -19,7 +19,7 @@ export default class CharacterDictionary {
     if (character && character.length > 0) {
       return character[0];
     }
-    throw 'Could not find character ${input} in the alphabet';
+    throw `Could not find character ${input} in the alphabet`;
   }
 
   /**
