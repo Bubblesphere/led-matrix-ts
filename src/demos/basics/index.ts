@@ -52,10 +52,15 @@ document.getElementById("pause-button").addEventListener("click", (e) => {
   ledMatrix.pause();
 });
 
+document.getElementById("tick-button").addEventListener("click", (e) => {
+  ledMatrix.tick();
+});
+
 document.getElementById("seek-button").addEventListener("click", (e) => {
   const value = (document.getElementById("seek-value") as HTMLInputElement).value;
   ledMatrix.seek(Number(value));
 });
+
 document.getElementById("fps-button").addEventListener("click", (e) => {
   const value = (document.getElementById("fps-value") as HTMLInputElement).value;
   ledMatrix.fps = Number(value);

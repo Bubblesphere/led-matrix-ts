@@ -155,6 +155,28 @@ describe('ui', () => {
                 done();
             }, 200);
         });
+
+        test('Should change the index at least once after 200ms when reversed', (done) => {
+            panel.reverse = true;
+            panel.play();
+            setTimeout(() => {
+                expect(panel.index).not.toBe(0);
+                done();
+            }, 200);
+        });
+
+        test('Should loop back to 0 when reaching upperbound', () => {
+            panel.seek(panel.indexUpperBound)
+            panel.tick();
+            expect(panel.index).toBe(0);
+        });
+
+        test('Should loop back to upperbound when reaching 0 when the panel is reversed', () => {
+            panel.reverse = true;
+            panel.seek(0);
+            panel.tick();
+            expect(panel.index).toBe(panel.indexUpperBound - 1);
+        })
     });
     
     describe('testing stop', () => {
@@ -205,6 +227,24 @@ describe('ui', () => {
     });
 
     describe('testing seek', () => {
+        test('Should throw error if value is null', () => {
+            expect(() => {
+                panel.seek(null);
+            }).toThrow();
+        });
+
+        test('Should throw error if value is negative', () => {
+            expect(() => {
+                panel.seek(-1);
+            }).toThrow();
+        });
+
+        test('Should throw error if value is bigger than the upperbound', () => {
+            expect(() => {
+                panel.seek(panel.indexUpperBound + 1);
+            }).toThrow();
+        });
+
         test('Should seek the index when seeking', () => {
             panel.seek(3);
             expect(panel.index).toBe(3);

@@ -40,7 +40,6 @@ export default class LedMatrix implements LedMatrixParameters {
     private readonly onReady = new Event<void>();
     public event: {
         panelUpdate: IEvent<{ display: bit[][]; }>,
-        panelUpdateBit: IEvent<{ x: number; y: number; value: bit; }>,
         reachingBoundary: IEvent<void>
         ready: IEvent<void>
     };
@@ -69,7 +68,6 @@ export default class LedMatrix implements LedMatrixParameters {
 
         this.event = {
             panelUpdate: this._panel.PanelUpdate,
-            panelUpdateBit: this._panel.PanelUpdateBit,
             reachingBoundary: this._panel.ReachingBoundary,
             ready: this.Ready
         };
@@ -138,6 +136,10 @@ export default class LedMatrix implements LedMatrixParameters {
 
     public resume() {
         this._panel.resume();
+    }
+
+    public tick() {
+        this._panel.tick();
     }
 
     public seek(frame: number) {
