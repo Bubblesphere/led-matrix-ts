@@ -305,7 +305,7 @@ export default abstract class Panel {
   }
 
   /**
-   * Stats the looping process
+   * Starts the looping process
    */
   private _startLoop() {
     this._then = Date.now();
