@@ -42,6 +42,9 @@ export default class Board {
     this._spacing = value;
   }
 
+  /**
+   * Returns the spacing of the board
+   */
   public get spacing() {
     return this._spacing;
   }
@@ -191,6 +194,7 @@ export default class Board {
       this._characters.push(dictionnary.find(characterBuffer));
     }
   }
+
   private _horizontalPaddingWidth(): number {
     return this._padding[1] + this._padding[3];
   }

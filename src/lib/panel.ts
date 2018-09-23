@@ -1,5 +1,4 @@
 import Board from './board';
-import { bit } from './bit-array';
 import Event from './event';
 import { PanelDisplay } from './types';
 import Renderer from './rendering/renderer';
@@ -22,7 +21,7 @@ export interface PanelParameters  {
 /**
  * The panel deals with the displaying logic. 
  * You can see it as a viewport moving through a board. 
- * It has control over starting, stopping, pausing, resuming, seeking.
+ * It has control over starting, stopping, pausing, resuming, seeking, ticking.
  */
 export default abstract class Panel {
   protected display: PanelDisplay;
@@ -63,6 +62,9 @@ export default abstract class Panel {
     this._reverse = params.reverse;
   }
 
+  /**
+   * Sets the width of the panel
+   */
   public set width(value: number) {
     // validation
     if (value == null) {
@@ -74,10 +76,16 @@ export default abstract class Panel {
     this._width = value;
   }
 
+  /**
+   * Returns the width of the panel
+   */
   public get width() {
     return this._width;
   }
 
+  /**
+   * Sets the number of frames the panel should produce in a second
+   */
   public set fps(value: number) {
     // validation
     if (value == null) {
@@ -94,10 +102,16 @@ export default abstract class Panel {
     this._fpsInterval = 1000 / this._fps;
   }
 
+  /**
+   * Gets the number of frames the panel produces in a second
+   */
   public get fps() {
     return this._fps;
   }
 
+  /**
+   * Set the panel's board
+   */
   public set board(value: Board) {
     // validation
     if (value == null) {
@@ -106,10 +120,16 @@ export default abstract class Panel {
     this._board = value;
   }
 
+  /**
+   * Gets the panel's board
+   */
   public get board() {
     return this._board;
   }
 
+  /**
+   * Sets the panel's index incrementation between each frame
+   */
   public set increment(value: number) {
     // validation
     if (value == null) {
@@ -121,10 +141,16 @@ export default abstract class Panel {
     this._increment = value;
   }
 
+  /**
+   * Gets the panel's index incrementation between each frame
+   */
   public get increment() {
     return this._increment;
   }
 
+  /**
+   * Sets the panel's renderer
+   */
   public set renderer(value: Renderer) {
     // validation
     if (value == null) {
@@ -133,10 +159,16 @@ export default abstract class Panel {
     this._renderer = value;
   }
 
+  /**
+   * Gets the panel's renderer
+   */
   public get renderer() {
     return this._renderer;
   }
 
+  /**
+   * Sets whether the panel should increment in reverse
+   */
   public set reverse(value: boolean) {
     // validation
     if (value == null) {
@@ -145,6 +177,9 @@ export default abstract class Panel {
     this._reverse = value;
   }
 
+  /**
+   * Gets whether the panel should increment in reverse
+   */
   public get reverse() {
     return this._reverse;
   }
@@ -193,6 +228,9 @@ export default abstract class Panel {
     this._draw();
   }
 
+  /**
+   * Ticks the panel a single step
+   */
   public tick() {
     this._step();
   }
@@ -205,6 +243,9 @@ export default abstract class Panel {
     this._draw();
   }
 
+  /**
+   * Displays the panel for an index
+   */
   private _draw() {
     this._resetPanel();
     this._generateDisplay(this.index);
@@ -212,6 +253,9 @@ export default abstract class Panel {
     this._renderer.render(this.display);
   }
 
+  /**
+   * Changes the index to its next value
+   */
   private _tickIndex() {
     this._reverse ? this._decrementIndex() : this._incrementIndex();
   }
@@ -231,6 +275,9 @@ export default abstract class Panel {
    */
   protected abstract _generateDisplay(currentIndex: number): void
 
+  /**
+   * The maximum index the panel can have before looping back
+   */
   public abstract get indexUpperBound(): number
 
   /**
@@ -245,6 +292,9 @@ export default abstract class Panel {
     }
   }
 
+  /**
+   * Decrements the panel next index
+   */
   private _decrementIndex() {
     if (this.index === 0) {
       this.onReachingBoundary.trigger();
@@ -254,6 +304,9 @@ export default abstract class Panel {
     }
   }
 
+  /**
+   * Stats the looping process
+   */
   private _startLoop() {
     this._then = Date.now();
     this._startTime = this._then;
