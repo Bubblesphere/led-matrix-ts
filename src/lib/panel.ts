@@ -26,7 +26,7 @@ export interface PanelParameters  {
  */
 export default abstract class Panel {
   protected display: PanelDisplay;
-  public index: number;
+  protected nextIndex: number;
   private _increment: number;
   private _width: number;
   private _board: Board;
@@ -59,11 +59,15 @@ export default abstract class Panel {
     this.width =  params.width;
     this.fps = params.fps;
     this._board = params.board;
-    this.index = 1;
+    this.nextIndex = 0;
     this._increment = params.increment;
     this.display = [];
     this._renderer = params.renderer;
     this._reverse = params.reverse;
+  }
+
+  public get index() {
+    return this.nextIndex == 0 ? this._board.width : this.nextIndex - 1;
   }
 
   public set width(value: number) {
@@ -156,7 +160,7 @@ export default abstract class Panel {
    * Starts the panel
    */
   public play() {
-    this.setIndex(0);
+    this.setNextIndex(0);
     this._startLoop();
   }
 
@@ -164,7 +168,7 @@ export default abstract class Panel {
    * Stops the panel
    */
   public stop() {
-    this.setIndex(0);
+    this.setNextIndex(0);
     this._step();
     cancelAnimationFrame(this._loopingRequestAnimationFrame);
   }
@@ -191,7 +195,7 @@ export default abstract class Panel {
     if (frame < 0 || frame > this._indexUpperBound()) {
       throw `Seek expects a value between 0 and ${this._indexUpperBound()}`;
     }
-    this.setIndex(frame);
+    this.setNextIndex(frame);
     this._step();
   }
 
@@ -200,7 +204,7 @@ export default abstract class Panel {
    */
   private _step(): void {
     this._resetPanel();
-    this._generateDisplay();
+    this._generateDisplay(this.nextIndex);
 
     for (let i = 0; i < this._board.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -215,7 +219,7 @@ export default abstract class Panel {
     this.onPanelUpdate.trigger({ display: this.display });
     this._renderer.render(this.display);
 
-    this._reverse ? this._decrementIndex() : this._incrementIndex();
+    this._reverse ? this._decrementNextIndex() : this._incrementNextIndex();
   }
 
   /**
@@ -231,40 +235,40 @@ export default abstract class Panel {
   /**
    * Generates the displayed matrix
    */
-  protected abstract _generateDisplay(): void
+  protected abstract _generateDisplay(currentIndex: number): void
 
   protected abstract _indexUpperBound(): number
 
   /**
-   * Sets the panel index
+   * Sets the panel next index
    * @param value The value to set the index at
    */
-  protected setIndex(value: number) {
+  protected setNextIndex(value: number) {
     if (value > this._indexUpperBound()) {
-      this.index = 0;
+      this.nextIndex = 0;
     } else {
-      this.index = value;
+      this.nextIndex = value;
     }
   }  
 
   /**
-   * Increments the panel index
+   * Increments the panel next index
    */
-  private _incrementIndex() {
-    if (this.index > this._indexUpperBound() - 1) {
+  private _incrementNextIndex() {
+    if (this.nextIndex > this._indexUpperBound() - 1) {
       this.onReachingBoundary.trigger();
-      this.index = 0;
+      this.nextIndex = 0;
     } else {
-      this.index += this._increment;
+      this.nextIndex += this._increment;
     }
   }
 
-  private _decrementIndex() {
-    if (this.index === 0) {
+  private _decrementNextIndex() {
+    if (this.nextIndex === 0) {
       this.onReachingBoundary.trigger();
-      this.index = this._indexUpperBound();
+      this.nextIndex = this._indexUpperBound();
     } else {
-      this.index -= this._increment;
+      this.nextIndex -= this._increment;
     }
   }
 

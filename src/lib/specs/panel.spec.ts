@@ -161,11 +161,53 @@ describe('ui', () => {
         test('Should reset the index back to 0 when stopping', (done) => {
             panel.play();
             setTimeout(() => {
-                expect(panel.index).not.toBe(1);
+                expect(panel.index).not.toBe(0);
                 panel.stop();
                 expect(panel.index).toBe(0);
                 done();
             }, 200);
+        });
+    });
+
+    describe('testing pause', () => {
+        test('Should pause the index when pausing', (done) => {
+            // play
+            panel.play();
+            setTimeout(() => {
+                expect(panel.index).not.toBe(0);
+                // pause
+                panel.pause();
+                const index = panel.index;
+                setTimeout(() => {
+                    // check if we're still at the same index as 200ms ago
+                    expect(panel.index).toBe(index);
+                    done();
+                }, 200);
+            }, 200);
+        });
+    });
+
+    describe('testing resume', () => {
+        test('Should resume the index when resume', (done) => {
+            // play
+            panel.play();
+            panel.pause();
+            setTimeout(() => {
+                const index = panel.index;
+                panel.resume();
+                setTimeout(() => {
+                    // check if the panel isn't paused
+                    expect(panel.index).not.toBe(index);
+                    done();
+                }, 200);
+            }, 200);
+        });
+    });
+
+    describe('testing seek', () => {
+        test('Should seek the index when seeking', () => {
+            panel.seek(3);
+            expect(panel.index).toBe(3);
         });
     });
 });

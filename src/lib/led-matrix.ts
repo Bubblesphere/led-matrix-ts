@@ -86,6 +86,10 @@ export default class LedMatrix implements LedMatrixParameters {
         });
     }
 
+    public get index() {
+        return this._panel.index;
+    }
+
     // Board
     public set spacing(value: number) {
         this._board.spacing = value;
