@@ -1,9 +1,7 @@
 import Board from './board';
-import { bit } from './bit-array';
 import Event from './event';
 import { PanelDisplay } from './types';
 import Renderer from './rendering/renderer';
-import { PanelType } from './panel-builder';
 
 export interface PanelParameters  {
   /** The board for which the panel operates on */
@@ -23,11 +21,11 @@ export interface PanelParameters  {
 /**
  * The panel deals with the displaying logic. 
  * You can see it as a viewport moving through a board. 
- * It has control over starting, stopping, pausing, resuming, seeking.
+ * It has control over starting, stopping, pausing, resuming, seeking, ticking.
  */
 export default abstract class Panel {
   protected display: PanelDisplay;
-  protected index: number;
+  public index: number;
   private _increment: number;
   private _width: number;
   private _board: Board;
@@ -41,14 +39,11 @@ export default abstract class Panel {
   private _then: number
   private _elapsed: number;
 
-  /** Triggered for every bit of every new frame the panel produces */
-  protected readonly onPanelUpdateBit = new Event<{x: number, y: number, value: bit}>();
   /** Triggered for every new frame the panel produces */
   protected readonly onPanelUpdate = new Event<{display: PanelDisplay}>();
   /** Triggered when the index reaches the lower or the upperbound */
   protected readonly onReachingBoundary = new Event<void>();
 
-  public get PanelUpdateBit() { return this.onPanelUpdateBit.expose(); }
   public get PanelUpdate() { return this.onPanelUpdate.expose(); }
   public get ReachingBoundary() { return this.onReachingBoundary.expose(); }
   
@@ -67,51 +62,124 @@ export default abstract class Panel {
     this._reverse = params.reverse;
   }
 
+  /**
+   * Sets the width of the panel
+   */
   public set width(value: number) {
+    // validation
+    if (value == null) {
+      throw `Panel's width cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Panel's width cannot be set to a negative number (${value})`;
+    }
     this._width = value;
   }
 
+  /**
+   * Returns the width of the panel
+   */
   public get width() {
     return this._width;
   }
 
+  /**
+   * Sets the number of frames the panel should produce in a second
+   */
   public set fps(value: number) {
+    // validation
+    if (value == null) {
+      throw `Panel's fps cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Panel's fps cannot be set to a negative number (${value})`;
+    }
+    const maxFps = 60;
+    if (value > maxFps) {
+      throw `Panel's fps has to be lower than ${maxFps}`;
+    }
     this._fps = value;
     this._fpsInterval = 1000 / this._fps;
   }
 
+  /**
+   * Gets the number of frames the panel produces in a second
+   */
   public get fps() {
     return this._fps;
   }
 
+  /**
+   * Set the panel's board
+   */
   public set board(value: Board) {
+    // validation
+    if (value == null) {
+      throw `Panel's board cannot be set to null`;
+    }
     this._board = value;
   }
 
+  /**
+   * Gets the panel's board
+   */
   public get board() {
     return this._board;
   }
 
+  /**
+   * Sets the panel's index incrementation between each frame
+   */
   public set increment(value: number) {
+    // validation
+    if (value == null) {
+      throw `Panel's fps cannot be set to null`;
+    }
+    if (value < 0) {
+      throw `Panel's fps cannot be set to a negative number (${value})`;
+    }
     this._increment = value;
   }
 
+  /**
+   * Gets the panel's index incrementation between each frame
+   */
   public get increment() {
     return this._increment;
   }
 
+  /**
+   * Sets the panel's renderer
+   */
   public set renderer(value: Renderer) {
+    // validation
+    if (value == null) {
+      throw `Panel's renderer cannot be set to null`;
+    }
     this._renderer = value;
   }
 
+  /**
+   * Gets the panel's renderer
+   */
   public get renderer() {
     return this._renderer;
   }
 
+  /**
+   * Sets whether the panel should increment in reverse
+   */
   public set reverse(value: boolean) {
+    // validation
+    if (value == null) {
+      throw `Panel's reverse cannot be set to null`;
+    }
     this._reverse = value;
   }
 
+  /**
+   * Gets whether the panel should increment in reverse
+   */
   public get reverse() {
     return this._reverse;
   }
@@ -120,7 +188,8 @@ export default abstract class Panel {
    * Starts the panel
    */
   public play() {
-    this.setIndex(0);
+    this.index = 0;
+    this._draw();
     this._startLoop();
   }
 
@@ -128,8 +197,8 @@ export default abstract class Panel {
    * Stops the panel
    */
   public stop() {
-    this.setIndex(0);
-    this._step();
+    this.index = 0;
+    this._draw();
     cancelAnimationFrame(this._loopingRequestAnimationFrame);
   }
 
@@ -152,10 +221,17 @@ export default abstract class Panel {
    * @param frame The frame to seek to
    */
   public seek(frame: number) {
-    if (frame < 0 || frame > this._indexUpperBound()) {
-      throw `Seek expects a value between 0 and ${this._indexUpperBound()}`;
+    if (frame == null || frame < 0 || frame > this.indexUpperBound) {
+      throw `Seek expects a value between 0 and ${this.indexUpperBound}`;
     }
-    this.setIndex(frame);
+    this.index = frame;
+    this._draw();
+  }
+
+  /**
+   * Ticks the panel a single step
+   */
+  public tick() {
     this._step();
   }
 
@@ -163,22 +239,24 @@ export default abstract class Panel {
    * Moves the panel a single step
    */
   private _step(): void {
+    this._tickIndex();
+    this._draw();
+  }
+
+  /**
+   * Displays the panel for an index
+   */
+  private _draw() {
     this._resetPanel();
-    this._generateDisplay();
-
-    for (let i = 0; i < this._board.height; i++) {
-      for (let j = 0; j < this.width; j++) {
-        this.onPanelUpdateBit.trigger({
-          x: i,
-          y: j,
-          value: this.display[i][j] == 1 ? 1 : 0
-        });
-      }
-    }
-
+    this._generateDisplay(this.index);
     this.onPanelUpdate.trigger({ display: this.display });
     this._renderer.render(this.display);
+  }
 
+  /**
+   * Changes the index to its next value
+   */
+  private _tickIndex() {
     this._reverse ? this._decrementIndex() : this._incrementIndex();
   }
 
@@ -195,27 +273,18 @@ export default abstract class Panel {
   /**
    * Generates the displayed matrix
    */
-  protected abstract _generateDisplay(): void
-
-  protected abstract _indexUpperBound(): number
+  protected abstract _generateDisplay(currentIndex: number): void
 
   /**
-   * Sets the panel index
-   * @param value The value to set the index at
+   * The maximum index the panel can have before looping back
    */
-  protected setIndex(value: number) {
-    if (value > this._indexUpperBound()) {
-      this.index = 0;
-    } else {
-      this.index = value;
-    }
-  }  
+  public abstract get indexUpperBound(): number
 
   /**
-   * Increments the panel index
+   * Increments the panel next index
    */
   private _incrementIndex() {
-    if (this.index > this._indexUpperBound() - 1) {
+    if (this.index >= this.indexUpperBound) {
       this.onReachingBoundary.trigger();
       this.index = 0;
     } else {
@@ -223,15 +292,21 @@ export default abstract class Panel {
     }
   }
 
+  /**
+   * Decrements the panel next index
+   */
   private _decrementIndex() {
     if (this.index === 0) {
       this.onReachingBoundary.trigger();
-      this.index = this._indexUpperBound();
+      this.index = this.indexUpperBound;
     } else {
       this.index -= this._increment;
     }
   }
 
+  /**
+   * Starts the looping process
+   */
   private _startLoop() {
     this._then = Date.now();
     this._startTime = this._then;

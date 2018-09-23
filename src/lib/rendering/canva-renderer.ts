@@ -10,25 +10,28 @@ export type CanvaRendererParameter = {
 }
 
 export default abstract class CanvaRenderer extends Renderer {
-  protected parameters: CanvaRendererParameter;
+  protected _parameters: CanvaRendererParameter;
 
   constructor(parameters: CanvaRendererParameter) {
     super();
-    this.parameters = {
+    this._parameters = {
       canva: parameters.canva,
       colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
       colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
       colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
       colorStrokeOff: parameters.colorStrokeOff ? parameters.colorStrokeOff : "#67809F"
     };
-    this.parameters.canva.getContext('2d').clearRect(0, 0, this.parameters.canva.width, this.parameters.canva.height);
- }
+    this._parameters.canva.getContext('2d').clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
+  }
+
+  public get parameters() {
+    return this._parameters
+  }
 
   render(display: PanelDisplay): void {
-    const ctx = this.parameters.canva.getContext("2d");
-    const widthEachBit = Math.floor(this.parameters.canva.width / display[0].length);
-    const heightEachBit = Math.floor(this.parameters.canva.height / display.length);
- 
+    const ctx = this._parameters.canva.getContext("2d");
+    const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
+    const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
     ctx.lineWidth = 1;
 
     const renderBitsOfValue = (value: number, fillColor: string, strokeColor: string) => {
@@ -47,8 +50,8 @@ export default abstract class CanvaRenderer extends Renderer {
       ctx.stroke();
     }
 
-    renderBitsOfValue(0, this.parameters.colorBitOff, this.parameters.colorStrokeOff);
-    renderBitsOfValue(1, this.parameters.colorBitOn, this.parameters.colorStrokeOn);
+    renderBitsOfValue(0, this._parameters.colorBitOff, this._parameters.colorStrokeOff);
+    renderBitsOfValue(1, this._parameters.colorBitOn, this._parameters.colorStrokeOn);
   }
 
   abstract moveToNextBit(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void;

@@ -1,6 +1,4 @@
 import Board from "./board";
-import CharacterDictionary from './alphabet';
-import AlphabetJSON from "./alphabet-json";
 import Panel from "./panel";
 import PanelBuilder, { PanelType } from "./panel-builder";
 import AsciiRenderer from "./rendering/ascii-renderer";
@@ -8,6 +6,8 @@ import { Padding } from "./types";
 import Renderer from "./rendering/renderer";
 import Event, { IEvent } from "./event";
 import { bit } from "./bit-array";
+import CharacterDictionary from "./character-dictionary";
+import CharactersJSON from "./character-json";
 
 interface ExposedBoardParameters {
     spacing?: number
@@ -40,7 +40,6 @@ export default class LedMatrix implements LedMatrixParameters {
     private readonly onReady = new Event<void>();
     public event: {
         panelUpdate: IEvent<{ display: bit[][]; }>,
-        panelUpdateBit: IEvent<{ x: number; y: number; value: bit; }>,
         reachingBoundary: IEvent<void>
         ready: IEvent<void>
     };
@@ -69,7 +68,6 @@ export default class LedMatrix implements LedMatrixParameters {
 
         this.event = {
             panelUpdate: this._panel.PanelUpdate,
-            panelUpdateBit: this._panel.PanelUpdateBit,
             reachingBoundary: this._panel.ReachingBoundary,
             ready: this.Ready
         };
@@ -78,12 +76,16 @@ export default class LedMatrix implements LedMatrixParameters {
     public get Ready() { return this.onReady.expose(); }
 
     public init() {
-        AlphabetJSON.import(this._params.pathCharacters, (characters) => {
+        CharactersJSON.import(this._params.pathCharacters, (characters) => {
             this._dictionary.add(characters);
             this._board.load(this._params.input, this._dictionary);
             this._panel.play();
             this.onReady.trigger();
         });
+    }
+
+    public get index() {
+        return this._panel.index;
     }
 
     // Board
@@ -134,6 +136,10 @@ export default class LedMatrix implements LedMatrixParameters {
 
     public resume() {
         this._panel.resume();
+    }
+
+    public tick() {
+        this._panel.tick();
     }
 
     public seek(frame: number) {

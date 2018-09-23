@@ -1,10 +1,9 @@
 import Character from './character';
 
 /**
- * The character dictionnary contains the matrix representation of the different characters available. 
- * You can create your own character array and pass it to the constructor.
+ * The dictionary contains different characters which are accessible via the find method
  */
-export default class Alphabet {
+export default class CharacterDictionary {
   private _characters: Character[];
 
   constructor() {
@@ -12,23 +11,34 @@ export default class Alphabet {
   }
 
   /**
-   * Finds an input within the alphabet 
+   * Finds an input within the dictionary 
    * @param input The input corresponding
    */
   public find(input: string): Character {
-    return this._characters.filter(x => x.hasPattern(input))[0];
+    const character = this._characters.filter(x => x.hasPattern(input));
+    if (character && character.length > 0) {
+      return character[0];
+    }
+    throw `Could not find character ${input} in the alphabet`;
   }
 
   /**
-   * Returns the height of the tallest character within the alphabet
+   * Returns the height of the tallest character within the dictionary
    */
   public get height() {
     return Math.max.apply(Math, this._characters.map(x => x.height))
   }
 
   /**
-   * Adds characters to the alphabet
-   * @param pendingCharacters Characters pending to be added to the alphabet
+   * Returns the length of the dictionary
+   */
+  public get length() {
+    return this._characters.length;
+  }
+
+  /**
+   * Adds characters to the dictionary
+   * @param pendingCharacters Characters pending to be added to the dictionary
    */
   public add(pendingCharacters: Character[]) {
     // Make sure no pending characters have the same pattern

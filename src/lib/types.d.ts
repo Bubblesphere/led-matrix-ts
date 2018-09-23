@@ -1,7 +1,7 @@
 import Character from "./character";
 import { bit } from "./bit-array";
 
-export interface AlphabetJSONSchema {
+export interface CharactersJSONSchema {
     height: number,
     characters: CharacterJSONSchema[]
 }

@@ -1,7 +1,7 @@
 import Character from './character';
-import CharacterDictionary from './alphabet';
 import { bit } from './bit-array';
 import { Padding, DetailedPadding } from './types';
+import CharacterDictionary from './character-dictionary';
 
 export interface BoardParameters {
   spacing: number
@@ -42,6 +42,9 @@ export default class Board {
     this._spacing = value;
   }
 
+  /**
+   * Returns the spacing of the board
+   */
   public get spacing() {
     return this._spacing;
   }
@@ -71,11 +74,14 @@ export default class Board {
     }
   }
 
+  /**
+   * Returns the padding of the board
+   */
   public get padding() {
     return this._padding;
   }
 
-    /**
+  /**
    * Returns the total width of the board
    */
   public get width() {
@@ -145,7 +151,8 @@ export default class Board {
     }
 
     // left padding + iterate[character + space] - space + right padding
-    const charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
+    let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
+    charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._spacing);
     
     return this._emptyArrayOfLength(this._padding[3])
       .concat(charactersWithSpace)
@@ -154,45 +161,40 @@ export default class Board {
   }
 
   /**
-   * Clears the board
-   */
-  public reset() {
-    this._characters = [];
-  }
-
-  /**
    * Loads a new input onto the board
    * @param input The input to load on the board
    * @param dictionnary The dictionnary for which the input is tested against
    */
   public load(input: String, dictionnary: CharacterDictionary): void {
-    this.reset();
+    const escapeCharacter = '~';
+    this._characters = [];
     
     for(let i = 0; i < input.length; i++) {
       let characterBuffer = input[i];
 
-      if (characterBuffer === "~") {
+      if (characterBuffer === escapeCharacter) {
+        // Check if were at the end of the input
         if (i == input.length - 1) {
           throw `No character escaped at the end of the string input`;
         }
+        // Change the characterBuffer to the character which is escaped
         characterBuffer = input[++i];
-      } else if (characterBuffer === "[" && (i === 0 || input[i-1] !== "~")) {
+      } else if (characterBuffer === "[" && (i === 0 || input[i-1] !== escapeCharacter)) {
         do {
+          // Add characters within brackets to the buffer
           characterBuffer += input[++i];
+
+          // Check if we've reached the end of the input without finding the closing bracket
           if (i == input.length) {
-            throw `Could not find the end bracket for pattern ${characterBuffer}. To escape the bracket, use \\`;
+            throw `Could not find the end bracket for pattern ${characterBuffer}. To escape the bracket, use ${escapeCharacter}`;
           }
         } while(input[i] != "]");
       }
 
-      const character = dictionnary.find(characterBuffer);
-      if (character) {
-        this._characters.push(character);
-      } else {
-        throw `Could not find any match for ${characterBuffer} within the provided dictionnary`;
-      }
+      this._characters.push(dictionnary.find(characterBuffer));
     }
   }
+
   private _horizontalPaddingWidth(): number {
     return this._padding[1] + this._padding[3];
   }
