@@ -74,6 +74,7 @@ ledMatrix.init();
 **Demo: Check out `src/demos/playground` for more details**
 #### Properties / Constructor parameters
 Parameters can be set using the constructor and/or properties. If you use the lather, make sure to set the properties within the callback of the `Ready` event.
+
 Parameters | Default | Description 
 --- | --- | ---
 **`fps?: number`** | `30` | The number of frames per second
