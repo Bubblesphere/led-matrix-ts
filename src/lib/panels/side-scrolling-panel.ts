@@ -3,7 +3,7 @@ import Panel from "../panel";
 
 export default class SideScrollingPanel extends Panel {
   public get indexUpperBound(): number {
-    return this.board.width;
+    return this.board.width - 1;
   }
 
   protected _generateDisplay(currentIndex: number): void {

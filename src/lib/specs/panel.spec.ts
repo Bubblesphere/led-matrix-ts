@@ -175,7 +175,7 @@ describe('ui', () => {
             panel.reverse = true;
             panel.seek(0);
             panel.tick();
-            expect(panel.index).toBe(panel.indexUpperBound - 1);
+            expect(panel.index).toBe(panel.indexUpperBound);
         })
     });
     
@@ -249,15 +249,37 @@ describe('ui', () => {
             panel.seek(3);
             expect(panel.index).toBe(3);
         });
+
+        test('Should seek the index when seeking to the indexUpperBound', () => {
+            panel.seek(panel.indexUpperBound);
+            expect(panel.index).toBe(panel.indexUpperBound);
+        });
+    });
+
+    describe('testing PanelUpdate', () => {
+        test('Should call panel update when it updates', () => {
+            panel.PanelUpdate.on((display) => {
+                expect(true).toBeTruthy();
+            });
+            panel.tick();
+        });
+    });
+
+    describe('testing ReachingBoundary', () => {
+        test('Should call ReachingBoundary when crossing boundary', () => {
+            panel.ReachingBoundary.on(() => {
+                expect(true).toBeTruthy();
+            });
+            panel.reverse = true;
+            panel.tick();
+        });
+
+        test('Should call ReachingBoundary when crossing boundary', () => {
+            panel.ReachingBoundary.on(() => {
+                expect(true).toBeTruthy();
+            });
+            panel.seek(panel.indexUpperBound);
+            panel.tick();
+        });
     });
 });
-
-
-/*
-resume
-pause
-seek
-PanelUpdateBit
-PanelUpdate
-ReachingBoundary
-*/

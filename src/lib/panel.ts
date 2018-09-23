@@ -237,7 +237,7 @@ export default abstract class Panel {
    * Increments the panel next index
    */
   private _incrementIndex() {
-    if (this.index >= this.indexUpperBound - 1) {
+    if (this.index >= this.indexUpperBound) {
       this.onReachingBoundary.trigger();
       this.index = 0;
     } else {
@@ -248,7 +248,7 @@ export default abstract class Panel {
   private _decrementIndex() {
     if (this.index === 0) {
       this.onReachingBoundary.trigger();
-      this.index = this.indexUpperBound - 1;
+      this.index = this.indexUpperBound;
     } else {
       this.index -= this._increment;
     }

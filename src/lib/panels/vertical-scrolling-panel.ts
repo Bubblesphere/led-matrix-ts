@@ -3,7 +3,7 @@ import Panel from "../panel";
 
 export default class VerticalScrollingPanel extends Panel {
   public get indexUpperBound(): number {
-    return this.board.height;
+    return this.board.height - 1;
   }
 
   protected _generateDisplay(currentIndex: number): void {
