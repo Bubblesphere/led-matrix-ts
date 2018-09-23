@@ -48,21 +48,21 @@ export default class LedMatrix implements LedMatrixParameters {
         this._params = this._validateParameters(params);
 
         this._board = new Board({
-            spacing: params.spacing,
-            padding: params.padding
+            spacing: this._params.spacing,
+            padding: this._params.padding
         });
 
         this._dictionary = new CharacterDictionary();
 
         this._panel = PanelBuilder.build(
-            params.panelType, 
+            this._params.panelType, 
             { 
                 board: this._board, 
-                renderer: params.renderer,
-                fps: params.fps,
-                increment: params.increment,
-                reverse: params.reverse,
-                width: params.width
+                renderer: this._params.renderer,
+                fps: this._params.fps,
+                increment: this._params.increment,
+                reverse: this._params.reverse,
+                width: this._params.width
             }
         );
 
@@ -210,7 +210,7 @@ export default class LedMatrix implements LedMatrixParameters {
     private _validateParameters(params: LedMatrixParameters) {
         const defaultParams: LedMatrixParameters = {
             input: "Hello World",
-            pathCharacters: "test.json",
+            pathCharacters: "alphabet.json",
             fps: 30,
             increment: 1,
             panelType: PanelType.SideScrollingPanel,
@@ -222,7 +222,7 @@ export default class LedMatrix implements LedMatrixParameters {
             reverse: false,
             width: 80,
             spacing: 2,
-            padding: [0]
+            padding: [0, 4]
             
         }
 

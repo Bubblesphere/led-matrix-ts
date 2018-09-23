@@ -5,39 +5,45 @@
   <body>
 
     <h1>LED Matrix Typescript Alphabet</h1>
+
     <ul>
-      <li><a href="basics.html">Basics</a></li>
-      <li><a href="controls.html">Controls</a></li>
-      <li><a href="panels.html">Panels</a></li>
-      <li><a href="panelEvents.html">Events</a></li>
-      <li><a href="renderers.html">Rendering</a></li>
       <li><a href="alphabet.html">Alphabet</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="playground.html">Playground</a></li>
     </ul>
-    <h2>Using your own alphabet</h2>
+
+    <h2>customAlphabet.json</h2>
     <xmp>
-      const Alphabet: ICharacterArray = [
-        new Character(
-          ['1'], 
-          new BitArray([0, 0, 1, 1, 1, 1, 1, 0, 0,
+      {
+        "characters": [
+            {
+            "patterns": ["[smiley]"],
+            "output": [ 0, 0, 1, 1, 1, 1, 1, 0, 0,
                         0, 1, 0, 0, 0, 0, 0, 1, 0,
                         1, 0, 0, 1, 0, 1, 0, 0, 1,
                         1, 0, 0, 0, 0, 0, 0, 0, 1,
                         1, 0, 1, 0, 0, 0, 1, 0, 1,
                         1, 0, 0, 1, 1, 1, 0, 0, 1,
                         0, 1, 0, 0, 0, 0, 0, 1, 0,
-                        0, 0, 1, 1, 1, 1, 1, 0, 0]),
-          9
-        )
-      ];
-      
-      const board = new Board();
-      const dictionary = new CharacterDictionary(Alphabet);
-      board.load("S", dictionary);
+                        0, 0, 1, 1, 1, 1, 1, 0, 0],
+            "width": 9
+            }
+        ]
+      }
     </xmp>
-    
-    <canvas id="canva" width="960" height="128"></canvas>
 
-    
+    <h2>index.ts</h2>
+    <xmp>
+      const ledMatrix = new LedMatrix({
+        pathCharacters: "customAlphabet.json",
+        input: "[smiley]"
+      });
+      
+      ledMatrix.init();
+    </xmp>
+
+    <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
+
     <script src="common-bundle.js"></script>
     <script src="alphabet-bundle.js"></script>
   </body>

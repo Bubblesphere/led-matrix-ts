@@ -5,80 +5,22 @@
   <body>
 
     <h1>LED Matrix Typescript Basics</h1>
+    
     <ul>
-      <li><a href="basics.html">Basics</a></li>
-      <li><a href="controls.html">Controls</a></li>
-      <li><a href="panels.html">Panels</a></li>
-      <li><a href="panelEvents.html">Events</a></li>
-      <li><a href="renderers.html">Rendering</a></li>
       <li><a href="alphabet.html">Alphabet</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="playground.html">Playground</a></li>
     </ul>
 
     <xmp>
-        const board = new Board();
-        const dictionary = new CharacterDictionary(Alphabet);
+      import LedMatrix from '../../lib/led-matrix';
 
-        board.load("HELLO WORLD ", dictionary);
-        
-        const panel = new SideScrollingPanel({
-          board: board,
-          renderer: new AsciiRenderer({ element: document.getElementById("root") })
-        });
-
-        panel.play();
+      const ledMatrix = new LedMatrix();
+      ledMatrix.init();
     </xmp>
 
-    <label>Input</label>
-    <input id="input-value" type="text" />
-    <input id="input-button" type="button" value="Apply input" />
-    <br>
-    <label>Spacing</label>
-    <input id="spacing-value" type="text" />
-    <input id="spacing-button" type="button" value="Apply spacing" />
-    <br>
-    <label>Padding</label>
-    <input id="padding-value" type="text" />
-    <input id="padding-button" type="button" value="Apply padding" />
-    <br>
-    <input id="play-button" type="button" value="Play" />
-    <input id="stop-button" type="button" value="Stop" />
-    <input id="pause-button" type="button" value="Pause" />
-    <input id="resume-button" type="button" value="Resume" />
-    <input id="tick-button" type="button" value="Tick" />
-    <input id="seek-button" type="button" value="Seek" />
-    <input id="seek-value" type="text" />
-    <br>
-    <label>fps</label>
-    <input id="fps-value" type="text" />
-    <input id="fps-button" type="button" value="Apply fps" />
-    <br>
-    <label>increment</label>
-    <input id="increment-value" type="text" />
-    <input id="increment-button" type="button" value="Apply increment" />
-    <br>
-    <label>viewportWidth</label>
-    <input id="viewportWidth-value" type="text" />
-    <input id="viewportWidth-button" type="button" value="Apply viewportWidth" />
-    <br>
-    <label>reverse</label>
-    <input id="reverse-checkbox" type="checkbox" />
-    <br>
-    <label>panelType</label>
-    <select id="panelType-select">
-      <option value="SideScrollingPanel">SideScrollingPanel</option>
-      <option value="VerticalScrollingPanel">VerticalScrollingPanel</option>
-    </select>
-    <br>
-    <label>renderer</label>
-    <select id="renderer-select">
-      <option value="AsciiRenderer">AsciiRenderer</option>
-      <option value="Rect">Rect</option>
-      <option value="Ellipse">Ellipse</option>
-    </select>
-    <br>
     <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
-    <canvas id="led-matrix-canvas" width="1900" height="256"></canvas>
-    
+
     <script src="common-bundle.js"></script>
     <script src="basics-bundle.js"></script>
   </body>
