@@ -4,7 +4,7 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 - [Installation](#installation)
 - [Basics](#basics)
-- [Documentation](#api)
+- [Documentation](#documentation)
 - [License](#license)
 
 ![Demo gif](https://i.imgur.com/bT8uZPN.gif)
@@ -48,7 +48,7 @@ ledMatrix.init();
 ```
 
 ## Documentation
-Check out the wiki
+[Check out the wiki](https://github.com/Bubblesphere/led-matrix-ts/wiki)
 
 ## License
 ```
