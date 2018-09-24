@@ -1,6 +1,6 @@
 import Board from './board';
 import Event from './event';
-import { PanelDisplay } from './types';
+import { PanelFrame } from './types';
 import Renderer from './rendering/renderer';
 
 export interface PanelParameters  {
@@ -24,7 +24,7 @@ export interface PanelParameters  {
  * It has control over starting, stopping, pausing, resuming, seeking, ticking.
  */
 export default abstract class Panel {
-  protected display: PanelDisplay;
+  protected display: PanelFrame;
   public index: number;
   private _increment: number;
   private _width: number;
@@ -40,7 +40,7 @@ export default abstract class Panel {
   private _elapsed: number;
 
   /** Triggered for every new frame the panel produces */
-  protected readonly onPanelUpdate = new Event<{display: PanelDisplay}>();
+  protected readonly onPanelUpdate = new Event<{display: PanelFrame}>();
   /** Triggered when the index reaches the lower or the upperbound */
   protected readonly onReachingBoundary = new Event<void>();
 
