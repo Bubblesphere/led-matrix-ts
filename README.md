@@ -15,8 +15,6 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 4.08 KB (Gzipped)
 
----
-
 ## Installation
 **via npm**
 
@@ -34,8 +32,6 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 `yarn start`
 
----
-
 ## Basics
 **Check out `src/demos/basics` for more details**
 
@@ -50,8 +46,6 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 const ledMatrix = new LedMatrix();
 ledMatrix.init();
 ```
-
----
 
 ## Documentation
 Check out the wiki
