@@ -4,7 +4,7 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 - [Installation](#installation)
 - [Basics](#basics)
-- [Documentation](#api)
+- [Documentation](#documentation)
 - [License](#license)
 
 ![Demo gif](https://i.imgur.com/bT8uZPN.gif)
@@ -14,8 +14,6 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 18.31 KB
 
 4.08 KB (Gzipped)
-
----
 
 ## Installation
 **via npm**
@@ -34,8 +32,6 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 
 `yarn start`
 
----
-
 ## Basics
 **Check out `src/demos/basics` for more details**
 
@@ -51,10 +47,8 @@ const ledMatrix = new LedMatrix();
 ledMatrix.init();
 ```
 
----
-
 ## Documentation
-Check out the wiki
+[Check out the wiki](https://github.com/Bubblesphere/led-matrix-ts/wiki)
 
 ## License
 ```
