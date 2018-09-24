@@ -24,7 +24,7 @@ interface ExposedPanelParameters {
     /** Frames of the panel scrolled per second */
     fps?: number,
     /** The width of the panel in bits displayed */
-    width?: number,
+    panelWidth?: number,
     /** Whether the panel animation should be reverse */
     reverse?: boolean
 }
@@ -62,7 +62,7 @@ export default class LedMatrix implements LedMatrixParameters {
                 fps: this._params.fps,
                 increment: this._params.increment,
                 reverse: this._params.reverse,
-                width: this._params.width
+                width: this._params.panelWidth
             }
         );
 
@@ -75,12 +75,13 @@ export default class LedMatrix implements LedMatrixParameters {
 
     public get Ready() { return this.onReady.expose(); }
 
-    public init() {
+    public init(callback?: () => any) {
         CharactersJSON.import(this._params.pathCharacters, (characters) => {
             this._dictionary.add(characters);
             this._board.load(this._params.input, this._dictionary);
             this._panel.play();
             this.onReady.trigger();
+            callback();
         });
     }
 
@@ -220,10 +221,9 @@ export default class LedMatrix implements LedMatrixParameters {
                 characterBitOff: ' '
             }),
             reverse: false,
-            width: 80,
+            panelWidth: 80,
             spacing: 2,
             padding: [0, 4]
-            
         }
 
         if (params) {
@@ -236,7 +236,7 @@ export default class LedMatrix implements LedMatrixParameters {
             params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
             params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
-            params.width = this._valueOrDefault(params.width, defaultParams.width);
+            params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
 
             return params;
         }

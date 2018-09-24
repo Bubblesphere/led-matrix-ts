@@ -71,26 +71,45 @@ ledMatrix.init();
 
 ## API
 ### LedMatrix
+
 **Demo: Check out `src/demos/playground` for more details**
-#### Properties / Constructor parameters
-Parameters can be set using the constructor and/or properties. If you use the lather, make sure to set the properties within the callback of the `Ready` event.
 
-Parameters | Default | Description 
+## Parameters
+*All parameters are optional*
+
+Parameters | Type | Default | Description 
+--- | --- | --- | ---
+**`fps`** | number | `30` | The number of frames per second
+**`increment`** | number | `1` | The incrementation between frames
+**`input`** | string | `"Hello World"` | The input to display on the board
+**`padding`** | Padding | `[0, 4]` | The board's padding
+**`panelType`** | PanelType | `PanelType.SideScrollingPanel` | The panel's scrolling logic
+**`pathCharacters`** | boolean | `"alphabet.json"` | The path to the json file containing details about the characters
+**`renderer`** | Renderer | `8` | The panel renderer
+**`reverse`** | boolean | `false` | Whether the scrolling sequence is reversed
+**`spacing`** | number | `2` | The space between characters on the board
+**`panelWidth`** | number | `80` | The width of the viewport (panel)
+
+## Properties
+Property | Get | Set
 --- | --- | ---
-**`fps?: number`** | `30` | The number of frames per second
-**`increment?: number`** | `1` | The incrementation between frames
-**`input?: string`** | `"Hello World"` | The input to display on the board
-**`padding?: Padding`** | `[0, 4]` | The board's padding. More details below
-**`panelType?: PanelType`** | `PanelType.SideScrollingPanel` | The panel's scrolling logic. More details below
-**`pathCharacters?: boolean`** | `"alphabet.json"` | The path to the json file containing details about the characters. More details below
-**`renderer?: Renderer`** | `8` | The panel renderer
-**`reverse?: boolean`** | `false` | Whether the scrolling sequence is reversed
-**`spacing?: number`** | `2` | The space between characters on the board
-**`width?: number`** | `80` | The width of the viewport
+index | X | 
+spacing | X | X
+padding | X | X
+width | X | 
+height | X |
+input | | X
+panelType | X | X
+renderer | X | X
+fps | X | X
+increment | X | X
+reverse | X | X
+panelWidth | X | X
 
-#### Methods
+## Methods
 Method | Description
 --- | --- 
+**`init(callback?: () => any)`** | Initializes the ledMatrix. The `callback` method is called when the initiation is done.
 **`pause()`** | Pauses the panel at the current frame
 **`play()`** | Places the panel at the first frame and starts ticking at the the fps speed
 **`resume()`** | Resumes the panel at the current frame
@@ -98,7 +117,7 @@ Method | Description
 **`stop()`** | Places the panel at the first frame and stops it
 **`tick()`** | Ticks the panel one frame
 
-#### Events
+## Events
 Event | Description
 --- | --- 
 **`PanelUpdate: (display: PanelDisplay) => void`** | Triggered whenever the panel updates

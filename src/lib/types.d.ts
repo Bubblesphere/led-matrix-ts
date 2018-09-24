@@ -12,8 +12,8 @@ export interface CharacterJSONSchema {
     width: number
 }
 
-export type PanelDisplay = Array<Array<bit>>;
-export type PanelRenderer = (display: PanelDisplay, ...other: any[]) => any
+export type PanelFrame = Array<Array<bit>>;
+export type PanelRenderer = (display: PanelFrame, ...other: any[]) => any
 
 export type DetailedPadding = [number, number, number, number];
 export type Padding = DetailedPadding | [number, number] | [number];
