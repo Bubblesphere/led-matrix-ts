@@ -1,6 +1,6 @@
-import { PanelDisplay } from "../types";
+import { PanelFrame } from "../types";
 
 export default abstract class Renderer {
-  abstract render(display: PanelDisplay): void;
+  abstract render(display: PanelFrame): void;
   abstract get parameters(): any;
 }

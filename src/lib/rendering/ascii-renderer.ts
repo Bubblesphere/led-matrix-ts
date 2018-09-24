@@ -1,5 +1,5 @@
 import Renderer from "./renderer";
-import { PanelDisplay } from "../types";
+import { PanelFrame } from "../types";
 
 type AsciiRendererParameter = {
   element: HTMLElement,
@@ -23,7 +23,7 @@ export default class AsciiRenderer extends Renderer {
     return this._parameters;
   }
 
-  render(display: PanelDisplay): void {
+  render(display: PanelFrame): void {
     let output = "";
     for(var i = 0; i < display.length; i++) {
         for(var j = 0; j < display[i].length; j++) {

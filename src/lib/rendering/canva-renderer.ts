@@ -1,4 +1,4 @@
-import { PanelDisplay } from "../../lib/types";
+import { PanelFrame } from "../../lib/types";
 import Renderer from "./renderer";
 
 export type CanvaRendererParameter = {
@@ -28,7 +28,7 @@ export default abstract class CanvaRenderer extends Renderer {
     return this._parameters
   }
 
-  render(display: PanelDisplay): void {
+  render(display: PanelFrame): void {
     const ctx = this._parameters.canva.getContext("2d");
     const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
     const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
