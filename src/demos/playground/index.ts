@@ -3,12 +3,19 @@ import { PanelType } from '../../lib/panel-builder';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
-const ledMatrix = new LedMatrix();
+const ledMatrix = new LedMatrix({
+  pathCharacters: "alphabett.json"
+});
 ledMatrix.init();
 
 document.getElementById("input-button").addEventListener("click", (e) => {
   const value = (document.getElementById("input-value") as HTMLInputElement).value;
   ledMatrix.input = value;
+});
+
+document.getElementById("size-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("size-value") as HTMLInputElement).value;
+  ledMatrix.size = Number(value);
 });
 
 document.getElementById("spacing-button").addEventListener("click", (e) => {

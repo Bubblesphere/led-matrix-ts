@@ -31,7 +31,7 @@ export default abstract class Panel {
   private _board: Board;
   private _renderer: Renderer;
   private _reverse: boolean;
-  private _loopingRequestAnimationFrame: number;
+  private _shouldUpdate: boolean;
   private _fps: number;
   private _fpsInterval: number
   private _startTime: number
@@ -199,7 +199,7 @@ export default abstract class Panel {
   public stop() {
     this.index = 0;
     this._draw();
-    cancelAnimationFrame(this._loopingRequestAnimationFrame);
+    this._shouldUpdate = false;
   }
 
   /**
@@ -213,7 +213,7 @@ export default abstract class Panel {
    * Pauses the panel
    */
   public pause() {
-    cancelAnimationFrame(this._loopingRequestAnimationFrame);
+    this._shouldUpdate = false;
   }
 
   /**
@@ -310,6 +310,7 @@ export default abstract class Panel {
   private _startLoop() {
     this._then = Date.now();
     this._startTime = this._then;
+    this._shouldUpdate = true;
     this._loop();
   }
 
@@ -317,8 +318,10 @@ export default abstract class Panel {
    * Steps at an interval of the panel's fps
    */
   private _loop(): void {
-    this._loopingRequestAnimationFrame = requestAnimationFrame(this._loop.bind(this));  
-    this._onNextFrame(this._step.bind(this));
+    requestAnimationFrame(this._loop.bind(this));
+    if (this._shouldUpdate) {
+      this._onNextFrame(this._step.bind(this));
+    }
   }
 
   private _onNextFrame(callback: () => any) {

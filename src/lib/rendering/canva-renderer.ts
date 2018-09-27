@@ -21,7 +21,6 @@ export default abstract class CanvaRenderer extends Renderer {
       colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
       colorStrokeOff: parameters.colorStrokeOff ? parameters.colorStrokeOff : "#67809F"
     };
-    this._parameters.canva.getContext('2d').clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
   }
 
   public get parameters() {
@@ -30,6 +29,7 @@ export default abstract class CanvaRenderer extends Renderer {
 
   render(display: PanelFrame): void {
     const ctx = this._parameters.canva.getContext("2d");
+    ctx.clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
     const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
     const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
     ctx.lineWidth = 1;
