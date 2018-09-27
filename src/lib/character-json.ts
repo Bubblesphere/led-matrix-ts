@@ -5,18 +5,16 @@ import NearestNeighbor from "./character-sizer";
 
 export default class CharactersJSON {
     static import(path: string, size: number, success: (content: Character[]) => any) {
-        const file = new XMLHttpRequest();
-        file.open("GET", path, false);
-        file.onreadystatechange = () =>
-        {
-            if(file.readyState === 4) {
-                if(file.status === 200 || file.status == 0) {
-                    success(CharactersJSON.parse(file.responseText, size));
-                }
-            }
-            // TODO: Error management
-        }
-        file.send(null);
+        fetch(path)
+        .then((response) => {
+            return response.text();
+        })
+        .then((response) => {
+            success(CharactersJSON.parse(response, size))
+        })
+        .catch((error) => {
+            throw `Couldn't fetch file: ${path}`;
+        });
     }
 
     static export() {
@@ -24,20 +22,41 @@ export default class CharactersJSON {
     }
 
     static parse(json: string, size: number): Character[] {
-        // TODO: Validation
+        if (size < 1 || size > 10) {
+            throw 'Size should be between 1 and 10';
+        }
+
         const data = JSON.parse(json) as CharactersJSONSchema;
 
+        if (data == null) {
+            throw 'Invalid character json file';
+        }
+
+        if (data.characters == null) {
+            throw 'Invalid character json file: Can\'t find property characters';
+        }
+
         return data.characters.map(x => {
+            if (x.patterns == null) {
+                throw 'Invalid character json file: Can\'t find property patterns for a character';
+            }
+            if (x.output == null) {
+                throw 'Invalid character json file: Can\'t find property output for a character';
+            }
+            if (x.width == null) {
+                throw 'Invalid character json file: Can\'t find property width for a character';
+            }
             const characterRaw = x.output.map(x => x as bit);
-            const w = x.width;
-            const h = x.output.length / x.width;
-            const character = NearestNeighbor.scale(characterRaw, w, size);
-            return new Character(x.patterns, new BitArray(character), w * size) 
+            const character = NearestNeighbor.scale(characterRaw, x.width, size);
+            return new Character(x.patterns, new BitArray(character), x.width * size) 
         });
     }
 
     static stringify(characters: Character[]): string {
-        // TODO: Validation
+        if (characters == null || characters.length == 0) {
+            return JSON.stringify("");
+        }
+
         return JSON.stringify({
             characters: characters.map(x => {
                 return {

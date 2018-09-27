@@ -3,7 +3,9 @@ import { PanelType } from '../../lib/panel-builder';
 import AsciiRenderer from '../../lib/rendering/ascii-renderer';
 import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 
-const ledMatrix = new LedMatrix();
+const ledMatrix = new LedMatrix({
+  pathCharacters: "alphabett.json"
+});
 ledMatrix.init();
 
 document.getElementById("input-button").addEventListener("click", (e) => {
