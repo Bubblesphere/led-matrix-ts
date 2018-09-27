@@ -6,10 +6,6 @@ import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
 const ledMatrix = new LedMatrix();
 ledMatrix.init();
 
-setTimeout(() => {
-  ledMatrix.init(3);
-}, 3000);
-
 document.getElementById("input-button").addEventListener("click", (e) => {
   const value = (document.getElementById("input-value") as HTMLInputElement).value;
   ledMatrix.input = value;

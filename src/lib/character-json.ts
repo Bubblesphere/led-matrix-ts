@@ -1,7 +1,7 @@
 import { CharactersJSONSchema } from "./types";
 import Character from "./character";
 import BitArray, { bit } from "./bit-array";
-import CharacterSizer from "./character-sizer";
+import NearestNeighbor from "./character-sizer";
 
 export default class CharactersJSON {
     static import(path: string, size: number, success: (content: Character[]) => any) {
@@ -31,7 +31,7 @@ export default class CharactersJSON {
             const characterRaw = x.output.map(x => x as bit);
             const w = x.width;
             const h = x.output.length / x.width;
-            const character = CharacterSizer.resize(characterRaw, w, h, w * size, h * size);
+            const character = NearestNeighbor.scale(characterRaw, w, size);
             return new Character(x.patterns, new BitArray(character), w * size) 
         });
     }
