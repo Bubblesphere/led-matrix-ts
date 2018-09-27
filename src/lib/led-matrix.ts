@@ -37,6 +37,8 @@ export default class LedMatrix implements LedMatrixParameters {
     private _dictionary: CharacterDictionary;
     private _panel: Panel;
     private _panelType: PanelType;
+    private _size: number;
+
     private readonly onReady = new Event<void>();
     public event: {
         panelUpdate: IEvent<{ display: bit[][]; }>,
@@ -51,8 +53,6 @@ export default class LedMatrix implements LedMatrixParameters {
             spacing: this._params.spacing,
             padding: this._params.padding
         });
-
-        this._dictionary = new CharacterDictionary();
 
         this._panel = PanelBuilder.build(
             this._params.panelType, 
@@ -75,14 +75,26 @@ export default class LedMatrix implements LedMatrixParameters {
 
     public get Ready() { return this.onReady.expose(); }
 
-    public init(callback?: () => any) {
-        CharactersJSON.import(this._params.pathCharacters, (characters) => {
+    public init(size?: number,callback?: () => any) {
+        CharactersJSON.import(this._params.pathCharacters, size ? size:  1, (characters) => {
+            this._dictionary = new CharacterDictionary();
             this._dictionary.add(characters);
             this._board.load(this._params.input, this._dictionary);
             this._panel.play();
             this.onReady.trigger();
-            callback();
+            if (callback) {
+                callback();
+            }
         });
+    }
+
+    public get size() {
+        return this._size;
+    }
+
+    public set size(value: number) {
+        this._size = value;
+        this.init(value);
     }
 
     public get index() {

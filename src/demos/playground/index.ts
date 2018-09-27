@@ -11,6 +11,11 @@ document.getElementById("input-button").addEventListener("click", (e) => {
   ledMatrix.input = value;
 });
 
+document.getElementById("size-button").addEventListener("click", (e) => {
+  const value = (document.getElementById("size-value") as HTMLInputElement).value;
+  ledMatrix.size = Number(value);
+});
+
 document.getElementById("spacing-button").addEventListener("click", (e) => {
   const value = (document.getElementById("spacing-value") as HTMLInputElement).value;
   ledMatrix.spacing = Number(value);
