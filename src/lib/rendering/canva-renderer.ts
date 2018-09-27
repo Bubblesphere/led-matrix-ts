@@ -30,6 +30,7 @@ export default abstract class CanvaRenderer extends Renderer {
 
   render(display: PanelFrame): void {
     const ctx = this._parameters.canva.getContext("2d");
+    ctx.clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
     const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
     const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
     ctx.lineWidth = 1;
