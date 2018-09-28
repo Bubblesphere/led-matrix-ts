@@ -1,4 +1,3 @@
-import Character from "./character";
 import { bit } from "./bit-array";
 
 export interface CharactersJSONSchema {

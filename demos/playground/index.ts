@@ -1,7 +1,7 @@
-import LedMatrix from '../../lib/led-matrix';
-import { PanelType } from '../../lib/panel-builder';
-import AsciiRenderer from '../../lib/rendering/ascii-renderer';
-import { CanvaRenderers } from '../../lib/rendering/canva-renderers';
+import LedMatrix from '../../src/lib/led-matrix';
+import { PanelType } from '../../src/lib/panel-builder';
+import AsciiRenderer from '../../src/lib/rendering/ascii-renderer';
+import { CanvaRenderers } from '../../src/lib/rendering/canva-renderers';
 
 const ledMatrix = new LedMatrix({
   pathCharacters: "alphabett.json"
