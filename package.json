@@ -1,7 +1,7 @@
 {
   "name": "led-matrix-ts",
   "description": "Highly customizable led matrix for the browser",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/Bubblesphere/led-matrix-ts.git"
@@ -40,5 +40,8 @@
     "build": "tsc && webpack --config webpack.build.js --mode production",
     "test": "jest --watch --verbose false",
     "test-cov": "jest --coverage"
-  }
+  },
+  "main": "./dist/umd/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/typings/index.d.ts"
 }
