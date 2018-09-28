@@ -1,5 +1,6 @@
 node_modules/
-dist/
+dist/esm
+dist/typings
 distDemos/
 npm-debug.log
 yarn-error.log

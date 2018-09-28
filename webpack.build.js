@@ -6,8 +6,8 @@ module.exports = (env) => {
 
   return {
     entry: {
-      'index': path.resolve(__dirname, './dist/esm/index.js'),
-      'index.min': path.resolve(__dirname, './dist/esm/index.js'),
+      'led-matrix': path.resolve(__dirname, './dist/esm/index.js'),
+      'led-matrix.min': path.resolve(__dirname, './dist/esm/index.js'),
     },
     output: {
       path: path.resolve(__dirname, './dist/umd'), // builds to ./dist/umd/
