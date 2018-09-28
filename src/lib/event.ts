@@ -5,7 +5,7 @@ export interface IEvent<T> {
   off(handler: Handler<T>) : void;
 }
 
-export default class Event<T> implements IEvent<T> {
+export class Event<T> implements IEvent<T> {
   private handlers: Handler<T>[] = [];
 
   public on(handler: Handler<T>) : void {

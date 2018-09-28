@@ -1,7 +1,7 @@
-import Character from './character';
+import { Character } from './character';
 import { bit } from './bit-array';
 import { Padding, DetailedPadding } from './types';
-import CharacterDictionary from './character-dictionary';
+import { CharacterDictionary } from './character-dictionary';
 
 export interface BoardParameters {
   spacing: number
@@ -12,7 +12,7 @@ export interface BoardParameters {
  * The board creates the link between the dictionnary and the input. 
  * It's role is to create the matrix reprentation of the entire board
  */
-export default class Board {
+export class Board {
   private _characters: Array<Character>;
   private _spacing: number;
   private _padding: DetailedPadding;
