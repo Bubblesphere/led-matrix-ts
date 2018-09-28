@@ -1,6 +1,6 @@
-import LedMatrix from '../../src/lib/led-matrix';
+import { LedMatrix } from '../../src/lib/led-matrix';
 import { PanelType } from '../../src/lib/panel-builder';
-import AsciiRenderer from '../../src/lib/rendering/ascii-renderer';
+import { AsciiRenderer } from '../../src/lib/rendering/ascii-renderer';
 import { CanvaRenderers } from '../../src/lib/rendering/canva-renderers';
 
 const ledMatrix = new LedMatrix({
