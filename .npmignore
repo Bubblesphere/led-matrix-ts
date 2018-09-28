@@ -1,8 +1,11 @@
-.*
-*.js
-*.json
-*.log
-*.lock
+.gitignore
+.npmignore
+jest.config.js
+tsconfig.json
+webpack.build.js
+webpack.demo.js
+yarn-error.log
+yarn.lock
 node_modules
 src
 distDemos
