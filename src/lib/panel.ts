@@ -1,7 +1,7 @@
-import Board from './board';
-import Event from './event';
+import { Board } from './board';
+import { Event } from './event';
 import { PanelFrame } from './types';
-import Renderer from './rendering/renderer';
+import { Renderer } from './rendering/renderer';
 
 export interface PanelParameters  {
   /** The board for which the panel operates on */
@@ -23,7 +23,7 @@ export interface PanelParameters  {
  * You can see it as a viewport moving through a board. 
  * It has control over starting, stopping, pausing, resuming, seeking, ticking.
  */
-export default abstract class Panel {
+export abstract class Panel {
   protected display: PanelFrame;
   public index: number;
   private _increment: number;

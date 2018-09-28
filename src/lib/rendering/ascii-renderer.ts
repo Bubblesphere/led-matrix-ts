@@ -1,4 +1,4 @@
-import Renderer from "./renderer";
+import { Renderer } from "./renderer";
 import { PanelFrame } from "../types";
 
 type AsciiRendererParameter = {
@@ -7,7 +7,7 @@ type AsciiRendererParameter = {
   characterBitOff?: string
 }
 
-export default class AsciiRenderer extends Renderer {
+export class AsciiRenderer extends Renderer {
   private _parameters: AsciiRendererParameter;
 
   constructor(parameters: AsciiRendererParameter) {

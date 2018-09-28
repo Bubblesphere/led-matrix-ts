@@ -1,7 +1,7 @@
 import { bit } from "../bit-array";
-import Panel from "../panel";
+import { Panel } from "../panel";
 
-export default class VerticalScrollingPanel extends Panel {
+export class VerticalScrollingPanel extends Panel {
   public get indexUpperBound(): number {
     return this.board.height - 1;
   }
