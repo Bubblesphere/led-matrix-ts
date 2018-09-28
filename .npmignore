@@ -1,0 +1,9 @@
+.*
+*.js
+*.json
+*.log
+*.lock
+node_modules
+src
+distDemos
+demos

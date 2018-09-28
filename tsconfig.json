@@ -1,17 +1,16 @@
 {
     "compilerOptions": {
-        "module": "esnext",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "sourceMap": true,
-        "target": "es5"
+      /* Basic Options */
+      "target": "ES2015",  /* Build to ES2015 */
+      "module": "ES2015",  /* using ES2015 modules */
+      "lib": ["es2015", "dom"], /* Using ES2015 features and DOM APIs  */
+      "declaration": true, /* Generates corresponding'.d.ts' files. */
+      "declarationDir": "./dist/typings/", /* build '.d.ts' files to ./dist/typings */
+      "outDir": "./dist/esm/", /* build to ./dist/esm/ */
+      "sourceMap": true,
+      "removeComments": true,
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
+    "files": [
+      "./src/index.ts"
     ]
-}
+  }
