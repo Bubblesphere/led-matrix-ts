@@ -41,11 +41,13 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 <div id="root" style="font-family: monospace; white-space: pre"></div>
 ```
 
+**Check out the [basics section](https://github.com/Bubblesphere/led-matrix-ts/wiki/basics) of the wiki for more importing options**
 **ts**
 ```typescript
 const ledMatrix = new LedMatrix();
 ledMatrix.init();
 ```
+
 
 ## Documentation
 [Check out the wiki](https://github.com/Bubblesphere/led-matrix-ts/wiki)
