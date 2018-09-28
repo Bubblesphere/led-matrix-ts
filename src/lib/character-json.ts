@@ -1,9 +1,9 @@
 import { CharactersJSONSchema } from "./types";
-import Character from "./character";
-import BitArray, { bit } from "./bit-array";
-import NearestNeighbor from "./character-sizer";
+import { Character } from "./character";
+import { BitArray, bit } from "./bit-array";
+import { NearestNeighbor } from "./character-sizer";
 
-export default class CharactersJSON {
+export class CharactersJSON {
     static import(path: string, size: number, success: (content: Character[]) => any) {
         fetch(path)
         .then((response) => {

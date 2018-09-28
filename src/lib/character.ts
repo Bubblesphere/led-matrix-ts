@@ -1,9 +1,9 @@
-import BitArray, { bit } from "./bit-array";
+import { BitArray, bit } from "./bit-array";
 
 /**
  * The character holds information about the visual representation of a character
  */
-export default class Character {
+export class Character {
   private _patterns: Array<string>;
   private _output: BitArray;
   private _width: number;

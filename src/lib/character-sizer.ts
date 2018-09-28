@@ -1,6 +1,6 @@
 import { bit } from "./bit-array";
 
-export default class NearestNeighbor {
+export class NearestNeighbor {
     static scale(matrix: bit[], width: number, factor: number) {
         const ratio = 1 / factor;
         const h1 = matrix.length / width;

@@ -1,4 +1,4 @@
-import CanvaRenderer, { CanvaRendererParameter } from "./canva-renderer";
+import { CanvaRenderer, CanvaRendererParameter } from "./canva-renderer";
 
 export namespace CanvaRenderers {
   export class Ellipse extends CanvaRenderer {

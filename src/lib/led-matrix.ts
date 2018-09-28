@@ -1,13 +1,13 @@
-import Board from "./board";
-import Panel from "./panel";
-import PanelBuilder, { PanelType } from "./panel-builder";
-import AsciiRenderer from "./rendering/ascii-renderer";
+import { Board } from "./board";
+import { Panel } from "./panel";
+import { PanelBuilder, PanelType } from "./panel-builder";
+import { AsciiRenderer } from "./rendering/ascii-renderer";
 import { Padding } from "./types";
-import Renderer from "./rendering/renderer";
-import Event, { IEvent } from "./event";
+import { Renderer } from "./rendering/renderer";
+import { Event, IEvent } from "./event";
 import { bit } from "./bit-array";
-import CharacterDictionary from "./character-dictionary";
-import CharactersJSON from "./character-json";
+import { CharacterDictionary } from "./character-dictionary";
+import { CharactersJSON } from "./character-json";
 
 interface ExposedBoardParameters {
     spacing?: number
@@ -31,7 +31,7 @@ interface ExposedPanelParameters {
 
 export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParameters & ExposedPanelParameters;
 
-export default class LedMatrix implements LedMatrixParameters {
+export class LedMatrix implements LedMatrixParameters {
     private _params: LedMatrixParameters;
     private _board: Board;
     private _dictionary: CharacterDictionary;

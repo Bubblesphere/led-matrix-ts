@@ -4,7 +4,7 @@ export * from './lib/character';
 export * from './lib/character-dictionary';
 export * from './lib/character-json';
 export * from './lib/character-sizer';
-export * from './lib/event';
+export * from './lib/event'; 
 export * from './lib/led-matrix';
 export * from './lib/panel';
 export * from './lib/panel-builder';

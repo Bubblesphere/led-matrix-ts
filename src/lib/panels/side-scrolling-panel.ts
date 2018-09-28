@@ -1,7 +1,7 @@
 import { bit } from "../bit-array";
 import Panel from "../panel";
 
-export default class SideScrollingPanel extends Panel {
+export class SideScrollingPanel extends Panel {
   public get indexUpperBound(): number {
     return this.board.width - 1;
   }

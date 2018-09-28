@@ -1,5 +1,5 @@
 import { PanelFrame } from "../../lib/types";
-import Renderer from "./renderer";
+import { Renderer } from "./renderer";
 
 export type CanvaRendererParameter = {
   canva: HTMLCanvasElement,
@@ -9,7 +9,7 @@ export type CanvaRendererParameter = {
   colorStrokeOff?: string
 }
 
-export default abstract class CanvaRenderer extends Renderer {
+export abstract class CanvaRenderer extends Renderer {
   protected _parameters: CanvaRendererParameter;
 
   constructor(parameters: CanvaRendererParameter) {
