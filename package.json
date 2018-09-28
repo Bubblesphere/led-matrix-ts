@@ -27,18 +27,17 @@
     "jest": "^23.6.0",
     "ts-jest": "^23.10.0",
     "ts-loader": "^4.1.0",
-    "typedoc": "^0.11.1",
-    "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^3.0.3",
-    "webpack": "^4.1.1",
-    "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.0.12",
+    "webpack": "4.1.1",
+    "webpack-cli": "2.0.11",
     "webpack-dev-server": "^3.1.1",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.4"
   },
   "scripts": {
-    "start": "webpack-dev-server --open-page dist/basics.html --config webpack.dev.js --mode development ",
-    "build": "webpack --config webpack.prod.js --mode production",
+    "start": "webpack-dev-server --open-page distDemos/basics.html --config webpack.demo.js --mode development ",
+    "build": "tsc && webpack --config webpack.build.js --mode production",
     "test": "jest --watch --verbose false",
     "test-cov": "jest --coverage"
   }
