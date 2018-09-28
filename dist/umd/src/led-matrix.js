@@ -635,6 +635,9 @@ class panel_Panel {
 // CONCATENATED MODULE: ./dist/esm/lib/panels/side-scrolling-panel.js
 
 class side_scrolling_panel_SideScrollingPanel extends panel_Panel {
+    constructor(params) {
+        super(params);
+    }
     get indexUpperBound() {
         return this.board.width - 1;
     }
@@ -652,6 +655,9 @@ class side_scrolling_panel_SideScrollingPanel extends panel_Panel {
 // CONCATENATED MODULE: ./dist/esm/lib/panels/vertical-scrolling-panel.js
 
 class vertical_scrolling_panel_VerticalScrollingPanel extends panel_Panel {
+    constructor(params) {
+        super(params);
+    }
     get indexUpperBound() {
         return this.board.height - 1;
     }
@@ -963,8 +969,23 @@ var canva_renderers_CanvaRenderers;
 })(canva_renderers_CanvaRenderers || (canva_renderers_CanvaRenderers = {}));
 //# sourceMappingURL=canva-renderers.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return Board; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Character", function() { return Character; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharacterDictionary", function() { return CharacterDictionary; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharactersJSON", function() { return character_json_CharactersJSON; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NearestNeighbor", function() { return NearestNeighbor; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelType", function() { return panel_builder_PanelType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelBuilder", function() { return panel_builder_PanelBuilder; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideScrollingPanel", function() { return side_scrolling_panel_SideScrollingPanel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VerticalScrollingPanel", function() { return vertical_scrolling_panel_VerticalScrollingPanel; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AsciiRenderer", function() { return ascii_renderer_AsciiRenderer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderer", function() { return canva_renderer_CanvaRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderers", function() { return canva_renderers_CanvaRenderers; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
 
 
 
