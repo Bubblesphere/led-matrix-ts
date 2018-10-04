@@ -53,7 +53,7 @@ export class LedMatrix implements LedMatrixParameters {
             spacing: this._params.spacing,
             padding: this._params.padding
         });
-
+        this._panelType = this._params.panelType;
         this._panel = PanelBuilder.build(
             this._params.panelType, 
             { 
