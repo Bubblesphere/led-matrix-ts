@@ -1,7 +1,7 @@
 {
   "name": "led-matrix-ts",
   "description": "Highly customizable led matrix for the browser",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/Bubblesphere/led-matrix-ts.git"
