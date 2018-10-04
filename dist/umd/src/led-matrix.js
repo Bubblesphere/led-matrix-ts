@@ -733,6 +733,7 @@ class led_matrix_LedMatrix {
             spacing: this._params.spacing,
             padding: this._params.padding
         });
+        this._panelType = this._params.panelType;
         this._panel = panel_builder_PanelBuilder.build(this._params.panelType, {
             board: this._board,
             renderer: this._params.renderer,
