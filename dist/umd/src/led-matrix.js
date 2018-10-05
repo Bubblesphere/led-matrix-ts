@@ -694,13 +694,98 @@ class panel_builder_PanelBuilder {
 }
 //# sourceMappingURL=panel-builder.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/rendering/renderer.js
-class Renderer {}
+class Renderer {
+    constructor(parameters) {
+        if (parameters.element == null) {
+            throw `Could not find the element to render led matrix`;
+        } else {
+            this._parameters = {
+                element: parameters.element
+            };
+        }
+    }
+}
 //# sourceMappingURL=renderer.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderer.js
+
+class canva_renderer_CanvaRenderer extends Renderer {
+    constructor(parameters) {
+        super(parameters);
+        this._parameters = {
+            element: parameters.element,
+            colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
+            colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
+            colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
+            colorStrokeOff: parameters.colorStrokeOff ? parameters.colorStrokeOff : "#67809F"
+        };
+    }
+    get parameters() {
+        return this._parameters;
+    }
+    get element() {
+        return this._parameters.element;
+    }
+    render(display) {
+        const ctx = this.element.getContext("2d");
+        ctx.clearRect(0, 0, this.element.width, this.element.height);
+        const widthEachBit = Math.floor(this.element.width / display[0].length);
+        const heightEachBit = Math.floor(this.element.height / display.length);
+        ctx.lineWidth = 1;
+        const renderBitsOfValue = (value, fillColor, strokeColor) => {
+            ctx.strokeStyle = strokeColor;
+            ctx.fillStyle = fillColor;
+            ctx.beginPath();
+            for (var i = 0; i < display.length; i++) {
+                for (var j = 0; j < display[i].length; j++) {
+                    if (display[i][j] == value) {
+                        this.moveToNextBit(ctx, i, j, widthEachBit, heightEachBit);
+                        this.drawBit(ctx, i, j, widthEachBit, heightEachBit);
+                    }
+                }
+            }
+            ctx.fill();
+            ctx.stroke();
+        };
+        renderBitsOfValue(0, this._parameters.colorBitOff, this._parameters.colorStrokeOff);
+        renderBitsOfValue(1, this._parameters.colorBitOn, this._parameters.colorStrokeOn);
+    }
+}
+//# sourceMappingURL=canva-renderer.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderers.js
+
+var canva_renderers_CanvaRenderers;
+(function (CanvaRenderers) {
+    class Ellipse extends canva_renderer_CanvaRenderer {
+        constructor(parameters) {
+            super(parameters);
+        }
+        moveToNextBit(ctx, i, j, w, h) {
+            ctx.moveTo(w * (j + 1), h * (i + 1) - h / 2);
+        }
+        drawBit(ctx, i, j, w, h) {
+            const radW = w / 2;
+            const radH = h / 2;
+            ctx.ellipse(w * j + radW, h * i + radH, radW, radH, 0, 0, 2 * Math.PI);
+        }
+    }
+    CanvaRenderers.Ellipse = Ellipse;
+    class Rect extends canva_renderer_CanvaRenderer {
+        constructor(parameters) {
+            super(parameters);
+        }
+        drawBit(context, i, j, w, h) {
+            return context.rect(w * j, h * i, w, h);
+        }
+        moveToNextBit(ctx, i, j, w, h) {}
+    }
+    CanvaRenderers.Rect = Rect;
+})(canva_renderers_CanvaRenderers || (canva_renderers_CanvaRenderers = {}));
+//# sourceMappingURL=canva-renderers.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/rendering/ascii-renderer.js
 
 class ascii_renderer_AsciiRenderer extends Renderer {
     constructor(parameters) {
-        super();
+        super(parameters);
         this._parameters = {
             element: parameters.element,
             characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
@@ -722,6 +807,34 @@ class ascii_renderer_AsciiRenderer extends Renderer {
     }
 }
 //# sourceMappingURL=ascii-renderer.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/renderer-builder.js
+
+
+var renderer_builder_RendererType;
+(function (RendererType) {
+    RendererType[RendererType["ASCII"] = 0] = "ASCII";
+    RendererType[RendererType["CanvasSquare"] = 1] = "CanvasSquare";
+    RendererType[RendererType["CanvasCircle"] = 2] = "CanvasCircle";
+})(renderer_builder_RendererType || (renderer_builder_RendererType = {}));
+class renderer_builder_RendererBuilder {
+    static build(rendererType, element) {
+        switch (rendererType) {
+            case renderer_builder_RendererType.ASCII:
+                return new ascii_renderer_AsciiRenderer({
+                    element: element
+                });
+            case renderer_builder_RendererType.CanvasSquare:
+                return new canva_renderers_CanvaRenderers.Rect({
+                    element: element
+                });
+            case renderer_builder_RendererType.CanvasCircle:
+                return new canva_renderers_CanvaRenderers.Ellipse({
+                    element: element
+                });
+        }
+    }
+}
+//# sourceMappingURL=renderer-builder.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/led-matrix.js
 
 
@@ -840,6 +953,9 @@ class led_matrix_LedMatrix {
     set renderer(value) {
         this._panel.renderer = value;
     }
+    setRendererFromBuilder(value) {
+        this._panel.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.element);
+    }
     get renderer() {
         return this._panel.renderer;
     }
@@ -874,11 +990,8 @@ class led_matrix_LedMatrix {
             fps: 30,
             increment: 1,
             panelType: panel_builder_PanelType.SideScrollingPanel,
-            renderer: new ascii_renderer_AsciiRenderer({
-                element: document.getElementById("led-matrix"),
-                characterBitOn: 'X',
-                characterBitOff: ' '
-            }),
+            rendererType: renderer_builder_RendererType.ASCII,
+            element: document.getElementById('led-matrix'),
             reverse: false,
             panelWidth: 80,
             spacing: 2,
@@ -892,9 +1005,16 @@ class led_matrix_LedMatrix {
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
             params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
-            params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
+            ;
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
             params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
+            if (params.renderer != null) {
+                params.renderer = params.renderer;
+            } else {
+                params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType);
+                params.element = this._valueOrDefault(params.element, defaultParams.element);
+                params.renderer = renderer_builder_RendererBuilder.build(params.rendererType, params.element);
+            }
             return params;
         }
         return defaultParams;
@@ -904,78 +1024,6 @@ class led_matrix_LedMatrix {
     }
 }
 //# sourceMappingURL=led-matrix.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderer.js
-
-class canva_renderer_CanvaRenderer extends Renderer {
-    constructor(parameters) {
-        super();
-        this._parameters = {
-            canva: parameters.canva,
-            colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
-            colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
-            colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
-            colorStrokeOff: parameters.colorStrokeOff ? parameters.colorStrokeOff : "#67809F"
-        };
-    }
-    get parameters() {
-        return this._parameters;
-    }
-    render(display) {
-        const ctx = this._parameters.canva.getContext("2d");
-        ctx.clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
-        const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
-        const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
-        ctx.lineWidth = 1;
-        const renderBitsOfValue = (value, fillColor, strokeColor) => {
-            ctx.strokeStyle = strokeColor;
-            ctx.fillStyle = fillColor;
-            ctx.beginPath();
-            for (var i = 0; i < display.length; i++) {
-                for (var j = 0; j < display[i].length; j++) {
-                    if (display[i][j] == value) {
-                        this.moveToNextBit(ctx, i, j, widthEachBit, heightEachBit);
-                        this.drawBit(ctx, i, j, widthEachBit, heightEachBit);
-                    }
-                }
-            }
-            ctx.fill();
-            ctx.stroke();
-        };
-        renderBitsOfValue(0, this._parameters.colorBitOff, this._parameters.colorStrokeOff);
-        renderBitsOfValue(1, this._parameters.colorBitOn, this._parameters.colorStrokeOn);
-    }
-}
-//# sourceMappingURL=canva-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderers.js
-
-var canva_renderers_CanvaRenderers;
-(function (CanvaRenderers) {
-    class Ellipse extends canva_renderer_CanvaRenderer {
-        constructor(parameters) {
-            super(parameters);
-        }
-        moveToNextBit(ctx, i, j, w, h) {
-            ctx.moveTo(w * (j + 1), h * (i + 1) - h / 2);
-        }
-        drawBit(ctx, i, j, w, h) {
-            const radW = w / 2;
-            const radH = h / 2;
-            ctx.ellipse(w * j + radW, h * i + radH, radW, radH, 0, 0, 2 * Math.PI);
-        }
-    }
-    CanvaRenderers.Ellipse = Ellipse;
-    class Rect extends canva_renderer_CanvaRenderer {
-        constructor(parameters) {
-            super(parameters);
-        }
-        drawBit(context, i, j, w, h) {
-            return context.rect(w * j, h * i, w, h);
-        }
-        moveToNextBit(ctx, i, j, w, h) {}
-    }
-    CanvaRenderers.Rect = Rect;
-})(canva_renderers_CanvaRenderers || (canva_renderers_CanvaRenderers = {}));
-//# sourceMappingURL=canva-renderers.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return Board; });
