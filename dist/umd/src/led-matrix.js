@@ -171,6 +171,9 @@ class Board {
     get spacing() {
         return this._spacing;
     }
+    get input() {
+        return this._input;
+    }
     set padding(value) {
         value.forEach(x => {
             if (x == null) {
@@ -248,6 +251,7 @@ class Board {
             }
             this._characters.push(dictionnary.find(characterBuffer));
         }
+        this._input = input;
     }
     _horizontalPaddingWidth() {
         return this._padding[1] + this._padding[3];
@@ -755,7 +759,7 @@ class led_matrix_LedMatrix {
         character_json_CharactersJSON.import(this._params.pathCharacters, size ? size : 1, characters => {
             this._dictionary = new CharacterDictionary();
             this._dictionary.add(characters);
-            this._board.load(this._params.input, this._dictionary);
+            this._board.load(this._board.input != null ? this._board.input : this._params.input, this._dictionary);
             this._panel.play();
             this.onReady.trigger();
             if (callback) {
@@ -795,6 +799,9 @@ class led_matrix_LedMatrix {
     }
     set input(value) {
         this._board.load(value, this._dictionary);
+    }
+    get input() {
+        return this._board.input;
     }
     play() {
         this._panel.play();
