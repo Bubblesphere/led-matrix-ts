@@ -1036,12 +1036,15 @@ class led_matrix_LedMatrix {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelType", function() { return panel_builder_PanelType; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelBuilder", function() { return panel_builder_PanelBuilder; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererType", function() { return renderer_builder_RendererType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideScrollingPanel", function() { return side_scrolling_panel_SideScrollingPanel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VerticalScrollingPanel", function() { return vertical_scrolling_panel_VerticalScrollingPanel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AsciiRenderer", function() { return ascii_renderer_AsciiRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderer", function() { return canva_renderer_CanvaRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderers", function() { return canva_renderers_CanvaRenderers; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
+
 
 
 
