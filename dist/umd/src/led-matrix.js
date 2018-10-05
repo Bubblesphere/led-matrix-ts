@@ -893,6 +893,9 @@ class led_matrix_LedMatrix {
     get index() {
         return this._panel.index;
     }
+    get indexUpperBound() {
+        return this._panel.indexUpperBound;
+    }
     set spacing(value) {
         this._board.spacing = value;
         this._panel.board = this._board;
