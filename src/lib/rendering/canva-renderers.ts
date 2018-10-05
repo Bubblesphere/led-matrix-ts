@@ -1,7 +1,8 @@
 import { CanvaRenderer, CanvaRendererParameter } from "./canva-renderer";
+import { Renderer } from './renderer';
 
 export namespace CanvaRenderers {
-  export class Ellipse extends CanvaRenderer {
+  export class Ellipse extends CanvaRenderer implements Renderer  {
     constructor(parameters: CanvaRendererParameter) {
       super(parameters)
     }
@@ -18,16 +19,18 @@ export namespace CanvaRenderers {
     }
   }
 
-  export class Rect extends CanvaRenderer {
+  export class Rect extends CanvaRenderer implements Renderer {
     constructor(parameters: CanvaRendererParameter) {
-      super(parameters)
+      super(parameters);
     }
-    
+
     drawBit(context: CanvasRenderingContext2D, i: any, j: any, w: any, h: any): void {
       return context.rect(w * j, h * i, w, h);
     }
 
     moveToNextBit(ctx: CanvasRenderingContext2D, i: any, j: any, w: any, h: any): void {
     }
+
+
   }
 }

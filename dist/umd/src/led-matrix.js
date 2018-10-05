@@ -171,6 +171,9 @@ class Board {
     get spacing() {
         return this._spacing;
     }
+    get input() {
+        return this._input;
+    }
     set padding(value) {
         value.forEach(x => {
             if (x == null) {
@@ -248,6 +251,7 @@ class Board {
             }
             this._characters.push(dictionnary.find(characterBuffer));
         }
+        this._input = input;
     }
     _horizontalPaddingWidth() {
         return this._padding[1] + this._padding[3];
@@ -690,220 +694,25 @@ class panel_builder_PanelBuilder {
 }
 //# sourceMappingURL=panel-builder.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/rendering/renderer.js
-class Renderer {}
-//# sourceMappingURL=renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/ascii-renderer.js
-
-class ascii_renderer_AsciiRenderer extends Renderer {
+class Renderer {
     constructor(parameters) {
-        super();
-        this._parameters = {
-            element: parameters.element,
-            characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
-            characterBitOff: parameters.characterBitOff ? parameters.characterBitOff : " "
-        };
-    }
-    get parameters() {
-        return this._parameters;
-    }
-    render(display) {
-        let output = "";
-        for (var i = 0; i < display.length; i++) {
-            for (var j = 0; j < display[i].length; j++) {
-                output += display[i][j] == 1 ? this._parameters.characterBitOn : this._parameters.characterBitOff;
-            }
-            output += '\n';
+        if (parameters.element == null) {
+            throw `Could not find the element to render led matrix`;
+        } else {
+            this._parameters = {
+                element: parameters.element
+            };
         }
-        this._parameters.element.innerHTML = output;
     }
 }
-//# sourceMappingURL=ascii-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/led-matrix.js
-
-
-
-
-
-
-class led_matrix_LedMatrix {
-    constructor(params) {
-        this.onReady = new Event();
-        this._params = this._validateParameters(params);
-        this._board = new Board({
-            spacing: this._params.spacing,
-            padding: this._params.padding
-        });
-        this._panelType = this._params.panelType;
-        this._panel = panel_builder_PanelBuilder.build(this._params.panelType, {
-            board: this._board,
-            renderer: this._params.renderer,
-            fps: this._params.fps,
-            increment: this._params.increment,
-            reverse: this._params.reverse,
-            width: this._params.panelWidth
-        });
-        this.event = {
-            panelUpdate: this._panel.PanelUpdate,
-            reachingBoundary: this._panel.ReachingBoundary,
-            ready: this.Ready
-        };
-    }
-    get Ready() {
-        return this.onReady.expose();
-    }
-    init(size, callback) {
-        character_json_CharactersJSON.import(this._params.pathCharacters, size ? size : 1, characters => {
-            this._dictionary = new CharacterDictionary();
-            this._dictionary.add(characters);
-            this._board.load(this._params.input, this._dictionary);
-            this._panel.play();
-            this.onReady.trigger();
-            if (callback) {
-                callback();
-            }
-        });
-    }
-    get size() {
-        return this._size;
-    }
-    set size(value) {
-        this._size = value;
-        this.init(value);
-    }
-    get index() {
-        return this._panel.index;
-    }
-    set spacing(value) {
-        this._board.spacing = value;
-        this._panel.board = this._board;
-    }
-    get spacing() {
-        return this._board.spacing;
-    }
-    set padding(value) {
-        this._board.padding = value;
-        this._panel.board = this._board;
-    }
-    get padding() {
-        return this._board.padding;
-    }
-    get width() {
-        return this._board.width;
-    }
-    get height() {
-        return this._board.height;
-    }
-    set input(value) {
-        this._board.load(value, this._dictionary);
-    }
-    play() {
-        this._panel.play();
-    }
-    stop() {
-        this._panel.stop();
-    }
-    pause() {
-        this._panel.pause();
-    }
-    resume() {
-        this._panel.resume();
-    }
-    tick() {
-        this._panel.tick();
-    }
-    seek(frame) {
-        this._panel.seek(frame);
-    }
-    set panelType(value) {
-        this._panelType = value;
-        this._panel.stop();
-        this._panel = panel_builder_PanelBuilder.build(this._panelType, {
-            board: this._board,
-            renderer: this._panel.renderer,
-            fps: this._panel.fps,
-            increment: this._panel.increment,
-            reverse: this._panel.reverse,
-            width: this._panel.width
-        });
-        this._panel.play();
-    }
-    get panelType() {
-        return this._panelType;
-    }
-    set renderer(value) {
-        this._panel.renderer = value;
-    }
-    get renderer() {
-        return this._panel.renderer;
-    }
-    set fps(value) {
-        this._panel.fps = value;
-    }
-    get fps() {
-        return this._panel.fps;
-    }
-    set increment(value) {
-        this._panel.increment = value;
-    }
-    get increment() {
-        return this._panel.increment;
-    }
-    set reverse(value) {
-        this._panel.reverse = value;
-    }
-    get reverse() {
-        return this._panel.reverse;
-    }
-    set viewportWidth(value) {
-        this._panel.width = value;
-    }
-    get viewportWidth() {
-        return this._panel.width;
-    }
-    _validateParameters(params) {
-        const defaultParams = {
-            input: "Hello World",
-            pathCharacters: "alphabet.json",
-            fps: 30,
-            increment: 1,
-            panelType: panel_builder_PanelType.SideScrollingPanel,
-            renderer: new ascii_renderer_AsciiRenderer({
-                element: document.getElementById("led-matrix"),
-                characterBitOn: 'X',
-                characterBitOff: ' '
-            }),
-            reverse: false,
-            panelWidth: 80,
-            spacing: 2,
-            padding: [0, 4]
-        };
-        if (params) {
-            params.input = this._valueOrDefault(params.input, defaultParams.input);
-            params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
-            params.spacing = this._valueOrDefault(params.spacing, defaultParams.spacing);
-            params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
-            params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
-            params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
-            params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
-            params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
-            params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
-            params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
-            return params;
-        }
-        return defaultParams;
-    }
-    _valueOrDefault(value, defaultValue) {
-        return value ? value : defaultValue;
-    }
-}
-//# sourceMappingURL=led-matrix.js.map
+//# sourceMappingURL=renderer.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderer.js
 
 class canva_renderer_CanvaRenderer extends Renderer {
     constructor(parameters) {
-        super();
+        super(parameters);
         this._parameters = {
-            canva: parameters.canva,
+            element: parameters.element,
             colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
             colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
             colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
@@ -913,11 +722,14 @@ class canva_renderer_CanvaRenderer extends Renderer {
     get parameters() {
         return this._parameters;
     }
+    get element() {
+        return this._parameters.element;
+    }
     render(display) {
-        const ctx = this._parameters.canva.getContext("2d");
-        ctx.clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
-        const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
-        const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
+        const ctx = this.element.getContext("2d");
+        ctx.clearRect(0, 0, this.element.width, this.element.height);
+        const widthEachBit = Math.floor(this.element.width / display[0].length);
+        const heightEachBit = Math.floor(this.element.height / display.length);
         ctx.lineWidth = 1;
         const renderBitsOfValue = (value, fillColor, strokeColor) => {
             ctx.strokeStyle = strokeColor;
@@ -969,6 +781,249 @@ var canva_renderers_CanvaRenderers;
     CanvaRenderers.Rect = Rect;
 })(canva_renderers_CanvaRenderers || (canva_renderers_CanvaRenderers = {}));
 //# sourceMappingURL=canva-renderers.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/rendering/ascii-renderer.js
+
+class ascii_renderer_AsciiRenderer extends Renderer {
+    constructor(parameters) {
+        super(parameters);
+        this._parameters = {
+            element: parameters.element,
+            characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
+            characterBitOff: parameters.characterBitOff ? parameters.characterBitOff : " "
+        };
+    }
+    get parameters() {
+        return this._parameters;
+    }
+    render(display) {
+        let output = "";
+        for (var i = 0; i < display.length; i++) {
+            for (var j = 0; j < display[i].length; j++) {
+                output += display[i][j] == 1 ? this._parameters.characterBitOn : this._parameters.characterBitOff;
+            }
+            output += '\n';
+        }
+        this._parameters.element.innerHTML = output;
+    }
+}
+//# sourceMappingURL=ascii-renderer.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/renderer-builder.js
+
+
+var renderer_builder_RendererType;
+(function (RendererType) {
+    RendererType[RendererType["ASCII"] = 0] = "ASCII";
+    RendererType[RendererType["CanvasSquare"] = 1] = "CanvasSquare";
+    RendererType[RendererType["CanvasCircle"] = 2] = "CanvasCircle";
+})(renderer_builder_RendererType || (renderer_builder_RendererType = {}));
+class renderer_builder_RendererBuilder {
+    static build(rendererType, element) {
+        switch (rendererType) {
+            case renderer_builder_RendererType.ASCII:
+                return new ascii_renderer_AsciiRenderer({
+                    element: element
+                });
+            case renderer_builder_RendererType.CanvasSquare:
+                return new canva_renderers_CanvaRenderers.Rect({
+                    element: element
+                });
+            case renderer_builder_RendererType.CanvasCircle:
+                return new canva_renderers_CanvaRenderers.Ellipse({
+                    element: element
+                });
+        }
+    }
+}
+//# sourceMappingURL=renderer-builder.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/led-matrix.js
+
+
+
+
+
+
+class led_matrix_LedMatrix {
+    constructor(params) {
+        this.onReady = new Event();
+        this._params = this._validateParameters(params);
+        this._board = new Board({
+            spacing: this._params.spacing,
+            padding: this._params.padding
+        });
+        this._panelType = this._params.panelType;
+        this._panel = panel_builder_PanelBuilder.build(this._params.panelType, {
+            board: this._board,
+            renderer: this._params.renderer,
+            fps: this._params.fps,
+            increment: this._params.increment,
+            reverse: this._params.reverse,
+            width: this._params.panelWidth
+        });
+        this.event = {
+            panelUpdate: this._panel.PanelUpdate,
+            reachingBoundary: this._panel.ReachingBoundary,
+            ready: this.Ready
+        };
+    }
+    get Ready() {
+        return this.onReady.expose();
+    }
+    init(size, callback) {
+        character_json_CharactersJSON.import(this._params.pathCharacters, size ? size : 1, characters => {
+            this._dictionary = new CharacterDictionary();
+            this._dictionary.add(characters);
+            this._board.load(this._board.input != null ? this._board.input : this._params.input, this._dictionary);
+            this._panel.play();
+            this.onReady.trigger();
+            if (callback) {
+                callback();
+            }
+        });
+    }
+    get size() {
+        return this._size;
+    }
+    set size(value) {
+        this._size = value;
+        this.init(value);
+    }
+    get index() {
+        return this._panel.index;
+    }
+    set spacing(value) {
+        this._board.spacing = value;
+        this._panel.board = this._board;
+    }
+    get spacing() {
+        return this._board.spacing;
+    }
+    set padding(value) {
+        this._board.padding = value;
+        this._panel.board = this._board;
+    }
+    get padding() {
+        return this._board.padding;
+    }
+    get width() {
+        return this._board.width;
+    }
+    get height() {
+        return this._board.height;
+    }
+    set input(value) {
+        this._board.load(value, this._dictionary);
+    }
+    get input() {
+        return this._board.input;
+    }
+    play() {
+        this._panel.play();
+    }
+    stop() {
+        this._panel.stop();
+    }
+    pause() {
+        this._panel.pause();
+    }
+    resume() {
+        this._panel.resume();
+    }
+    tick() {
+        this._panel.tick();
+    }
+    seek(frame) {
+        this._panel.seek(frame);
+    }
+    set panelType(value) {
+        this._panelType = value;
+        this._panel.stop();
+        this._panel = panel_builder_PanelBuilder.build(this._panelType, {
+            board: this._board,
+            renderer: this._panel.renderer,
+            fps: this._panel.fps,
+            increment: this._panel.increment,
+            reverse: this._panel.reverse,
+            width: this._panel.width
+        });
+        this._panel.play();
+    }
+    get panelType() {
+        return this._panelType;
+    }
+    set renderer(value) {
+        this._panel.renderer = value;
+    }
+    setRendererFromBuilder(value) {
+        this._panel.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.element);
+    }
+    get renderer() {
+        return this._panel.renderer;
+    }
+    set fps(value) {
+        this._panel.fps = value;
+    }
+    get fps() {
+        return this._panel.fps;
+    }
+    set increment(value) {
+        this._panel.increment = value;
+    }
+    get increment() {
+        return this._panel.increment;
+    }
+    set reverse(value) {
+        this._panel.reverse = value;
+    }
+    get reverse() {
+        return this._panel.reverse;
+    }
+    set viewportWidth(value) {
+        this._panel.width = value;
+    }
+    get viewportWidth() {
+        return this._panel.width;
+    }
+    _validateParameters(params) {
+        const defaultParams = {
+            input: "Hello World",
+            pathCharacters: "alphabet.json",
+            fps: 30,
+            increment: 1,
+            panelType: panel_builder_PanelType.SideScrollingPanel,
+            rendererType: renderer_builder_RendererType.ASCII,
+            element: document.getElementById('led-matrix'),
+            reverse: false,
+            panelWidth: 80,
+            spacing: 2,
+            padding: [0, 4]
+        };
+        if (params) {
+            params.input = this._valueOrDefault(params.input, defaultParams.input);
+            params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
+            params.spacing = this._valueOrDefault(params.spacing, defaultParams.spacing);
+            params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
+            params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
+            params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
+            params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
+            ;
+            params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
+            params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
+            if (params.renderer != null) {
+                params.renderer = params.renderer;
+            } else {
+                params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType);
+                params.element = this._valueOrDefault(params.element, defaultParams.element);
+                params.renderer = renderer_builder_RendererBuilder.build(params.rendererType, params.element);
+            }
+            return params;
+        }
+        return defaultParams;
+    }
+    _valueOrDefault(value, defaultValue) {
+        return value ? value : defaultValue;
+    }
+}
+//# sourceMappingURL=led-matrix.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return Board; });

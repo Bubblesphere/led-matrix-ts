@@ -1,6 +1,7 @@
 import { Board } from "./board";
 import { Panel } from "./panel";
 import { PanelBuilder, PanelType } from "./panel-builder";
+import { RendererBuilder, RendererType } from "./renderer-builder";
 import { AsciiRenderer } from "./rendering/ascii-renderer";
 import { Padding } from "./types";
 import { Renderer } from "./rendering/renderer";
@@ -29,7 +30,18 @@ interface ExposedPanelParameters {
     reverse?: boolean
 }
 
-export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParameters & ExposedPanelParameters;
+interface RendererBuilderParameters {
+    rendererType?: RendererType,
+    element?: HTMLElement
+}
+
+interface SetRendererBuilderParameters {
+    rendererType: RendererType,
+    element: HTMLElement
+}
+
+export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParameters & ExposedPanelParameters & RendererBuilderParameters;
+
 
 export class LedMatrix implements LedMatrixParameters {
     private _params: LedMatrixParameters;
@@ -187,6 +199,10 @@ export class LedMatrix implements LedMatrixParameters {
         this._panel.renderer = value;
     }
 
+    public setRendererFromBuilder(value: SetRendererBuilderParameters) {
+        this._panel.renderer = RendererBuilder.build(value.rendererType, value.element);
+    }
+
     public get renderer() {
         return this._panel.renderer;
     }
@@ -231,11 +247,8 @@ export class LedMatrix implements LedMatrixParameters {
             fps: 30,
             increment: 1,
             panelType: PanelType.SideScrollingPanel,
-            renderer: new AsciiRenderer({
-                element: document.getElementById("led-matrix"),
-                characterBitOn: 'X',
-                characterBitOff: ' '
-            }),
+            rendererType: RendererType.ASCII,
+            element: document.getElementById('led-matrix'),
             reverse: false,
             panelWidth: 80,
             spacing: 2,
@@ -249,10 +262,18 @@ export class LedMatrix implements LedMatrixParameters {
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
-            params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
-            params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
+            params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);;
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
             params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
+
+            if (params.renderer != null) {
+                params.renderer = params.renderer;
+            } else {
+                params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType)
+                params.element = this._valueOrDefault(params.element, defaultParams.element);
+                params.renderer = RendererBuilder.build(params.rendererType, params.element);
+            }
+            
 
             return params;
         }
