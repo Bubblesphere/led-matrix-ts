@@ -16,6 +16,7 @@ export class Board {
   private _characters: Array<Character>;
   private _spacing: number;
   private _padding: DetailedPadding;
+  private _input: string;
 
   /**
    * Creates a board
@@ -47,6 +48,13 @@ export class Board {
    */
   public get spacing() {
     return this._spacing;
+  }
+
+  /**
+   * Returns the input of the board
+   */
+  public get input() {
+    return this._input;
   }
 
   /**
@@ -165,7 +173,7 @@ export class Board {
    * @param input The input to load on the board
    * @param dictionnary The dictionnary for which the input is tested against
    */
-  public load(input: String, dictionnary: CharacterDictionary): void {
+  public load(input: string, dictionnary: CharacterDictionary): void {
     const escapeCharacter = '~';
     this._characters = [];
     
@@ -193,6 +201,7 @@ export class Board {
 
       this._characters.push(dictionnary.find(characterBuffer));
     }
+    this._input = input;
   }
 
   private _horizontalPaddingWidth(): number {
