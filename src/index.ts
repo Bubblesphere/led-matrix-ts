@@ -8,6 +8,7 @@ export * from './lib/event';
 export * from './lib/led-matrix';
 export * from './lib/panel';
 export * from './lib/panel-builder';
+export * from './lib/renderer-builder';
 export * from './lib/panels/side-scrolling-panel';
 export * from './lib/panels/vertical-scrolling-panel';
 export * from './lib/rendering/ascii-renderer';
