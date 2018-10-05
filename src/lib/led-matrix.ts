@@ -79,7 +79,7 @@ export class LedMatrix implements LedMatrixParameters {
         CharactersJSON.import(this._params.pathCharacters, size ? size:  1, (characters) => {
             this._dictionary = new CharacterDictionary();
             this._dictionary.add(characters);
-            this._board.load(this._params.input, this._dictionary);
+            this._board.load(this._board.input != null ? this._board.input : this._params.input, this._dictionary);
             this._panel.play();
             this.onReady.trigger();
             if (callback) {
@@ -132,6 +132,10 @@ export class LedMatrix implements LedMatrixParameters {
 
     public set input(value: string) {
         this._board.load(value, this._dictionary);
+    }
+
+    public get input() {
+        return this._board.input;
     }
 
     // Panel
