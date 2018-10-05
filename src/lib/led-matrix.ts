@@ -113,6 +113,10 @@ export class LedMatrix implements LedMatrixParameters {
         return this._panel.index;
     }
 
+    public get indexUpperBound() {
+        return this._panel.indexUpperBound;
+    }
+
     // Board
     public set spacing(value: number) {
         this._board.spacing = value;
