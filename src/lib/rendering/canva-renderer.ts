@@ -1,21 +1,20 @@
 import { PanelFrame } from "../../lib/types";
-import { Renderer } from "./renderer";
+import { Renderer, IRendererParameters } from "./renderer";
 
-export type CanvaRendererParameter = {
-  canva: HTMLCanvasElement,
+export interface CanvaRendererParameter extends IRendererParameters {
   colorBitOn?: string,
   colorBitOff?: string,
   colorStrokeOn?: string,
   colorStrokeOff?: string
 }
 
-export abstract class CanvaRenderer extends Renderer {
+export abstract class CanvaRenderer extends Renderer   {
   protected _parameters: CanvaRendererParameter;
 
   constructor(parameters: CanvaRendererParameter) {
-    super();
+    super(parameters);
     this._parameters = {
-      canva: parameters.canva,
+      element: parameters.element,
       colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
       colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
       colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
@@ -27,11 +26,15 @@ export abstract class CanvaRenderer extends Renderer {
     return this._parameters
   }
 
+  private get element() {
+    return this._parameters.element as HTMLCanvasElement
+  }
+
   render(display: PanelFrame): void {
-    const ctx = this._parameters.canva.getContext("2d");
-    ctx.clearRect(0, 0, this._parameters.canva.width, this._parameters.canva.height);
-    const widthEachBit = Math.floor(this._parameters.canva.width / display[0].length);
-    const heightEachBit = Math.floor(this._parameters.canva.height / display.length);
+    const ctx = this.element.getContext("2d");
+    ctx.clearRect(0, 0, this.element.width, this.element.height);
+    const widthEachBit = Math.floor(this.element.width / display[0].length);
+    const heightEachBit = Math.floor(this.element.height / display.length);
     ctx.lineWidth = 1;
 
     const renderBitsOfValue = (value: number, fillColor: string, strokeColor: string) => {

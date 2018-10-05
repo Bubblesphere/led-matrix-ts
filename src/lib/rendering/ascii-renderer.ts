@@ -1,17 +1,16 @@
-import { Renderer } from "./renderer";
+import { Renderer, IRendererParameters } from "./renderer";
 import { PanelFrame } from "../types";
 
-type AsciiRendererParameter = {
-  element: HTMLElement,
+interface AsciiRendererParameter extends IRendererParameters  {
   characterBitOn?: string,
   characterBitOff?: string
 }
 
-export class AsciiRenderer extends Renderer {
-  private _parameters: AsciiRendererParameter;
+export class AsciiRenderer extends Renderer  {
+  protected _parameters: AsciiRendererParameter;
 
   constructor(parameters: AsciiRendererParameter) {
-    super();
+    super(parameters);
     this._parameters = {
       element: parameters.element,
       characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",

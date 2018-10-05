@@ -102,14 +102,14 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
       ledMatrix.renderer = new CanvaRenderers.Rect({
-        canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
+        element: document.getElementById("led-matrix-canvas"),
       })
       break;
     case "Ellipse":
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
       ledMatrix.renderer = new CanvaRenderers.Ellipse({
-        canva: document.getElementById("led-matrix-canvas") as HTMLCanvasElement,
+        element: document.getElementById("led-matrix-canvas"),
         colorBitOn: '#e74c3c',
         colorBitOff: '#ecf0f1',
         colorStrokeOn: '#c0392b',
