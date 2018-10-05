@@ -472,7 +472,7 @@ class panel_Panel {
         this.width = params.width;
         this.fps = params.fps;
         this._board = params.board;
-        this.index = 0;
+        this._index = 0;
         this._increment = params.increment;
         this.display = [];
         this._renderer = params.renderer;
@@ -483,6 +483,9 @@ class panel_Panel {
     }
     get ReachingBoundary() {
         return this.onReachingBoundary.expose();
+    }
+    get index() {
+        return this._index;
     }
     set width(value) {
         if (value == null) {
@@ -524,7 +527,7 @@ class panel_Panel {
     }
     set increment(value) {
         if (value == null) {
-            throw `Panel's fps cannot be set to null`;
+            throw `Panel's fps cannot be set to nu_rendererl`;
         }
         if (value < 0) {
             throw `Panel's fps cannot be set to a negative number (${value})`;
@@ -553,12 +556,12 @@ class panel_Panel {
         return this._reverse;
     }
     play() {
-        this.index = 0;
+        this._index = 0;
         this._draw();
         this._startLoop();
     }
     stop() {
-        this.index = 0;
+        this._index = 0;
         this._draw();
         this._shouldUpdate = false;
     }
@@ -572,7 +575,7 @@ class panel_Panel {
         if (frame == null || frame < 0 || frame > this.indexUpperBound) {
             throw `Seek expects a value between 0 and ${this.indexUpperBound}`;
         }
-        this.index = frame;
+        this._index = frame;
         this._draw();
     }
     tick() {
@@ -584,7 +587,7 @@ class panel_Panel {
     }
     _draw() {
         this._resetPanel();
-        this._generateDisplay(this.index);
+        this._generateDisplay(this._index);
         this.onPanelUpdate.trigger({ display: this.display });
         this._renderer.render(this.display);
     }
@@ -598,19 +601,19 @@ class panel_Panel {
         }
     }
     _incrementIndex() {
-        if (this.index >= this.indexUpperBound) {
+        if (this._index >= this.indexUpperBound) {
             this.onReachingBoundary.trigger();
-            this.index = 0;
+            this._index = 0;
         } else {
-            this.index += this._increment;
+            this._index += this._increment;
         }
     }
     _decrementIndex() {
-        if (this.index === 0) {
+        if (this._index === 0) {
             this.onReachingBoundary.trigger();
-            this.index = this.indexUpperBound;
+            this._index = this.indexUpperBound;
         } else {
-            this.index -= this._increment;
+            this._index -= this._increment;
         }
     }
     _startLoop() {
