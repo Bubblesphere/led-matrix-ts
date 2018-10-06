@@ -15,3 +15,4 @@ export * from './lib/rendering/ascii-renderer';
 export * from './lib/rendering/canva-renderer';
 export * from './lib/rendering/canva-renderers';
 export * from './lib/rendering/renderer';
+export * from './lib/types';
