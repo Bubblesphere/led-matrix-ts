@@ -32,6 +32,15 @@ export abstract class CanvaRenderer extends Renderer   {
 
   render(display: PanelFrame): void {
     const ctx = this.element.getContext("2d");
+
+    if (this.element.width != this.element.clientWidth) {
+      this.element.width = this.element.clientWidth;
+    }
+
+    if (this.element.height != this.element.clientHeight) {
+      this.element.height = this.element.clientHeight;
+    }
+
     ctx.clearRect(0, 0, this.element.width, this.element.height);
     const widthEachBit = Math.floor(this.element.width / display[0].length);
     const heightEachBit = Math.floor(this.element.height / display.length);
