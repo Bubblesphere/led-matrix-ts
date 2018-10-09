@@ -1,6 +1,6 @@
 import { CanvaRenderers } from "./rendering/canva-renderers";
 import { AsciiRenderer } from "./rendering/ascii-renderer";
-import { Renderer,  } from "./rendering/renderer";
+import { Renderer, IRenderer,  } from "./rendering/renderer";
 export enum RendererType {
     ASCII,
     CanvasSquare,
@@ -8,7 +8,7 @@ export enum RendererType {
 }
 
 export class RendererBuilder {
-    static build(rendererType: RendererType, element: HTMLElement) : Renderer {
+    static build(rendererType: RendererType, element: HTMLElement) : IRenderer {
         switch(rendererType) {
             case RendererType.ASCII:
                 return new AsciiRenderer({
