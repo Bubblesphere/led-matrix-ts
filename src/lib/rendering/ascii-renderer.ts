@@ -1,7 +1,7 @@
 import { Renderer, IRendererParameters } from "./renderer";
 import { PanelFrame } from "../types";
 
-interface AsciiRendererParameter extends IRendererParameters  {
+export interface AsciiRendererParameter extends IRendererParameters  {
   characterBitOn?: string,
   characterBitOff?: string
 }
