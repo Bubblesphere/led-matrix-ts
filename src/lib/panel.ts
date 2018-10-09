@@ -1,13 +1,13 @@
 import { Board } from './board';
 import { Event } from './event';
 import { PanelFrame } from './types';
-import { Renderer, IRenderer } from './rendering/renderer';
+import { Renderer } from './rendering/renderer';
 
 export interface PanelParameters  {
   /** The board for which the panel operates on */
   board: Board,
   /**  */
-  renderer: IRenderer,
+  renderer: Renderer,
   /** Increment at each frame */
   increment: number,
   /** Frames of the panel scrolled per second */
@@ -30,7 +30,7 @@ export abstract class Panel {
   private _width: number;
   private _board: Board;
 
-  private _renderer: IRenderer;
+  private _renderer: Renderer;
   private _reverse: boolean;
   private _shouldUpdate: boolean;
   private _fps: number;
@@ -156,7 +156,7 @@ export abstract class Panel {
   /**
    * Sets the panel's renderer
    */
-  public set renderer(value: IRenderer) {
+  public set renderer(value: Renderer) {
     // validation
     if (value == null) {
       throw `Panel's renderer cannot be set to null`;

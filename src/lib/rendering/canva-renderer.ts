@@ -8,7 +8,7 @@ export interface CanvaRendererParameter extends IRendererParameters {
   colorStrokeOff?: string
 }
 
-export abstract class CanvaRenderer extends Renderer<CanvaRendererParameter>   {
+export abstract class CanvaRenderer extends Renderer   {
   protected _parameters: CanvaRendererParameter;
 
   constructor(parameters: CanvaRendererParameter) {
