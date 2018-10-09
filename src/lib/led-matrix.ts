@@ -4,7 +4,7 @@ import { PanelBuilder, PanelType } from "./panel-builder";
 import { RendererBuilder, RendererType } from "./renderer-builder";
 import { AsciiRenderer } from "./rendering/ascii-renderer";
 import { Padding } from "./types";
-import { Renderer } from "./rendering/renderer";
+import { Renderer, IRenderer } from "./rendering/renderer";
 import { Event, IEvent } from "./event";
 import { bit } from "./bit-array";
 import { CharacterDictionary } from "./character-dictionary";
@@ -19,7 +19,7 @@ interface ExposedBoardParameters {
 interface ExposedPanelParameters {
     panelType?: PanelType,
     /**  */
-    renderer?: Renderer,
+    renderer?: IRenderer,
     /** Increment at each frame */
     increment?: number,
     /** Frames of the panel scrolled per second */
@@ -199,7 +199,7 @@ export class LedMatrix implements LedMatrixParameters {
         return this._panelType;
     }
 
-    public set renderer(value: Renderer) {
+    public set renderer(value: IRenderer) {
         this._panel.renderer = value;
     }
 
