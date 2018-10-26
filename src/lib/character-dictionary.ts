@@ -23,6 +23,13 @@ export class CharacterDictionary {
   }
 
   /**
+   * Returns the different characters in the dictionary
+   */
+  public get characters() {
+    return this._characters
+  }
+
+  /**
    * Returns the height of the tallest character within the dictionary
    */
   public get height() {

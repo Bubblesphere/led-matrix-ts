@@ -51,6 +51,13 @@ export class Board {
   }
 
   /**
+   * Returns the characters used by the board
+   */
+  public get characters() {
+    return this._characters
+  }
+
+  /**
    * Returns the input of the board
    */
   public get input() {
