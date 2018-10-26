@@ -171,6 +171,9 @@ class Board {
     get letterSpacing() {
         return this._letterSpacing;
     }
+    get characters() {
+        return this._characters;
+    }
     get input() {
         return this._input;
     }
@@ -339,6 +342,9 @@ class CharacterDictionary {
             return character[0];
         }
         throw `Could not find character ${input} in the alphabet`;
+    }
+    get characters() {
+        return this._characters;
     }
     get height() {
         return Math.max.apply(Math, this._characters.map(x => x.height));
@@ -904,6 +910,12 @@ class led_matrix_LedMatrix {
     }
     addCharacter(character) {
         this._dictionary.add([character]);
+    }
+    get loadedCharacters() {
+        return this._dictionary.characters;
+    }
+    get usedCharacters() {
+        return this._board.characters;
     }
     set spacing(value) {
         this._board.letterSpacing = value;
