@@ -2,7 +2,7 @@ import { CanvaRenderer, CanvaRendererParameter } from "./canva-renderer";
 import { Renderer } from './renderer';
 
 export namespace CanvaRenderers {
-  export class Ellipse extends CanvaRenderer implements Renderer  {
+  export class Ellipse extends CanvaRenderer  {
     constructor(parameters: CanvaRendererParameter) {
       super(parameters)
     }
@@ -19,7 +19,7 @@ export namespace CanvaRenderers {
     }
   }
 
-  export class Rect extends CanvaRenderer implements Renderer {
+  export class Rect extends CanvaRenderer {
     constructor(parameters: CanvaRendererParameter) {
       super(parameters);
     }

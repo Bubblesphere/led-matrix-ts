@@ -2,13 +2,13 @@ import { Board } from "./board";
 import { Panel } from "./panel";
 import { PanelBuilder, PanelType } from "./panel-builder";
 import { RendererBuilder, RendererType } from "./renderer-builder";
-import { AsciiRenderer } from "./rendering/ascii-renderer";
 import { Padding } from "./types";
-import { Renderer } from "./rendering/renderer";
+import { Renderer, IRendererParameters } from "./rendering/renderer";
 import { Event, IEvent } from "./event";
 import { bit } from "./bit-array";
 import { CharacterDictionary } from "./character-dictionary";
 import { CharactersJSON } from "./character-json";
+import { Character } from "./character";
 
 interface ExposedBoardParameters {
     letterSpacing?: number
@@ -115,6 +115,11 @@ export class LedMatrix implements LedMatrixParameters {
 
     public get indexUpperBound() {
         return this._panel.indexUpperBound;
+    }
+
+    // CharacterDictionary
+    public addCharacter(character: Character) {
+        this._dictionary.add([character]);
     }
 
     // Board
@@ -242,6 +247,7 @@ export class LedMatrix implements LedMatrixParameters {
     public get viewportWidth() {
         return this._panel.width;
     }
+    
 
     // LedMatrix private
     private _validateParameters(params: LedMatrixParameters) {

@@ -1,9 +1,10 @@
 import { PanelFrame } from "../types";
 
-export abstract class Renderer  {
+export abstract class Renderer {
   protected _parameters: IRendererParameters;
 
   constructor(parameters: IRendererParameters) {
+
     if (parameters.element == null) {
       throw `Could not find the element to render led matrix`;
     } else {
@@ -16,13 +17,12 @@ export abstract class Renderer  {
   abstract get parameters(): IRendererParameters;
 }
 /*
-export interface IRenderer<T> {
+export interface IRenderer<T extends IRendererParameters> {
   render(display: PanelFrame): void;
-  parameters: IRendererParameters;
-  build(): T;
-  isNotInitiliazed: boolean;
+  parameters(): T;
 }
 */
+
 export interface IRendererParameters {
   element: HTMLElement
 }

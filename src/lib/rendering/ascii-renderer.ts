@@ -6,7 +6,7 @@ export interface AsciiRendererParameter extends IRendererParameters  {
   characterBitOff?: string
 }
 
-export class AsciiRenderer extends Renderer  {
+export class AsciiRenderer extends Renderer {
   protected _parameters: AsciiRendererParameter;
 
   constructor(parameters: AsciiRendererParameter) {

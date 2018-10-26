@@ -29,6 +29,7 @@ export abstract class Panel {
   private _increment: number;
   private _width: number;
   private _board: Board;
+
   private _renderer: Renderer;
   private _reverse: boolean;
   private _shouldUpdate: boolean;
