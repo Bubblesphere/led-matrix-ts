@@ -11,7 +11,7 @@ import { CharacterDictionary } from "./character-dictionary";
 import { CharactersJSON } from "./character-json";
 
 interface ExposedBoardParameters {
-    spacing?: number
+    letterSpacing?: number
     padding?: Padding,
     input?: string
 }
@@ -62,7 +62,7 @@ export class LedMatrix implements LedMatrixParameters {
         this._params = this._validateParameters(params);
 
         this._board = new Board({
-            spacing: this._params.spacing,
+            letterSpacing: this._params.letterSpacing,
             padding: this._params.padding
         });
         this._panelType = this._params.panelType;
@@ -119,13 +119,13 @@ export class LedMatrix implements LedMatrixParameters {
 
     // Board
     public set spacing(value: number) {
-        this._board.spacing = value;
+        this._board.letterSpacing = value;
         // Any changes to the board requires to reassign it to the panel
         this._panel.board = this._board;
     }
 
     public get spacing() {
-        return this._board.spacing;
+        return this._board.letterSpacing;
     }
 
     public set padding(value: Padding) {
@@ -255,14 +255,14 @@ export class LedMatrix implements LedMatrixParameters {
             element: document.getElementById('led-matrix'),
             reverse: false,
             panelWidth: 80,
-            spacing: 2,
+            letterSpacing: 2,
             padding: [0, 4]
         }
 
         if (params) {
             params.input = this._valueOrDefault(params.input, defaultParams.input);
             params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
-            params.spacing = this._valueOrDefault(params.spacing, defaultParams.spacing);
+            params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);

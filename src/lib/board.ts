@@ -4,7 +4,7 @@ import { Padding, DetailedPadding } from './types';
 import { CharacterDictionary } from './character-dictionary';
 
 export interface BoardParameters {
-  spacing: number
+  letterSpacing: number
   padding: Padding,
 }
 
@@ -14,7 +14,7 @@ export interface BoardParameters {
  */
 export class Board {
   private _characters: Array<Character>;
-  private _spacing: number;
+  private _letterSpacing: number;
   private _padding: DetailedPadding;
   private _input: string;
 
@@ -24,14 +24,14 @@ export class Board {
    */
   constructor(params: BoardParameters) {
     this._characters = [];
-    this.spacing = params.spacing;
+    this._letterSpacing = params.letterSpacing;
     this.padding = params.padding;
   }
 
   /**
    * Sets the spacing between characters on the board
    */
-  public set spacing(value: number) {
+  public set letterSpacing(value: number) {
     // validation
     if (value == null) {
       throw `Board's spacing cannot be set to null`;
@@ -40,14 +40,14 @@ export class Board {
       throw `Board's spacing cannot be set to a negative number (${value})`;
     }
 
-    this._spacing = value;
+    this._letterSpacing = value;
   }
 
   /**
    * Returns the spacing of the board
    */
-  public get spacing() {
-    return this._spacing;
+  public get letterSpacing() {
+    return this._letterSpacing;
   }
 
   /**
@@ -135,7 +135,7 @@ export class Board {
           .concat(this._emptyArrayOfLength(this._padding[2]));
         return true;
       }
-      accumulator += this._spacing;
+      accumulator += this._letterSpacing;
       if (accumulator > index) {
         // Column is space
         toReturn = this._emptyArrayOfLength(this.height);
@@ -159,8 +159,8 @@ export class Board {
     }
 
     // left padding + iterate[character + space] - space + right padding
-    let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
-    charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._spacing);
+    let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._letterSpacing))));
+    charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._letterSpacing);
     
     return this._emptyArrayOfLength(this._padding[3])
       .concat(charactersWithSpace)
@@ -210,7 +210,7 @@ export class Board {
 
   private _totalSpacingWidth(): number {
     // There's a space between each character
-    return (this._characters.length - 1) * this._spacing;
+    return (this._characters.length - 1) * this._letterSpacing;
   }
 
   private _verticalPaddingWidth(): number {
