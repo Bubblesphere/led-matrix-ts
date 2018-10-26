@@ -156,20 +156,20 @@ class BitArray {
 class Board {
     constructor(params) {
         this._characters = [];
-        this.spacing = params.spacing;
+        this._letterSpacing = params.letterSpacing;
         this.padding = params.padding;
     }
-    set spacing(value) {
+    set letterSpacing(value) {
         if (value == null) {
             throw `Board's spacing cannot be set to null`;
         }
         if (value < 0) {
             throw `Board's spacing cannot be set to a negative number (${value})`;
         }
-        this._spacing = value;
+        this._letterSpacing = value;
     }
-    get spacing() {
-        return this._spacing;
+    get letterSpacing() {
+        return this._letterSpacing;
     }
     get input() {
         return this._input;
@@ -214,7 +214,7 @@ class Board {
                 toReturn = this._emptyArrayOfLength(this._padding[0]).concat(characterColumn).concat(this._emptyArrayOfLength(this._padding[2]));
                 return true;
             }
-            accumulator += this._spacing;
+            accumulator += this._letterSpacing;
             if (accumulator > index) {
                 toReturn = this._emptyArrayOfLength(this.height);
                 return true;
@@ -227,8 +227,8 @@ class Board {
         if (index < this._padding[0] || index >= this.height - this._padding[2]) {
             return this._emptyArrayOfLength(this.width);
         }
-        let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._spacing))));
-        charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._spacing);
+        let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._letterSpacing))));
+        charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._letterSpacing);
         return this._emptyArrayOfLength(this._padding[3]).concat(charactersWithSpace).concat(this._emptyArrayOfLength(this._padding[1]));
     }
     load(input, dictionnary) {
@@ -257,7 +257,7 @@ class Board {
         return this._padding[1] + this._padding[3];
     }
     _totalSpacingWidth() {
-        return (this._characters.length - 1) * this._spacing;
+        return (this._characters.length - 1) * this._letterSpacing;
     }
     _verticalPaddingWidth() {
         return this._padding[0] + this._padding[2];
@@ -856,7 +856,7 @@ class led_matrix_LedMatrix {
         this.onReady = new Event();
         this._params = this._validateParameters(params);
         this._board = new Board({
-            spacing: this._params.spacing,
+            letterSpacing: this._params.letterSpacing,
             padding: this._params.padding
         });
         this._panelType = this._params.panelType;
@@ -902,12 +902,15 @@ class led_matrix_LedMatrix {
     get indexUpperBound() {
         return this._panel.indexUpperBound;
     }
+    addCharacter(character) {
+        this._dictionary.add([character]);
+    }
     set spacing(value) {
-        this._board.spacing = value;
+        this._board.letterSpacing = value;
         this._panel.board = this._board;
     }
     get spacing() {
-        return this._board.spacing;
+        return this._board.letterSpacing;
     }
     set padding(value) {
         this._board.padding = value;
@@ -1006,13 +1009,13 @@ class led_matrix_LedMatrix {
             element: document.getElementById('led-matrix'),
             reverse: false,
             panelWidth: 80,
-            spacing: 2,
+            letterSpacing: 2,
             padding: [0, 4]
         };
         if (params) {
             params.input = this._valueOrDefault(params.input, defaultParams.input);
             params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
-            params.spacing = this._valueOrDefault(params.spacing, defaultParams.spacing);
+            params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
