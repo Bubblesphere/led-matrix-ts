@@ -122,7 +122,15 @@ export class LedMatrix implements LedMatrixParameters {
         this._dictionary.add([character]);
     }
 
+    public get loadedCharacters() {
+        return this._dictionary.characters;
+    }
+
     // Board
+    public get usedCharacters() {
+        return this._board.characters;
+    }
+
     public set spacing(value: number) {
         this._board.letterSpacing = value;
         // Any changes to the board requires to reassign it to the panel
