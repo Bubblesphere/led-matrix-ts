@@ -707,11 +707,10 @@ class Renderer {
     constructor(parameters) {}
     render(display) {
         if (this._parameters.element == null) {
-            throw `Could not find the element to render led matrix`;
-        } else {
-            this._parameters = {
-                element: this._parameters.element
-            };
+            this._parameters.element = document.getElementById(this._parameters.elementId);
+            if (this._parameters.element == null) {
+                throw `Could not find the element to render led matrix`;
+            }
         }
     }
 }
@@ -722,6 +721,7 @@ class canva_renderer_CanvaRenderer extends Renderer {
     constructor(parameters) {
         super(parameters);
         this._parameters = {
+            elementId: parameters.elementId,
             element: parameters.element,
             colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
             colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
@@ -804,6 +804,7 @@ class ascii_renderer_AsciiRenderer extends Renderer {
     constructor(parameters) {
         super(parameters);
         this._parameters = {
+            elementId: parameters.elementId,
             element: parameters.element,
             characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
             characterBitOff: parameters.characterBitOff ? parameters.characterBitOff : " "
@@ -835,19 +836,19 @@ var renderer_builder_RendererType;
     RendererType[RendererType["CanvasCircle"] = 2] = "CanvasCircle";
 })(renderer_builder_RendererType || (renderer_builder_RendererType = {}));
 class renderer_builder_RendererBuilder {
-    static build(rendererType, element) {
+    static build(rendererType, elementId) {
         switch (rendererType) {
             case renderer_builder_RendererType.ASCII:
                 return new ascii_renderer_AsciiRenderer({
-                    element: element
+                    elementId: elementId
                 });
             case renderer_builder_RendererType.CanvasSquare:
                 return new canva_renderers_CanvaRenderers.Rect({
-                    element: element
+                    elementId: elementId
                 });
             case renderer_builder_RendererType.CanvasCircle:
                 return new canva_renderers_CanvaRenderers.Ellipse({
-                    element: element
+                    elementId: elementId
                 });
         }
     }
@@ -984,7 +985,7 @@ class led_matrix_LedMatrix {
         this._panel.renderer = value;
     }
     setRendererFromBuilder(value) {
-        this._panel.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.element);
+        this._panel.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.elementId);
     }
     get renderer() {
         return this._panel.renderer;
@@ -1021,7 +1022,7 @@ class led_matrix_LedMatrix {
             increment: 1,
             panelType: panel_builder_PanelType.SideScrollingPanel,
             rendererType: renderer_builder_RendererType.ASCII,
-            element: document.getElementById('led-matrix'),
+            elementId: 'led-matrix',
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,
@@ -1042,8 +1043,8 @@ class led_matrix_LedMatrix {
                 params.renderer = params.renderer;
             } else {
                 params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType);
-                params.element = this._valueOrDefault(params.element, defaultParams.element);
-                params.renderer = renderer_builder_RendererBuilder.build(params.rendererType, params.element);
+                params.elementId = this._valueOrDefault(params.elementId, defaultParams.elementId);
+                params.renderer = renderer_builder_RendererBuilder.build(params.rendererType, params.elementId);
             }
             return params;
         }

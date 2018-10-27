@@ -8,19 +8,19 @@ export enum RendererType {
 }
 
 export class RendererBuilder {
-    static build(rendererType: RendererType, element: HTMLElement) : Renderer {
+    static build(rendererType: RendererType, elementId: string) : Renderer {
         switch(rendererType) {
             case RendererType.ASCII:
                 return new AsciiRenderer({
-                    element: element
+                    elementId: elementId
                 });
             case RendererType.CanvasSquare:
                 return new CanvaRenderers.Rect({
-                    element: element
+                    elementId: elementId
                 });
             case RendererType.CanvasCircle:
                 return new CanvaRenderers.Ellipse({
-                    element: element
+                    elementId: elementId
                 })
         }
     }
