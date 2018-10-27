@@ -12,6 +12,7 @@ export class AsciiRenderer extends Renderer {
   constructor(parameters: AsciiRendererParameter) {
     super(parameters);
     this._parameters = {
+      elementId: parameters.elementId,
       element: parameters.element,
       characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
       characterBitOff: parameters.characterBitOff ? parameters.characterBitOff : " "

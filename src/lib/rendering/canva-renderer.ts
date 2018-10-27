@@ -14,6 +14,7 @@ export abstract class CanvaRenderer extends Renderer   {
   constructor(parameters: CanvaRendererParameter) {
     super(parameters);
     this._parameters = {
+      elementId: parameters.elementId,
       element: parameters.element,
       colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
       colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
