@@ -23,6 +23,7 @@ export class AsciiRenderer extends Renderer {
   }
 
   render(display: PanelFrame): void {
+    super.render(display);
     let output = "";
     for(var i = 0; i < display.length; i++) {
         for(var j = 0; j < display[i].length; j++) {
