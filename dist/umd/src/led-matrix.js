@@ -704,12 +704,13 @@ class panel_builder_PanelBuilder {
 //# sourceMappingURL=panel-builder.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/rendering/renderer.js
 class Renderer {
-    constructor(parameters) {
-        if (parameters.element == null) {
+    constructor(parameters) {}
+    render(display) {
+        if (this._parameters.element == null) {
             throw `Could not find the element to render led matrix`;
         } else {
             this._parameters = {
-                element: parameters.element
+                element: this._parameters.element
             };
         }
     }
@@ -735,6 +736,7 @@ class canva_renderer_CanvaRenderer extends Renderer {
         return this._parameters.element;
     }
     render(display) {
+        super.render(display);
         const ctx = this.element.getContext("2d");
         if (this.element.width != this.element.clientWidth) {
             this.element.width = this.element.clientWidth;
@@ -811,6 +813,7 @@ class ascii_renderer_AsciiRenderer extends Renderer {
         return this._parameters;
     }
     render(display) {
+        super.render(display);
         let output = "";
         for (var i = 0; i < display.length; i++) {
             for (var j = 0; j < display[i].length; j++) {
