@@ -94,7 +94,7 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
       document.getElementById("led-matrix-canvas").hidden = true;
       document.getElementById("led-matrix").hidden = false;
       ledMatrix.renderer = new AsciiRenderer({
-        element: document.getElementById("led-matrix"),
+        elementId: 'led-matrix',
         characterBitOn: 'X',
         characterBitOff: ' '
       });
@@ -103,14 +103,14 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
       ledMatrix.renderer = new CanvaRenderers.Rect({
-        element: document.getElementById("led-matrix-canvas"),
+        elementId: 'led-matrix-canvas',
       })
       break;
     case "Ellipse":
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
       ledMatrix.renderer = new CanvaRenderers.Ellipse({
-        element: document.getElementById("led-matrix-canvas"),
+        elementId: 'led-matrix-canvas',
         colorBitOn: '#e74c3c',
         colorBitOff: '#ecf0f1',
         colorStrokeOn: '#c0392b',
