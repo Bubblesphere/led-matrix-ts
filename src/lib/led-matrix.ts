@@ -92,7 +92,7 @@ export class LedMatrix implements LedMatrixParameters {
             this._dictionary = new CharacterDictionary();
             this._dictionary.add(characters);
             this._board.load(this._board.input != null ? this._board.input : this._params.input, this._dictionary);
-            this._panel.play();
+            //this._panel.play();
             this.onReady.trigger();
             if (callback) {
                 callback();

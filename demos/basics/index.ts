@@ -3,7 +3,9 @@ import { RendererType } from '../../src/lib/renderer-builder';
 
 const ledMatrix = new LedMatrix();
 ledMatrix.setRendererFromBuilder({
-    element: document.getElementById('led-matrix'),
+    elementId: 'led-matrix',
     rendererType: RendererType.ASCII
 });
-ledMatrix.init();
+ledMatrix.init(1, () => {
+    ledMatrix.play();
+});
