@@ -32,12 +32,12 @@ interface ExposedPanelParameters {
 
 interface RendererBuilderParameters {
     rendererType?: RendererType,
-    element?: HTMLElement
+    elementId?: string
 }
 
 interface SetRendererBuilderParameters {
     rendererType: RendererType,
-    element: HTMLElement
+    elementId: string
 }
 
 export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParameters & ExposedPanelParameters & RendererBuilderParameters;
@@ -217,7 +217,7 @@ export class LedMatrix implements LedMatrixParameters {
     }
 
     public setRendererFromBuilder(value: SetRendererBuilderParameters) {
-        this._panel.renderer = RendererBuilder.build(value.rendererType, value.element);
+        this._panel.renderer = RendererBuilder.build(value.rendererType, value.elementId);
     }
 
     public get renderer() {
@@ -266,7 +266,7 @@ export class LedMatrix implements LedMatrixParameters {
             increment: 1,
             panelType: PanelType.SideScrollingPanel,
             rendererType: RendererType.ASCII,
-            element: document.getElementById('led-matrix'),
+            elementId: 'led-matrix',
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,
@@ -288,8 +288,8 @@ export class LedMatrix implements LedMatrixParameters {
                 params.renderer = params.renderer;
             } else {
                 params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType)
-                params.element = this._valueOrDefault(params.element, defaultParams.element);
-                params.renderer = RendererBuilder.build(params.rendererType, params.element);
+                params.elementId = this._valueOrDefault(params.elementId, defaultParams.elementId);
+                params.renderer = RendererBuilder.build(params.rendererType, params.elementId);
             }
             
 
