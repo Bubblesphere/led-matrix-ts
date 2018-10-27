@@ -31,6 +31,7 @@ export abstract class CanvaRenderer extends Renderer   {
   }
 
   render(display: PanelFrame): void {
+    super.render(display);
     const ctx = this.element.getContext("2d");
 
     if (this.element.width != this.element.clientWidth) {
