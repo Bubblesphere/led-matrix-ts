@@ -1,7 +1,7 @@
 {
   "name": "led-matrix-ts",
   "description": "Highly customizable led matrix for the browser",
-  "version": "0.5.13",
+  "version": "0.6.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Bubblesphere/led-matrix-ts.git"
@@ -21,6 +21,8 @@
   "homepage": "https://github.com/Bubblesphere/led-matrix-ts",
   "devDependencies": {
     "@types/jest": "^23.3.2",
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.4",
     "babel-preset-es2015": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
@@ -31,9 +33,7 @@
     "webpack": "4.1.1",
     "webpack-cli": "2.0.11",
     "webpack-dev-server": "^3.1.1",
-    "webpack-merge": "^4.1.2",
-    "babel-core": "6.26.0",
-    "babel-loader": "7.1.4"
+    "webpack-merge": "^4.1.2"
   },
   "scripts": {
     "start": "webpack-dev-server --open-page distDemos/basics.html --config webpack.demo.js --mode development ",
