@@ -4,7 +4,7 @@ import { BitArray, bit } from "./bit-array";
  * The character holds information about the visual representation of a character
  */
 export class Character {
-  private _patterns: Array<string>;
+  private _pattern: string;
   private _output: BitArray;
   private _width: number;
   private _height: number;
@@ -15,8 +15,8 @@ export class Character {
    * @param output The bit representation of the character
    * @param width  The width of the character
    */
-  constructor(patterns: Array<string>, output: BitArray, width: number) {
-    this._patterns = patterns;
+  constructor(pattern: string, output: BitArray, width: number) {
+    this._pattern = pattern;
     this._output = output;
     if (output.size >= width) {
       this._width = width;
@@ -88,10 +88,10 @@ export class Character {
   }
 
   /**
-   * Gets the patterns of the character
+   * Gets the pattern of the character
    */
-  public get patterns() {
-    return this._patterns;
+  public get pattern() {
+    return this._pattern;
   }
 
   /**
@@ -106,6 +106,6 @@ export class Character {
    * @param input The input string to match the character against
    */
   public hasPattern(input: string): boolean {
-    return this._patterns.indexOf(input) >= 0;
+    return this._pattern == input;
   }
 };
