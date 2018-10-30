@@ -49,7 +49,7 @@ export class CharacterDictionary {
    */
   public add(pendingCharacters: Character[]) {
     // Make sure no pending characters have the same pattern
-    const pendingPatterns: string[] = [].concat.apply([], pendingCharacters.map(x => x.patterns));
+    const pendingPatterns: string[] = pendingCharacters.map(x => x.pattern);
 
     const duplicatedPendingPatterns = pendingPatterns.filter((value, index, array) => {
       return array.indexOf(value) != index;
@@ -61,18 +61,52 @@ export class CharacterDictionary {
 
     // Make sure no pending characters have the same pattern as already added characters
     if (this._characters.length > 0) {
-      const alreadyAddedPatterns: string[] = [].concat.apply([], this._characters.map(x => x.patterns));
+      const alreadyAddedPatterns: string[] = this._characters.map(x => x.pattern);
 
       const duplicatedPatterns = alreadyAddedPatterns.filter((value) => {
         return pendingPatterns.indexOf(value) != -1;
       })
-  
+
       if (duplicatedPatterns.length > 0) {
         throw `Different characters cannot have the same patterns. One or more of the characters pending to be added has the same pattern as one or more already added characters. The following patterns were identified as duplicates: ${duplicatedPatterns.join(", ")}`;
       }
     }
 
     this._characters.push(...pendingCharacters);
+  }
+
+  /**
+ * Edits a character from the dictionary
+ * @param pendingCharacter Character pending to be edited from the dictionary
+ */
+  public edit(pendingCharacter: Character) {
+    let edited = false;
+    this._characters.forEach((character) => {
+      if (character.pattern == pendingCharacter.pattern && !edited) {
+        character = pendingCharacter;
+        edited = true;
+      }
+    });
+    if (!edited) {
+      throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted edit operation`;
+    }
+  }
+
+  /**
+* Deletes a character from the dictionary
+* @param pendingCharacter Character pending to be deleted from the dictionary
+*/
+  public delete(pendingCharacter: Character) {
+    let deleted = false;
+    this._characters.forEach((character, index, arr) => {
+      if (character.pattern == pendingCharacter.pattern && !deleted) {
+        arr.splice(index, 1);
+        deleted = true;
+      }
+    });
+    if (!deleted) {
+      throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted delete operation`;
+    }
   }
 };
 

@@ -6,7 +6,7 @@ export interface CharactersJSONSchema {
 }
 
 export interface CharacterJSONSchema {
-    patterns: Array<string>,
+    pattern: string,
     output: Array<number>,
     width: number
 }

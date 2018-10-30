@@ -273,8 +273,8 @@ class Board {
 //# sourceMappingURL=board.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/character.js
 class Character {
-    constructor(patterns, output, width) {
-        this._patterns = patterns;
+    constructor(pattern, output, width) {
+        this._pattern = pattern;
         this._output = output;
         if (output.size >= width) {
             this._width = width;
@@ -319,14 +319,14 @@ class Character {
     get height() {
         return this._height;
     }
-    get patterns() {
-        return this._patterns;
+    get pattern() {
+        return this._pattern;
     }
     get output() {
         return this._output;
     }
     hasPattern(input) {
-        return this._patterns.indexOf(input) >= 0;
+        return this._pattern == input;
     }
 }
 ;
@@ -353,7 +353,7 @@ class CharacterDictionary {
         return this._characters.length;
     }
     add(pendingCharacters) {
-        const pendingPatterns = [].concat.apply([], pendingCharacters.map(x => x.patterns));
+        const pendingPatterns = pendingCharacters.map(x => x.pattern);
         const duplicatedPendingPatterns = pendingPatterns.filter((value, index, array) => {
             return array.indexOf(value) != index;
         });
@@ -361,7 +361,7 @@ class CharacterDictionary {
             throw `Different characters cannot have the same patterns. Some of the characters pending to be added have the same patterns. The following patterns were identified as duplicates: ${duplicatedPendingPatterns.join(", ")}`;
         }
         if (this._characters.length > 0) {
-            const alreadyAddedPatterns = [].concat.apply([], this._characters.map(x => x.patterns));
+            const alreadyAddedPatterns = this._characters.map(x => x.pattern);
             const duplicatedPatterns = alreadyAddedPatterns.filter(value => {
                 return pendingPatterns.indexOf(value) != -1;
             });
@@ -370,6 +370,30 @@ class CharacterDictionary {
             }
         }
         this._characters.push(...pendingCharacters);
+    }
+    edit(pendingCharacter) {
+        let edited = false;
+        this._characters.forEach(character => {
+            if (character.pattern == pendingCharacter.pattern && !edited) {
+                character = pendingCharacter;
+                edited = true;
+            }
+        });
+        if (!edited) {
+            throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted edit operation`;
+        }
+    }
+    delete(pendingCharacter) {
+        let deleted = false;
+        this._characters.forEach((character, index, arr) => {
+            if (character.pattern == pendingCharacter.pattern && !deleted) {
+                arr.splice(index, 1);
+                deleted = true;
+            }
+        });
+        if (!deleted) {
+            throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted delete operation`;
+        }
     }
 }
 ;
@@ -420,7 +444,7 @@ class character_json_CharactersJSON {
             throw 'Invalid character json file: Can\'t find property characters';
         }
         return data.characters.map(x => {
-            if (x.patterns == null) {
+            if (x.pattern == null) {
                 throw 'Invalid character json file: Can\'t find property patterns for a character';
             }
             if (x.output == null) {
@@ -431,7 +455,7 @@ class character_json_CharactersJSON {
             }
             const characterRaw = x.output.map(x => x);
             const character = NearestNeighbor.scale(characterRaw, x.width, size);
-            return new Character(x.patterns, new BitArray(character), x.width * size);
+            return new Character(x.pattern, new BitArray(character), x.width * size);
         });
     }
     static stringify(characters) {
@@ -441,7 +465,7 @@ class character_json_CharactersJSON {
         return JSON.stringify({
             characters: characters.map(x => {
                 return {
-                    patterns: x.patterns,
+                    patterns: x.pattern,
                     output: x.output.atIndexRange(0, x.output.size),
                     width: x.width
                 };
@@ -914,6 +938,12 @@ class led_matrix_LedMatrix {
     addCharacter(character) {
         this._dictionary.add([character]);
     }
+    editCharacter(character) {
+        this._dictionary.edit(character);
+    }
+    deleteCharacter(character) {
+        this._dictionary.delete(character);
+    }
     get loadedCharacters() {
         return this._dictionary.characters;
     }
@@ -1015,7 +1045,7 @@ class led_matrix_LedMatrix {
     }
     _validateParameters(params) {
         const defaultParams = {
-            input: "Hello World",
+            input: "hello world",
             pathCharacters: "alphabet.json",
             fps: 30,
             increment: 1,

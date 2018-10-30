@@ -37,7 +37,7 @@ export class CharactersJSON {
         }
 
         return data.characters.map(x => {
-            if (x.patterns == null) {
+            if (x.pattern == null) {
                 throw 'Invalid character json file: Can\'t find property patterns for a character';
             }
             if (x.output == null) {
@@ -48,7 +48,7 @@ export class CharactersJSON {
             }
             const characterRaw = x.output.map(x => x as bit);
             const character = NearestNeighbor.scale(characterRaw, x.width, size);
-            return new Character(x.patterns, new BitArray(character), x.width * size) 
+            return new Character(x.pattern, new BitArray(character), x.width * size) 
         });
     }
 
@@ -60,7 +60,7 @@ export class CharactersJSON {
         return JSON.stringify({
             characters: characters.map(x => {
                 return {
-                    patterns: x.patterns,
+                    patterns: x.pattern,
                     output: x.output.atIndexRange(0, x.output.size),
                     width: x.width
                 };
