@@ -122,6 +122,14 @@ export class LedMatrix implements LedMatrixParameters {
         this._dictionary.add([character]);
     }
 
+    public editCharacter(character: Character) {
+        this._dictionary.edit(character);
+    }
+
+    public deleteCharacter(character: Character) {
+        this._dictionary.delete(character);
+    }
+
     public get loadedCharacters() {
         return this._dictionary.characters;
     }
@@ -260,7 +268,7 @@ export class LedMatrix implements LedMatrixParameters {
     // LedMatrix private
     private _validateParameters(params: LedMatrixParameters) {
         const defaultParams: LedMatrixParameters = {
-            input: "Hello World",
+            input: "hello world",
             pathCharacters: "alphabet.json",
             fps: 30,
             increment: 1,
