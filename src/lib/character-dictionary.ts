@@ -81,9 +81,9 @@ export class CharacterDictionary {
  */
   public edit(pendingCharacter: Character) {
     let edited = false;
-    this._characters.forEach((character) => {
+    this._characters.forEach((character, index, arr) => {
       if (character.pattern == pendingCharacter.pattern && !edited) {
-        character = pendingCharacter;
+        arr[index] = pendingCharacter;
         edited = true;
       }
     });
