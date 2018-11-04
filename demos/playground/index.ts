@@ -7,7 +7,9 @@ import { CanvaRendererParameter } from '../../src/lib/rendering/canva-renderer';
 const ledMatrix = new LedMatrix({
   pathCharacters: "alphabett.json"
 });
-ledMatrix.init();
+ledMatrix.init(1, () => {
+  ledMatrix.play();
+});
 
 document.getElementById("input-button").addEventListener("click", (e) => {
   const value = (document.getElementById("input-value") as HTMLInputElement).value;

@@ -186,6 +186,10 @@ export class Board {
    */
   public load(input: string, dictionnary: CharacterDictionary): void {
     const escapeCharacter = '~';
+    const delimiterWord = {
+      start: "(",
+      end: ")"
+    }
     this._characters = [];
     
     for(let i = 0; i < input.length; i++) {
@@ -198,16 +202,19 @@ export class Board {
         }
         // Change the characterBuffer to the character which is escaped
         characterBuffer = input[++i];
-      } else if (characterBuffer === "[" && (i === 0 || input[i-1] !== escapeCharacter)) {
+      } else if (characterBuffer === delimiterWord.start && (i === 0 || input[i-1] !== escapeCharacter)) {
         do {
           // Add characters within brackets to the buffer
           characterBuffer += input[++i];
 
           // Check if we've reached the end of the input without finding the closing bracket
           if (i == input.length) {
-            throw `Could not find the end bracket for pattern ${characterBuffer}. To escape the bracket, use ${escapeCharacter}`;
+            throw `Could not find the ending delimiter "${delimiterWord.end}" for pattern ${characterBuffer}`;
           }
-        } while(input[i] != "]");
+        } while(input[i] != delimiterWord.end);
+
+        // Remove delimiter from buffer
+        characterBuffer = characterBuffer.slice(1, -1);
       }
 
       this._characters.push(dictionnary.find(characterBuffer));

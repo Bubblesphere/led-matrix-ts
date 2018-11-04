@@ -2,7 +2,9 @@ import { LedMatrix } from "../../src/lib/led-matrix";
 
 const ledMatrix = new LedMatrix({
   pathCharacters: "customAlphabet.json",
-  input: "[smiley]"
+  input: "(smiley)"
 });
 
-ledMatrix.init();
+ledMatrix.init(1, () => {
+  ledMatrix.play();
+});
