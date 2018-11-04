@@ -138,7 +138,7 @@ export abstract class Panel {
   public set increment(value: number) {
     // validation
     if (value == null) {
-      throw `Panel's fps cannot be set to nu_rendererl`;
+      throw `Panel's fps cannot be set to a null value`;
     }
     if (value < 0) {
       throw `Panel's fps cannot be set to a negative number (${value})`;
