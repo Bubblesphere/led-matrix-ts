@@ -56,7 +56,7 @@ export class CharacterDictionary {
     })
 
     if (duplicatedPendingPatterns.length > 0) {
-      throw `Different characters cannot have the same patterns. Some of the characters pending to be added have the same patterns. The following patterns were identified as duplicates: ${duplicatedPendingPatterns.join(", ")}`;
+      throw `Pattern already used by another pending character`;
     }
 
     // Make sure no pending characters have the same pattern as already added characters
@@ -68,7 +68,7 @@ export class CharacterDictionary {
       })
 
       if (duplicatedPatterns.length > 0) {
-        throw `Different characters cannot have the same patterns. One or more of the characters pending to be added has the same pattern as one or more already added characters. The following patterns were identified as duplicates: ${duplicatedPatterns.join(", ")}`;
+        throw `Pattern already used by another character`;
       }
     }
 
