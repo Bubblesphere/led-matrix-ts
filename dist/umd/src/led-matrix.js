@@ -206,7 +206,7 @@ class Board {
     getColumnAtIndex(index) {
         index %= this.width;
         if (index < this._padding[3] || index >= this.width - this._padding[1]) {
-            return this._emptyArrayOfLength(this.height);
+            return this._createBitOffArrayOfLength(this.height);
         }
         let accumulator = this._padding[3];
         let toReturn;
@@ -214,12 +214,12 @@ class Board {
             accumulator += character.width;
             if (accumulator > index) {
                 const characterColumn = character.getColumn(index - (accumulator - character.width));
-                toReturn = this._emptyArrayOfLength(this._padding[0]).concat(characterColumn).concat(this._emptyArrayOfLength(this._padding[2]));
+                toReturn = this._createBitOffArrayOfLength(this._padding[0]).concat(characterColumn).concat(this._createBitOffArrayOfLength(this._padding[2])).concat(characterColumn.length < this.height ? this._createBitOffArrayOfLength(this.height - characterColumn.length) : []);
                 return true;
             }
             accumulator += this._letterSpacing;
             if (accumulator > index) {
-                toReturn = this._emptyArrayOfLength(this.height);
+                toReturn = this._createBitOffArrayOfLength(this.height);
                 return true;
             }
         });
@@ -228,11 +228,11 @@ class Board {
     getRowAtIndex(index) {
         index %= this.height;
         if (index < this._padding[0] || index >= this.height - this._padding[2]) {
-            return this._emptyArrayOfLength(this.width);
+            return this._createBitOffArrayOfLength(this.width);
         }
-        let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._letterSpacing))));
+        let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._createBitOffArrayOfLength(this._letterSpacing))));
         charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._letterSpacing);
-        return this._emptyArrayOfLength(this._padding[3]).concat(charactersWithSpace).concat(this._emptyArrayOfLength(this._padding[1]));
+        return this._createBitOffArrayOfLength(this._padding[3]).concat(charactersWithSpace).concat(this._createBitOffArrayOfLength(this._padding[1]));
     }
     load(input, dictionnary) {
         const escapeCharacter = '~';
@@ -265,7 +265,7 @@ class Board {
     _verticalPaddingWidth() {
         return this._padding[0] + this._padding[2];
     }
-    _emptyArrayOfLength(length) {
+    _createBitOffArrayOfLength(length) {
         return Array.apply(null, Array(length)).map(() => 0);
     }
 }
@@ -358,7 +358,7 @@ class CharacterDictionary {
             return array.indexOf(value) != index;
         });
         if (duplicatedPendingPatterns.length > 0) {
-            throw `Different characters cannot have the same patterns. Some of the characters pending to be added have the same patterns. The following patterns were identified as duplicates: ${duplicatedPendingPatterns.join(", ")}`;
+            throw `Pattern already used by another pending character`;
         }
         if (this._characters.length > 0) {
             const alreadyAddedPatterns = this._characters.map(x => x.pattern);
@@ -366,7 +366,7 @@ class CharacterDictionary {
                 return pendingPatterns.indexOf(value) != -1;
             });
             if (duplicatedPatterns.length > 0) {
-                throw `Different characters cannot have the same patterns. One or more of the characters pending to be added has the same pattern as one or more already added characters. The following patterns were identified as duplicates: ${duplicatedPatterns.join(", ")}`;
+                throw `Pattern already used by another character`;
             }
         }
         this._characters.push(...pendingCharacters);
