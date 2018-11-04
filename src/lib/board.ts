@@ -127,7 +127,7 @@ export class Board {
 
     if (index < this._padding[3] || index >= this.width - this._padding[1]) {
       // Column is padding
-      return this._emptyArrayOfLength(this.height);
+      return this._createBitOffArrayOfLength(this.height);
     }
 
     let accumulator = this._padding[3];
@@ -137,15 +137,19 @@ export class Board {
       if (accumulator > index) {
         // Column is character
         const characterColumn = character.getColumn(index - (accumulator - character.width));
-        toReturn =  this._emptyArrayOfLength(this._padding[0])
+        toReturn =  this._createBitOffArrayOfLength(this._padding[0])
           .concat(characterColumn)
-          .concat(this._emptyArrayOfLength(this._padding[2]));
+          .concat(this._createBitOffArrayOfLength(this._padding[2]))
+          // Character might be shorter than the tallest character
+          // If so, append 0s to make up the difference in size
+          .concat(characterColumn.length < this.height ? this._createBitOffArrayOfLength(this.height - characterColumn.length) : []);
+
         return true;
       }
       accumulator += this._letterSpacing;
       if (accumulator > index) {
         // Column is space
-        toReturn = this._emptyArrayOfLength(this.height);
+        toReturn = this._createBitOffArrayOfLength(this.height);
         return true;
       }
     });
@@ -162,16 +166,16 @@ export class Board {
 
     if (index < this._padding[0] || index >= this.height - this._padding[2]) {
       // Column is padding
-      return this._emptyArrayOfLength(this.width);
+      return this._createBitOffArrayOfLength(this.width);
     }
 
-    // left padding + iterate[character + space] - space + right padding
-    let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._emptyArrayOfLength(this._letterSpacing))));
+    // left padding + iterate[ character + space] - space + right padding
+    let charactersWithSpace = [].concat.apply([], this._characters.map(x => x.getRow(index - this._padding[0]).concat(this._createBitOffArrayOfLength(this._letterSpacing))));
     charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._letterSpacing);
     
-    return this._emptyArrayOfLength(this._padding[3])
+    return this._createBitOffArrayOfLength(this._padding[3])
       .concat(charactersWithSpace)
-      .concat(this._emptyArrayOfLength(this._padding[1]));
+      .concat(this._createBitOffArrayOfLength(this._padding[1]));
       
   }
 
@@ -224,7 +228,7 @@ export class Board {
     return this._padding[0] + this._padding[2];
   }
 
-  private _emptyArrayOfLength(length: number) {
+  private _createBitOffArrayOfLength(length: number) {
     return Array.apply(null, Array(length)).map(() => 0);
   }
 };
