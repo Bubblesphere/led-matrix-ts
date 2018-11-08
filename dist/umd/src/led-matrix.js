@@ -740,6 +740,10 @@ class Renderer {
             if (this._parameters.element == null) {
                 throw `Could not find the element to render led matrix`;
             }
+        } else {
+            if (this._parameters.element.clientHeight == 0 || this._parameters.element.clientWidth == 0) {
+                this._parameters.element = document.getElementById(this._parameters.elementId);
+            }
         }
     }
 }
