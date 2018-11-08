@@ -100,12 +100,17 @@ export class Board {
    * Returns the total width of the board
    */
   public get width() {
-    // horizontal padding + space between characters + characters width
-    return this._horizontalPaddingWidth() + 
-      this._totalSpacingWidth() +
-      this._characters
+    const paddingAndSpacingWidth = this._horizontalPaddingWidth() + this._totalSpacingWidth();
+    if (this._characters.length > 0) {
+      // horizontal padding + space between characters + characters width
+      return paddingAndSpacingWidth + this._characters
         .map(character => character.width)
         .reduce((accumulator, current) => accumulator + current);
+    } else {
+      // horizontal padding + space between characters
+      return paddingAndSpacingWidth;
+    }
+
   }
 
   /**
@@ -113,9 +118,13 @@ export class Board {
    */
   public get height() {
     // vertical padding + size of tallest character
-    return this._verticalPaddingWidth() + 
-      this._characters
-        .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
+    if (this._characters.length > 0) {
+      return this._verticalPaddingWidth() + 
+        this._characters
+          .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
+    } else {
+      return this._verticalPaddingWidth();
+    }
   }
 
   /**
