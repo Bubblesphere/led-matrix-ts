@@ -198,10 +198,19 @@ class Board {
         return this._padding;
     }
     get width() {
-        return this._horizontalPaddingWidth() + this._totalSpacingWidth() + this._characters.map(character => character.width).reduce((accumulator, current) => accumulator + current);
+        const paddingAndSpacingWidth = this._horizontalPaddingWidth() + this._totalSpacingWidth();
+        if (this._characters.length > 0) {
+            return paddingAndSpacingWidth + this._characters.map(character => character.width).reduce((accumulator, current) => accumulator + current);
+        } else {
+            return paddingAndSpacingWidth;
+        }
     }
     get height() {
-        return this._verticalPaddingWidth() + this._characters.reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
+        if (this._characters.length > 0) {
+            return this._verticalPaddingWidth() + this._characters.reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
+        } else {
+            return this._verticalPaddingWidth();
+        }
     }
     getColumnAtIndex(index) {
         index %= this.width;
