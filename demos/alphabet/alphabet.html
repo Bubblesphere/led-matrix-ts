@@ -17,7 +17,7 @@
       {
         "characters": [
             {
-            "patterns": ["[smiley]"],
+            "patterns": ["smiley"],
             "output": [ 0, 0, 1, 1, 1, 1, 1, 0, 0,
                         0, 1, 0, 0, 0, 0, 0, 1, 0,
                         1, 0, 0, 1, 0, 1, 0, 0, 1,
@@ -36,7 +36,7 @@
     <xmp>
       const ledMatrix = new LedMatrix({
         pathCharacters: "customAlphabet.json",
-        input: "[smiley]"
+        input: "(smiley)"
       });
       
       ledMatrix.init();

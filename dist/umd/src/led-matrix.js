@@ -236,6 +236,10 @@ class Board {
     }
     load(input, dictionnary) {
         const escapeCharacter = '~';
+        const delimiterWord = {
+            start: "(",
+            end: ")"
+        };
         this._characters = [];
         for (let i = 0; i < input.length; i++) {
             let characterBuffer = input[i];
@@ -244,13 +248,14 @@ class Board {
                     throw `No character escaped at the end of the string input`;
                 }
                 characterBuffer = input[++i];
-            } else if (characterBuffer === "[" && (i === 0 || input[i - 1] !== escapeCharacter)) {
+            } else if (characterBuffer === delimiterWord.start && (i === 0 || input[i - 1] !== escapeCharacter)) {
                 do {
                     characterBuffer += input[++i];
                     if (i == input.length) {
-                        throw `Could not find the end bracket for pattern ${characterBuffer}. To escape the bracket, use ${escapeCharacter}`;
+                        throw `Could not find the ending delimiter "${delimiterWord.end}" for pattern ${characterBuffer}`;
                     }
-                } while (input[i] != "]");
+                } while (input[i] != delimiterWord.end);
+                characterBuffer = characterBuffer.slice(1, -1);
             }
             this._characters.push(dictionnary.find(characterBuffer));
         }
@@ -557,7 +562,7 @@ class panel_Panel {
     }
     set increment(value) {
         if (value == null) {
-            throw `Panel's fps cannot be set to nu_rendererl`;
+            throw `Panel's fps cannot be set to a null value`;
         }
         if (value < 0) {
             throw `Panel's fps cannot be set to a negative number (${value})`;
@@ -762,10 +767,10 @@ class canva_renderer_CanvaRenderer extends Renderer {
     render(display) {
         super.render(display);
         const ctx = this.element.getContext("2d");
-        if (this.element.width != this.element.clientWidth) {
+        if (this.element.width != this.element.clientWidth && this.element.clientWidth != 0) {
             this.element.width = this.element.clientWidth;
         }
-        if (this.element.height != this.element.clientHeight) {
+        if (this.element.height != this.element.clientHeight && this.element.clientHeight != 0) {
             this.element.height = this.element.clientHeight;
         }
         ctx.clearRect(0, 0, this.element.width, this.element.height);
@@ -878,7 +883,26 @@ class renderer_builder_RendererBuilder {
     }
 }
 //# sourceMappingURL=renderer-builder.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/panel-recorder.js
+class PanelRecorder {
+    static getSequence(panel) {
+        let sequence = [];
+        panel.PanelUpdate.on(panelFrame => {
+            sequence.push(panelFrame.display);
+        });
+        let prevIndex = panel.index;
+        let i = 0;
+        panel.seek(0);
+        for (let i = 0; i <= panel.indexUpperBound; i++) {
+            panel.tick();
+        }
+        panel.seek(prevIndex);
+        return sequence;
+    }
+}
+//# sourceMappingURL=panel-recorder.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/led-matrix.js
+
 
 
 
@@ -934,6 +958,9 @@ class led_matrix_LedMatrix {
     }
     get indexUpperBound() {
         return this._panel.indexUpperBound;
+    }
+    getSequence() {
+        return PanelRecorder.getSequence(this._panel);
     }
     addCharacter(character) {
         this._dictionary.add([character]);

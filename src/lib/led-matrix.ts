@@ -9,6 +9,7 @@ import { bit } from "./bit-array";
 import { CharacterDictionary } from "./character-dictionary";
 import { CharactersJSON } from "./character-json";
 import { Character } from "./character";
+import { PanelRecorder } from './panel-recorder';
 
 interface ExposedBoardParameters {
     letterSpacing?: number
@@ -115,6 +116,11 @@ export class LedMatrix implements LedMatrixParameters {
 
     public get indexUpperBound() {
         return this._panel.indexUpperBound;
+    }
+
+    // PanelRecorder
+    public getSequence() {
+        return PanelRecorder.getSequence(this._panel);
     }
 
     // CharacterDictionary
