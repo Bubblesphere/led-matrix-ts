@@ -35,11 +35,11 @@ export abstract class CanvaRenderer extends Renderer   {
     super.render(display);
     const ctx = this.element.getContext("2d");
 
-    if (this.element.width != this.element.clientWidth) {
+    if (this.element.width != this.element.clientWidth && this.element.clientWidth != 0) {
       this.element.width = this.element.clientWidth;
     }
 
-    if (this.element.height != this.element.clientHeight) {
+    if (this.element.height != this.element.clientHeight && this.element.clientHeight != 0) {
       this.element.height = this.element.clientHeight;
     }
 
