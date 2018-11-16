@@ -1,11 +1,13 @@
 import { Character } from './character';
-import { bit } from './bit-array';
+import { bit, BitArray } from './bit-array';
 import { Padding, DetailedPadding } from './types';
 import { CharacterDictionary } from './character-dictionary';
+import { NearestNeighbor } from "./character-sizer";
 
 export interface BoardParameters {
   letterSpacing: number
   padding: Padding,
+  size: number
 }
 
 /**
@@ -17,6 +19,7 @@ export class Board {
   private _letterSpacing: number;
   private _padding: DetailedPadding;
   private _input: string;
+  private _size: number;
 
   /**
    * Creates a board
@@ -26,6 +29,7 @@ export class Board {
     this._characters = [];
     this._letterSpacing = params.letterSpacing;
     this.padding = params.padding;
+    this._size = params.size;
   }
 
   /**
@@ -62,6 +66,10 @@ export class Board {
    */
   public get input() {
     return this._input;
+  }
+
+  public get size() {
+    return this._size;
   }
 
   /**
@@ -193,13 +201,16 @@ export class Board {
    * @param input The input to load on the board
    * @param dictionnary The dictionnary for which the input is tested against
    */
-  public load(input: string, dictionnary: CharacterDictionary): void {
-    const escapeCharacter = '~';
+  public load(input: string, dictionnary: CharacterDictionary, size?: number): void {
+    const escapeCharacter = '\\';
     const delimiterWord = {
       start: "(",
       end: ")"
     }
     this._characters = [];
+    if (size) {
+      this._size = size;
+    }
     
     for(let i = 0; i < input.length; i++) {
       let characterBuffer = input[i];
@@ -225,8 +236,12 @@ export class Board {
         // Remove delimiter from buffer
         characterBuffer = characterBuffer.slice(1, -1);
       }
-
-      this._characters.push(dictionnary.find(characterBuffer));
+      const character = dictionnary.find(characterBuffer);
+      this._characters.push(new Character(
+        character.pattern,
+        new BitArray(NearestNeighbor.scale(character.output.atIndexRange(0, character.output.size), character.width, this._size)),
+        character.width * this._size
+      ));
     }
     this._input = input;
   }

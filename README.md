@@ -45,7 +45,13 @@ A library for simulating an LED matrix panel in the browser. The library offers 
 **ts**
 ```typescript
 const ledMatrix = new LedMatrix();
-ledMatrix.init();
+
+CharactersJSON.import("alphabet.json", (characters) => {
+    ledMatrix.addCharacters(characters);
+    ledMatrix.input = "hello world";
+    ledMatrix.play();
+});
+
 ```
 
 

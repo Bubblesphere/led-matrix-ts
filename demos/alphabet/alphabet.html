@@ -34,12 +34,14 @@
 
     <h2>index.ts</h2>
     <xmp>
-      const ledMatrix = new LedMatrix({
-        pathCharacters: "customAlphabet.json",
-        input: "(smiley)"
+      const ledMatrix = new LedMatrix();
+
+      CharactersJSON.import("customAlphabet.json", (characters) => {
+        ledMatrix.addCharacters(characters);
+        ledMatrix.input = "(smiley)";
+        ledMatrix.play();
       });
       
-      ledMatrix.init();
     </xmp>
 
     <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>

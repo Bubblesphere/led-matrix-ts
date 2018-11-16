@@ -11,16 +11,17 @@ import { CharactersJSON } from "./character-json";
 import { Character } from "./character";
 import { PanelRecorder } from './panel-recorder';
 
+
 interface ExposedBoardParameters {
     letterSpacing?: number
     padding?: Padding,
-    input?: string
+    size?: number
 }
 
 interface ExposedPanelParameters {
     panelType?: PanelType,
     /**  */
-    renderer?: Renderer,
+    renderer?: Renderer | RendererBuilderParameters,
     /** Increment at each frame */
     increment?: number,
     /** Frames of the panel scrolled per second */
@@ -41,7 +42,10 @@ interface SetRendererBuilderParameters {
     elementId: string
 }
 
-export type LedMatrixParameters = {pathCharacters?: string} & ExposedBoardParameters & ExposedPanelParameters & RendererBuilderParameters;
+export type LedMatrixParameters = 
+    ExposedBoardParameters & 
+    ExposedPanelParameters & 
+    RendererBuilderParameters;
 
 
 export class LedMatrix implements LedMatrixParameters {
@@ -64,14 +68,16 @@ export class LedMatrix implements LedMatrixParameters {
 
         this._board = new Board({
             letterSpacing: this._params.letterSpacing,
-            padding: this._params.padding
+            padding: this._params.padding,
+            size: this._params.size
         });
         this._panelType = this._params.panelType;
+
         this._panel = PanelBuilder.build(
             this._params.panelType, 
             { 
                 board: this._board, 
-                renderer: this._params.renderer,
+                renderer: this._params.renderer as Renderer,
                 fps: this._params.fps,
                 increment: this._params.increment,
                 reverse: this._params.reverse,
@@ -84,22 +90,11 @@ export class LedMatrix implements LedMatrixParameters {
             reachingBoundary: this._panel.ReachingBoundary,
             ready: this.Ready
         };
+
+        this._dictionary = new CharacterDictionary();
     }
 
     public get Ready() { return this.onReady.expose(); }
-
-    public init(size?: number,callback?: () => any) {
-        CharactersJSON.import(this._params.pathCharacters, size ? size:  1, (characters) => {
-            this._dictionary = new CharacterDictionary();
-            this._dictionary.add(characters);
-            this._board.load(this._board.input != null ? this._board.input : this._params.input, this._dictionary);
-            //this._panel.play();
-            this.onReady.trigger();
-            if (callback) {
-                callback();
-            }
-        });
-    }
 
     public get size() {
         return this._size;
@@ -107,7 +102,7 @@ export class LedMatrix implements LedMatrixParameters {
 
     public set size(value: number) {
         this._size = value;
-        this.init(value);
+        this._board.load(this.input, this._dictionary, this.size);
     }
 
     public get index() {
@@ -124,6 +119,9 @@ export class LedMatrix implements LedMatrixParameters {
     }
 
     // CharacterDictionary
+    public addCharacters(characters: Character[]) {
+        this._dictionary.add(characters);
+    }
     public addCharacter(character: Character) {
         this._dictionary.add([character]);
     }
@@ -273,9 +271,7 @@ export class LedMatrix implements LedMatrixParameters {
 
     // LedMatrix private
     private _validateParameters(params: LedMatrixParameters) {
-        const defaultParams: LedMatrixParameters = {
-            input: "hello world",
-            pathCharacters: "alphabet.json",
+        let defaultParams: LedMatrixParameters = {
             fps: 30,
             increment: 1,
             panelType: PanelType.SideScrollingPanel,
@@ -284,32 +280,31 @@ export class LedMatrix implements LedMatrixParameters {
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,
-            padding: [0, 4]
+            padding: [0, 4],
+            size: 1
         }
 
         if (params) {
-            params.input = this._valueOrDefault(params.input, defaultParams.input);
-            params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
             params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
+            params.size = this._valueOrDefault(params.size, defaultParams.size);
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
             params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);;
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
             params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
 
-            if (params.renderer != null) {
+            if (params.renderer instanceof Renderer) {
                 params.renderer = params.renderer;
             } else {
-                params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType)
-                params.elementId = this._valueOrDefault(params.elementId, defaultParams.elementId);
-                params.renderer = RendererBuilder.build(params.rendererType, params.elementId);
+                params.renderer = RendererBuilder.build(this._valueOrDefault(params.renderer.rendererType, defaultParams.rendererType), this._valueOrDefault(params.elementId, defaultParams.elementId));
             }
             
 
             return params;
         }
 
+        defaultParams.renderer = RendererBuilder.build(defaultParams.rendererType, defaultParams.elementId);
         return defaultParams;
     }
 

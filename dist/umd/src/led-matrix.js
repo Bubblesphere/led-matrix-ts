@@ -152,12 +152,95 @@ class BitArray {
 }
 ;
 //# sourceMappingURL=bit-array.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/character.js
+class Character {
+    constructor(pattern, output, width) {
+        this._pattern = pattern;
+        this._output = output;
+        if (output.size >= width) {
+            this._width = width;
+        } else {
+            throw `Output size (${output.size}) can't be smaller than the character's width (${width})`;
+        }
+        if (output.size % width === 0) {
+            this._height = output.size / width;
+        } else {
+            throw `Output size (${output.size}) must be divisible by the character's width (${width})`;
+        }
+    }
+    getColumn(index) {
+        if (index < 0) {
+            throw `Index (${index}) cannot be negative`;
+        }
+        if (index >= this._width) {
+            throw `Index (${index}) is greater than the width of the character (${this._width})`;
+        }
+        let column = [];
+        for (let i = 0; i < this._height; i++) {
+            column.push(this._output.atIndex(i * this._width + index));
+        }
+        return column;
+    }
+    getRow(index) {
+        if (index < 0) {
+            throw `Index (${index}) cannot be negative`;
+        }
+        if (index >= this._height) {
+            throw `Index (${index}) is greater than the height of the character (${this._height})`;
+        }
+        let row = [];
+        for (let i = 0; i < this._width; i++) {
+            row.push(this._output.atIndex(index * this._width + i));
+        }
+        return row;
+    }
+    get width() {
+        return this._width;
+    }
+    get height() {
+        return this._height;
+    }
+    get pattern() {
+        return this._pattern;
+    }
+    get output() {
+        return this._output;
+    }
+    hasPattern(input) {
+        return this._pattern == input;
+    }
+}
+;
+//# sourceMappingURL=character.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/character-sizer.js
+class NearestNeighbor {
+    static scale(matrix, width, factor) {
+        const ratio = 1 / factor;
+        const h1 = matrix.length / width;
+        const w2 = width * factor;
+        const h2 = h1 * factor;
+        let finalMatrix = new Array(w2 * h2);
+        for (let i = 0; i < h2; i++) {
+            for (let j = 0; j < w2; j++) {
+                const px = Math.floor(j * ratio);
+                const py = Math.floor(i * ratio);
+                finalMatrix[i * w2 + j] = matrix[py * width + px];
+            }
+        }
+        return finalMatrix;
+    }
+}
+//# sourceMappingURL=character-sizer.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/board.js
-class Board {
+
+
+
+class board_Board {
     constructor(params) {
         this._characters = [];
         this._letterSpacing = params.letterSpacing;
         this.padding = params.padding;
+        this._size = params.size;
     }
     set letterSpacing(value) {
         if (value == null) {
@@ -176,6 +259,9 @@ class Board {
     }
     get input() {
         return this._input;
+    }
+    get size() {
+        return this._size;
     }
     set padding(value) {
         value.forEach(x => {
@@ -243,13 +329,16 @@ class Board {
         charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._letterSpacing);
         return this._createBitOffArrayOfLength(this._padding[3]).concat(charactersWithSpace).concat(this._createBitOffArrayOfLength(this._padding[1]));
     }
-    load(input, dictionnary) {
-        const escapeCharacter = '~';
+    load(input, dictionnary, size) {
+        const escapeCharacter = '\\';
         const delimiterWord = {
             start: "(",
             end: ")"
         };
         this._characters = [];
+        if (size) {
+            this._size = size;
+        }
         for (let i = 0; i < input.length; i++) {
             let characterBuffer = input[i];
             if (characterBuffer === escapeCharacter) {
@@ -266,7 +355,8 @@ class Board {
                 } while (input[i] != delimiterWord.end);
                 characterBuffer = characterBuffer.slice(1, -1);
             }
-            this._characters.push(dictionnary.find(characterBuffer));
+            const character = dictionnary.find(characterBuffer);
+            this._characters.push(new Character(character.pattern, new BitArray(NearestNeighbor.scale(character.output.atIndexRange(0, character.output.size), character.width, this._size)), character.width * this._size));
         }
         this._input = input;
     }
@@ -285,66 +375,6 @@ class Board {
 }
 ;
 //# sourceMappingURL=board.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/character.js
-class Character {
-    constructor(pattern, output, width) {
-        this._pattern = pattern;
-        this._output = output;
-        if (output.size >= width) {
-            this._width = width;
-        } else {
-            throw `Output size (${output.size}) can't be smaller than the character's width (${width})`;
-        }
-        if (output.size % width === 0) {
-            this._height = output.size / width;
-        } else {
-            throw `Output size (${output.size}) must be divisible by the character's width (${width})`;
-        }
-    }
-    getColumn(index) {
-        if (index < 0) {
-            throw `Index (${index}) cannot be negative`;
-        }
-        if (index >= this._width) {
-            throw `Index (${index}) is greater than the width of the character (${this._width})`;
-        }
-        let column = [];
-        for (let i = 0; i < this._height; i++) {
-            column.push(this._output.atIndex(i * this._width + index));
-        }
-        return column;
-    }
-    getRow(index) {
-        if (index < 0) {
-            throw `Index (${index}) cannot be negative`;
-        }
-        if (index >= this._height) {
-            throw `Index (${index}) is greater than the height of the character (${this._height})`;
-        }
-        let row = [];
-        for (let i = 0; i < this._width; i++) {
-            row.push(this._output.atIndex(index * this._width + i));
-        }
-        return row;
-    }
-    get width() {
-        return this._width;
-    }
-    get height() {
-        return this._height;
-    }
-    get pattern() {
-        return this._pattern;
-    }
-    get output() {
-        return this._output;
-    }
-    hasPattern(input) {
-        return this._pattern == input;
-    }
-}
-;
-//# sourceMappingURL=character.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/character-dictionary.js
 class CharacterDictionary {
     constructor() {
@@ -412,44 +442,21 @@ class CharacterDictionary {
 }
 ;
 //# sourceMappingURL=character-dictionary.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/character-sizer.js
-class NearestNeighbor {
-    static scale(matrix, width, factor) {
-        const ratio = 1 / factor;
-        const h1 = matrix.length / width;
-        const w2 = width * factor;
-        const h2 = h1 * factor;
-        let finalMatrix = new Array(w2 * h2);
-        for (let i = 0; i < h2; i++) {
-            for (let j = 0; j < w2; j++) {
-                const px = Math.floor(j * ratio);
-                const py = Math.floor(i * ratio);
-                finalMatrix[i * w2 + j] = matrix[py * width + px];
-            }
-        }
-        return finalMatrix;
-    }
-}
-//# sourceMappingURL=character-sizer.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/character-json.js
 
 
-
 class character_json_CharactersJSON {
-    static import(path, size, success) {
+    static import(path, success) {
         fetch(path).then(response => {
             return response.text();
         }).then(response => {
-            success(character_json_CharactersJSON.parse(response, size));
+            success(character_json_CharactersJSON.parse(response));
         }).catch(error => {
             throw `Couldn't fetch file: ${path}`;
         });
     }
     static export() {}
-    static parse(json, size) {
-        if (size < 1 || size > 10) {
-            throw 'Size should be between 1 and 10';
-        }
+    static parse(json) {
         const data = JSON.parse(json);
         if (data == null) {
             throw 'Invalid character json file';
@@ -467,9 +474,7 @@ class character_json_CharactersJSON {
             if (x.width == null) {
                 throw 'Invalid character json file: Can\'t find property width for a character';
             }
-            const characterRaw = x.output.map(x => x);
-            const character = NearestNeighbor.scale(characterRaw, x.width, size);
-            return new Character(x.pattern, new BitArray(character), x.width * size);
+            return new Character(x.pattern, new BitArray(x.output.map(x => x)), x.width);
         });
     }
     static stringify(characters) {
@@ -926,9 +931,10 @@ class led_matrix_LedMatrix {
     constructor(params) {
         this.onReady = new Event();
         this._params = this._validateParameters(params);
-        this._board = new Board({
+        this._board = new board_Board({
             letterSpacing: this._params.letterSpacing,
-            padding: this._params.padding
+            padding: this._params.padding,
+            size: this._params.size
         });
         this._panelType = this._params.panelType;
         this._panel = panel_builder_PanelBuilder.build(this._params.panelType, {
@@ -944,27 +950,17 @@ class led_matrix_LedMatrix {
             reachingBoundary: this._panel.ReachingBoundary,
             ready: this.Ready
         };
+        this._dictionary = new CharacterDictionary();
     }
     get Ready() {
         return this.onReady.expose();
-    }
-    init(size, callback) {
-        character_json_CharactersJSON.import(this._params.pathCharacters, size ? size : 1, characters => {
-            this._dictionary = new CharacterDictionary();
-            this._dictionary.add(characters);
-            this._board.load(this._board.input != null ? this._board.input : this._params.input, this._dictionary);
-            this.onReady.trigger();
-            if (callback) {
-                callback();
-            }
-        });
     }
     get size() {
         return this._size;
     }
     set size(value) {
         this._size = value;
-        this.init(value);
+        this._board.load(this.input, this._dictionary, this.size);
     }
     get index() {
         return this._panel.index;
@@ -974,6 +970,9 @@ class led_matrix_LedMatrix {
     }
     getSequence() {
         return PanelRecorder.getSequence(this._panel);
+    }
+    addCharacters(characters) {
+        this._dictionary.add(characters);
     }
     addCharacter(character) {
         this._dictionary.add([character]);
@@ -1084,9 +1083,7 @@ class led_matrix_LedMatrix {
         return this._panel.width;
     }
     _validateParameters(params) {
-        const defaultParams = {
-            input: "hello world",
-            pathCharacters: "alphabet.json",
+        let defaultParams = {
             fps: 30,
             increment: 1,
             panelType: panel_builder_PanelType.SideScrollingPanel,
@@ -1095,28 +1092,27 @@ class led_matrix_LedMatrix {
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,
-            padding: [0, 4]
+            padding: [0, 4],
+            size: 1
         };
         if (params) {
-            params.input = this._valueOrDefault(params.input, defaultParams.input);
-            params.pathCharacters = this._valueOrDefault(params.pathCharacters, defaultParams.pathCharacters);
             params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
+            params.size = this._valueOrDefault(params.size, defaultParams.size);
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
             params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
             ;
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
             params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
-            if (params.renderer != null) {
+            if (params.renderer instanceof Renderer) {
                 params.renderer = params.renderer;
             } else {
-                params.rendererType = this._valueOrDefault(params.rendererType, defaultParams.rendererType);
-                params.elementId = this._valueOrDefault(params.elementId, defaultParams.elementId);
-                params.renderer = renderer_builder_RendererBuilder.build(params.rendererType, params.elementId);
+                params.renderer = renderer_builder_RendererBuilder.build(this._valueOrDefault(params.renderer.rendererType, defaultParams.rendererType), this._valueOrDefault(params.elementId, defaultParams.elementId));
             }
             return params;
         }
+        defaultParams.renderer = renderer_builder_RendererBuilder.build(defaultParams.rendererType, defaultParams.elementId);
         return defaultParams;
     }
     _valueOrDefault(value, defaultValue) {
@@ -1126,7 +1122,7 @@ class led_matrix_LedMatrix {
 //# sourceMappingURL=led-matrix.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return Board; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return board_Board; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Character", function() { return Character; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharacterDictionary", function() { return CharacterDictionary; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharactersJSON", function() { return character_json_CharactersJSON; });

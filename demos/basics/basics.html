@@ -13,10 +13,13 @@
     </ul>
 
     <xmp>
-      import LedMatrix from '../../lib/led-matrix';
-
       const ledMatrix = new LedMatrix();
-      ledMatrix.init();
+      
+      CharactersJSON.import("alphabet.json", (characters) => {
+          ledMatrix.addCharacters(characters);
+          ledMatrix.input = "hello world";
+          ledMatrix.play();
+      });      
     </xmp>
 
     <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
