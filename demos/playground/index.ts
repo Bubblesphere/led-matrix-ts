@@ -2,14 +2,15 @@ import { LedMatrix } from '../../src/lib/led-matrix';
 import { PanelType } from '../../src/lib/panel-builder';
 import { AsciiRenderer } from '../../src/lib/rendering/ascii-renderer';
 import { CanvaRenderers } from '../../src/lib/rendering/canva-renderers';
-import { CanvaRendererParameter } from '../../src/lib/rendering/canva-renderer';
+import { CharactersJSON } from '../../src/lib/character-json';
 
-const ledMatrix = new LedMatrix({
-  pathCharacters: "alphabett.json"
-});
-ledMatrix.init(1, () => {
+const ledMatrix = new LedMatrix();
+
+CharactersJSON.import("alphabett.json", (characters) => {
+  ledMatrix.addCharacters(characters);
   ledMatrix.play();
 });
+
 
 document.getElementById("input-button").addEventListener("click", (e) => {
   const value = (document.getElementById("input-value") as HTMLInputElement).value;
