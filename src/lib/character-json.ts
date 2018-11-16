@@ -1,16 +1,15 @@
 import { CharactersJSONSchema } from "./types";
 import { Character } from "./character";
 import { BitArray, bit } from "./bit-array";
-import { NearestNeighbor } from "./character-sizer";
 
 export class CharactersJSON {
-    static import(path: string, size: number, success: (content: Character[]) => any) {
+    static import(path: string, success: (content: Character[]) => any) {
         fetch(path)
         .then((response) => {
             return response.text();
         })
         .then((response) => {
-            success(CharactersJSON.parse(response, size))
+            success(CharactersJSON.parse(response))
         })
         .catch((error) => {
             throw `Couldn't fetch file: ${path}`;
@@ -21,11 +20,7 @@ export class CharactersJSON {
         // TODO: Implement
     }
 
-    static parse(json: string, size: number): Character[] {
-        if (size < 1 || size > 10) {
-            throw 'Size should be between 1 and 10';
-        }
-
+    static parse(json: string): Character[] {
         const data = JSON.parse(json) as CharactersJSONSchema;
 
         if (data == null) {
@@ -46,9 +41,7 @@ export class CharactersJSON {
             if (x.width == null) {
                 throw 'Invalid character json file: Can\'t find property width for a character';
             }
-            const characterRaw = x.output.map(x => x as bit);
-            const character = NearestNeighbor.scale(characterRaw, x.width, size);
-            return new Character(x.pattern, new BitArray(character), x.width * size) 
+            return new Character(x.pattern, new BitArray(x.output.map(x => x as bit)), x.width) 
         });
     }
 

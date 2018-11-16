@@ -7,7 +7,7 @@ export class Character {
   private _pattern: string;
   private _output: BitArray;
   private _width: number;
-  private _height: number;
+  private _height: number; 
 
   /**
    * Creates a character
