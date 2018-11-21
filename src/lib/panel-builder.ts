@@ -1,6 +1,7 @@
-import { Panel, PanelParameters } from "./panel";
+import { PanelPlayer, PanelPlayerParameters } from "./panel-player";
 import { SideScrollingPanel } from "./panels/side-scrolling-panel";
 import { VerticalScrollingPanel } from "./panels/vertical-scrolling-panel";
+import { PanelSequencerParameters } from "./panel-sequencer";
 
 export enum PanelType {
     SideScrollingPanel,
@@ -8,12 +9,20 @@ export enum PanelType {
 }
 
 export class PanelBuilder {
-    static build(panelType: PanelType, params: PanelParameters) : Panel {
+    static build(panelType: PanelType, playerParams: PanelPlayerParameters, sequencerParams: PanelSequencerParameters) : PanelPlayer {
         switch(panelType) {
             case PanelType.SideScrollingPanel:
-                return new SideScrollingPanel(params);
+                return new PanelPlayer({
+                    fps: playerParams.fps,
+                    renderer: playerParams.renderer,
+                    panelSequencer: new SideScrollingPanel(sequencerParams)
+                });
             case PanelType.VerticalScrollingPanel:
-                return new VerticalScrollingPanel(params);
+                return new PanelPlayer({
+                    fps: playerParams.fps,
+                    renderer: playerParams.renderer,
+                    panelSequencer: new VerticalScrollingPanel(sequencerParams)
+                });
         }
     }
 }

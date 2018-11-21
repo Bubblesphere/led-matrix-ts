@@ -10,6 +10,7 @@ import { CharacterDictionary } from "./character-dictionary";
 import { CharactersJSON } from "./character-json";
 import { Character } from "./character";
 import { PanelRecorder } from './panel-recorder';
+import { PanelPlayer } from "./panel-player";
 
 
 interface ExposedBoardParameters {
@@ -52,7 +53,7 @@ export class LedMatrix implements LedMatrixParameters {
     private _params: LedMatrixParameters;
     private _board: Board;
     private _dictionary: CharacterDictionary;
-    private _panel: Panel;
+    private _panelPlayer: PanelPlayer;
     private _panelType: PanelType;
     private _size: number;
 
@@ -73,12 +74,15 @@ export class LedMatrix implements LedMatrixParameters {
         });
         this._panelType = this._params.panelType;
 
-        this._panel = PanelBuilder.build(
+        this._panelPlayer = PanelBuilder.build(
             this._params.panelType, 
             { 
-                board: this._board, 
                 renderer: this._params.renderer as Renderer,
                 fps: this._params.fps,
+                panelSequencer: null
+            },
+            {
+                board: this._board,
                 increment: this._params.increment,
                 reverse: this._params.reverse,
                 width: this._params.panelWidth
@@ -86,8 +90,8 @@ export class LedMatrix implements LedMatrixParameters {
         );
 
         this.event = {
-            panelUpdate: this._panel.PanelUpdate,
-            reachingBoundary: this._panel.ReachingBoundary,
+            panelUpdate: this._panelPlayer.PanelUpdate,
+            reachingBoundary: this._panelPlayer.ReachingBoundary,
             ready: this.Ready
         };
 
@@ -106,17 +110,17 @@ export class LedMatrix implements LedMatrixParameters {
     }
 
     public get index() {
-        return this._panel.index;
+        return this._panelPlayer.index;
     }
 
     public get indexUpperBound() {
-        return this._panel.indexUpperBound;
+        return this._panelPlayer.panelSequencer.indexUpperBound;
     }
 
     // PanelRecorder
-    public getSequence() {
-        return PanelRecorder.getSequence(this._panel);
-    }
+    /*public getSequence() {
+        return PanelRecorder.getSequence(this._panelPlayer);
+    }*/
 
     // CharacterDictionary
     public addCharacters(characters: Character[]) {
@@ -146,7 +150,7 @@ export class LedMatrix implements LedMatrixParameters {
     public set spacing(value: number) {
         this._board.letterSpacing = value;
         // Any changes to the board requires to reassign it to the panel
-        this._panel.board = this._board;
+        this._panelPlayer.panelSequencer.board = this._board;
     }
 
     public get spacing() {
@@ -156,7 +160,7 @@ export class LedMatrix implements LedMatrixParameters {
     public set padding(value: Padding) {
         this._board.padding = value;
         // Any changes to the board requires to reassign it to the panel
-        this._panel.board = this._board;
+        this._panelPlayer.panelSequencer.board = this._board;
     }
 
     public get padding() {
@@ -181,43 +185,46 @@ export class LedMatrix implements LedMatrixParameters {
 
     // Panel
     public play() {
-        this._panel.play();
+        this._panelPlayer.play();
     }
 
     public stop() {
-        this._panel.stop();
+        this._panelPlayer.stop();
     }
 
     public pause() {
-        this._panel.pause();
+        this._panelPlayer.pause();
     }
 
     public resume() {
-        this._panel.resume();
+        this._panelPlayer.resume();
     }
 
     public tick() {
-        this._panel.tick();
+        this._panelPlayer.tick();
     }
 
     public seek(frame: number) {
-        this._panel.seek(frame);
+        this._panelPlayer.seek(frame);
     }
 
     public set panelType(value: PanelType) {
         this._panelType = value;
-        this._panel.stop();
-        this._panel = PanelBuilder.build(this._panelType,
+        this._panelPlayer.stop();
+        this._panelPlayer = PanelBuilder.build(this._panelType,
+            {  
+                renderer: this._panelPlayer.renderer,
+                fps: this._panelPlayer.fps,
+                panelSequencer: null
+            },
             { 
-                board: this._board, 
-                renderer: this._panel.renderer,
-                fps: this._panel.fps,
-                increment: this._panel.increment,
-                reverse: this._panel.reverse,
-                width: this._panel.width
+                board: this._board,
+                increment: this._panelPlayer.panelSequencer.increment,
+                reverse: this._panelPlayer.panelSequencer.reverse,
+                width: this._panelPlayer.panelSequencer.width
             }
         );
-        this._panel.play();
+        this._panelPlayer.play();
     }
 
     public get panelType() {
@@ -225,47 +232,47 @@ export class LedMatrix implements LedMatrixParameters {
     }
 
     public set renderer(value: Renderer) {
-        this._panel.renderer = value;
+        this._panelPlayer.renderer = value;
     }
 
     public setRendererFromBuilder(value: SetRendererBuilderParameters) {
-        this._panel.renderer = RendererBuilder.build(value.rendererType, value.elementId);
+        this._panelPlayer.renderer = RendererBuilder.build(value.rendererType, value.elementId);
     }
 
     public get renderer() {
-        return this._panel.renderer;
+        return this._panelPlayer.renderer;
     }
 
     public set fps(value: number) {
-        this._panel.fps = value;
+        this._panelPlayer.fps = value;
     }
 
     public get fps() {
-        return this._panel.fps;
+        return this._panelPlayer.fps;
     }
 
     public set increment(value: number) {
-        this._panel.increment = value;
+        this._panelPlayer.panelSequencer.increment = value;
     }
 
     public get increment() {
-        return this._panel.increment;
+        return this._panelPlayer.panelSequencer.increment;
     }
 
     public set reverse(value: boolean) {
-        this._panel.reverse = value;
+        this._panelPlayer.panelSequencer.reverse = value;
     }
 
     public get reverse() {
-        return this._panel.reverse;
+        return this._panelPlayer.panelSequencer.reverse;
     }
 
     public set viewportWidth(value: number) {
-        this._panel.width = value;
+        this._panelPlayer.panelSequencer.width = value;
     }
 
     public get viewportWidth() {
-        return this._panel.width;
+        return this._panelPlayer.panelSequencer.width;
     }
     
 
