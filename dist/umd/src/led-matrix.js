@@ -86,9 +86,33 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
+// CONCATENATED MODULE: ./dist/esm/lib/utils/exception.js
+class Exception {
+    static throwIfNull(value, valueDescription) {
+        if (value == null) {
+            throw `${valueDescription} property cannot be set to null`;
+        }
+    }
+    static throwIfNegative(value, valueDescription) {
+        if (value < 0) {
+            throw `${valueDescription} property cannot be set to a negative number (${value})`;
+        }
+    }
+    static throwIfNotBetween(value, valueDescription, rangeFrom, rangeTo) {
+        if (value < rangeFrom || value > rangeTo) {
+            throw `Seek expects a value between ${rangeFrom} and ${rangeTo}`;
+        }
+    }
+    static getDescriptionForProperty(className, methodName) {
+        return `${className}'s ${methodName}`;
+    }
+}
+//# sourceMappingURL=exception.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/core/character.js
-class Character {
+
+class character_Character {
     constructor(pattern, output, width) {
+        this.CLASS_NAME = character_Character.name;
         this._pattern = pattern;
         this._output = output;
         if (output.size >= width) {
@@ -102,32 +126,6 @@ class Character {
             throw `Output size (${output.size}) must be divisible by the character's width (${width})`;
         }
     }
-    getColumn(index) {
-        if (index < 0) {
-            throw `Index (${index}) cannot be negative`;
-        }
-        if (index >= this._width) {
-            throw `Index (${index}) is greater than the width of the character (${this._width})`;
-        }
-        let column = [];
-        for (let i = 0; i < this._height; i++) {
-            column.push(this._output.atIndex(i * this._width + index));
-        }
-        return column;
-    }
-    getRow(index) {
-        if (index < 0) {
-            throw `Index (${index}) cannot be negative`;
-        }
-        if (index >= this._height) {
-            throw `Index (${index}) is greater than the height of the character (${this._height})`;
-        }
-        let row = [];
-        for (let i = 0; i < this._width; i++) {
-            row.push(this._output.atIndex(index * this._width + i));
-        }
-        return row;
-    }
     get width() {
         return this._width;
     }
@@ -139,6 +137,22 @@ class Character {
     }
     get output() {
         return this._output;
+    }
+    getColumn(index) {
+        Exception.throwIfNotBetween(index, Exception.getDescriptionForProperty(this.CLASS_NAME, 'getColumn'), 0, this._width - 1);
+        let column = [];
+        for (let i = 0; i < this._height; i++) {
+            column.push(this._output.atIndex(i * this._width + index));
+        }
+        return column;
+    }
+    getRow(index) {
+        Exception.throwIfNotBetween(index, Exception.getDescriptionForProperty(this.CLASS_NAME, 'getRow'), 0, this._height - 1);
+        let row = [];
+        for (let i = 0; i < this._width; i++) {
+            row.push(this._output.atIndex(index * this._width + i));
+        }
+        return row;
     }
     hasPattern(input) {
         return this._pattern == input;
@@ -255,8 +269,10 @@ class Event {
 
 
 
+
 class board_Board {
     constructor(params) {
+        this.CLASS_NAME = board_Board.name;
         this.onPropertyChange = new Event();
         this._characters = [];
         this._letterSpacing = params.letterSpacing;
@@ -267,18 +283,11 @@ class board_Board {
     get PropertyChange() {
         return this.onPropertyChange.expose();
     }
-    set letterSpacing(value) {
-        if (value == null) {
-            throw `Board's spacing cannot be set to null`;
-        }
-        if (value < 0) {
-            throw `Board's spacing cannot be set to a negative number (${value})`;
-        }
-        this._letterSpacing = value;
-        this.onPropertyChange.trigger();
-    }
     get letterSpacing() {
         return this._letterSpacing;
+    }
+    get padding() {
+        return this._padding;
     }
     get characters() {
         return this._characters;
@@ -288,27 +297,6 @@ class board_Board {
     }
     get size() {
         return this._size;
-    }
-    set padding(value) {
-        value.forEach(x => {
-            if (x == null) {
-                throw `Board's padding cannot set to null`;
-            }
-            if (x < 0) {
-                throw `Board's padding cannot be set to a negative number (${value})`;
-            }
-        });
-        if (value.length == 1) {
-            this._padding = [value[0], value[0], value[0], value[0]];
-        } else if (value.length == 2) {
-            this._padding = [value[0], value[1], value[0], value[1]];
-        } else {
-            this._padding = value;
-        }
-        this.onPropertyChange.trigger();
-    }
-    get padding() {
-        return this._padding;
     }
     get width() {
         const paddingAndSpacingWidth = this._horizontalPaddingWidth() + this._totalSpacingWidth();
@@ -323,6 +311,32 @@ class board_Board {
             return this._verticalPaddingWidth() + this._characters.reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
         } else {
             return this._verticalPaddingWidth();
+        }
+    }
+    set letterSpacing(value) {
+        const letterSpacingDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'padding');
+        Exception.throwIfNull(value, letterSpacingDescription);
+        Exception.throwIfNegative(value, letterSpacingDescription);
+        const prevLetterSpacing = this._letterSpacing;
+        this._letterSpacing = value;
+        this._emitPropertyChangeEvent(value, prevLetterSpacing);
+    }
+    set padding(value) {
+        const paddingDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'padding');
+        value.forEach(x => {
+            Exception.throwIfNull(x, paddingDescription);
+            Exception.throwIfNegative(x, paddingDescription);
+        });
+        const nextPadding = value.length == 1 ? [value[0], value[0], value[0], value[0]] : value.length == 2 ? [value[0], value[1], value[0], value[1]] : value;
+        if (this._padding) {
+            let prevPadding = [...this._padding];
+            this._padding = [nextPadding[0], nextPadding[1], nextPadding[2], nextPadding[3]];
+            if (this._padding[0] != prevPadding[0] || this._padding[1] != prevPadding[1] || this._padding[2] != prevPadding[2] || this._padding[3] != prevPadding[3]) {
+                this.onPropertyChange.trigger();
+            }
+        } else {
+            this._padding = [nextPadding[0], nextPadding[1], nextPadding[2], nextPadding[3]];
+            this.onPropertyChange.trigger();
         }
     }
     getColumnAtIndex(index) {
@@ -381,7 +395,7 @@ class board_Board {
                 characterBuffer = characterBuffer.slice(1, -1);
             }
             const character = dictionnary.find(characterBuffer);
-            this._characters.push(new Character(character.pattern, new BitArray(NearestNeighbor.scale(character.output.atIndexRange(0, character.output.size), character.width, this._size)), character.width * this._size));
+            this._characters.push(new character_Character(character.pattern, new BitArray(NearestNeighbor.scale(character.output.atIndexRange(0, character.output.size), character.width, this._size)), character.width * this._size));
         }
         this._input = input;
         this.onPropertyChange.trigger();
@@ -398,6 +412,11 @@ class board_Board {
     _createBitOffArrayOfLength(length) {
         return Array.apply(null, Array(length)).map(() => 0);
     }
+    _emitPropertyChangeEvent(value, prevValue) {
+        if (value != prevValue) {
+            this.onPropertyChange.trigger();
+        }
+    }
 }
 ;
 //# sourceMappingURL=board.js.map
@@ -405,13 +424,6 @@ class board_Board {
 class CharacterDictionary {
     constructor() {
         this._characters = [];
-    }
-    find(input) {
-        const character = this._characters.filter(x => x.hasPattern(input));
-        if (character && character.length > 0) {
-            return character[0];
-        }
-        throw `Could not find character ${input} in the alphabet`;
     }
     get characters() {
         return this._characters;
@@ -421,6 +433,13 @@ class CharacterDictionary {
     }
     get length() {
         return this._characters.length;
+    }
+    find(input) {
+        const character = this._characters.filter(x => x.hasPattern(input));
+        if (character && character.length > 0) {
+            return character[0];
+        }
+        throw `Could not find character ${input} in the alphabet`;
     }
     add(pendingCharacters) {
         const pendingPatterns = pendingCharacters.map(x => x.pattern);
@@ -500,7 +519,7 @@ class character_json_CharactersJSON {
             if (x.width == null) {
                 throw 'Invalid character json file: Can\'t find property width for a character';
             }
-            return new Character(x.pattern, new BitArray(x.output.map(x => x)), x.width);
+            return new character_Character(x.pattern, new BitArray(x.output.map(x => x)), x.width);
         });
     }
     static stringify(characters) {
@@ -519,28 +538,6 @@ class character_json_CharactersJSON {
     }
 }
 //# sourceMappingURL=character-json.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/utils/exception.js
-class Exception {
-    static throwIfNull(value, valueDescription) {
-        if (value == null) {
-            throw `${valueDescription} property cannot be set to null`;
-        }
-    }
-    static throwIfNegative(value, valueDescription) {
-        if (value < 0) {
-            throw `${valueDescription} property cannot be set to a negative number (${value})`;
-        }
-    }
-    static throwIfNotBetween(value, valueDescription, rangeFrom, rangeTo) {
-        if (value < rangeFrom || value > rangeTo) {
-            throw `Seek expects a value between ${rangeFrom} and ${rangeTo}`;
-        }
-    }
-    static getDescriptionForProperty(className, methodName) {
-        return `${className}'s ${methodName}`;
-    }
-}
-//# sourceMappingURL=exception.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/core/panel.js
 
 
@@ -618,9 +615,9 @@ class panel_Panel {
     GetCurrentSequence() {
         let sequence = [];
         let panelIndex = 0;
-        for (let i = 0; i <= this._params.scroller.indexUpperBound(this._params); i++) {
+        for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
             panelIndex = this._tickPanelIndex(panelIndex);
-            sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this._params));
+            sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
         }
         return sequence;
     }
@@ -634,67 +631,32 @@ class panel_Panel {
         return this._params.reverse ? this._decrementIndex(index) : this._incrementIndex(index);
     }
     _incrementIndex(index) {
-        return index >= this._params.scroller.indexUpperBound(this._params) ? 0 : index + this._params.increment;
+        return index >= this._params.scroller.loopEndIndex(this) ? 0 : index + this._params.increment;
     }
     _decrementIndex(index) {
-        return index === 0 ? this._params.scroller.indexUpperBound(this._params) : index - this._params.increment;
+        return index === 0 ? this._params.scroller.loopEndIndex(this) : index - this._params.increment;
     }
 }
 ;
 //# sourceMappingURL=panel.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/side-scrolling-panel.js
-class SideScrollingPanel {
-    indexUpperBound(params) {
+// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/side-scroller.js
+class SideScroller {
+    loopEndIndex(params) {
         return params.board.width - 1;
     }
-    generatePanelFrameAtIndex(currentIndex, params) {
+    generatePanelFrameAtIndex(currentIndex, panel) {
         let columns = [];
-        for (let i = 0; i < params.width; i++) {
-            columns.push(params.board.getColumnAtIndex(currentIndex + i));
+        for (let i = 0; i < panel.width; i++) {
+            columns.push(panel.board.getColumnAtIndex(currentIndex + i));
         }
-        let display = [];
+        let panelFrame = [];
         for (let i = 0; i < columns[0].length; i++) {
-            display.push(columns.map(x => x[i]));
+            panelFrame.push(columns.map(x => x[i]));
         }
-        return display;
+        return panelFrame;
     }
 }
-//# sourceMappingURL=side-scrolling-panel.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/vertical-scrolling-panel.js
-class VerticalScrollingPanel {
-    indexUpperBound(params) {
-        return params.board.height - 1;
-    }
-    generatePanelFrameAtIndex(currentIndex, params) {
-        let display = [];
-        for (let i = 0; i < params.board.height; i++) {
-            let row;
-            row = params.board.getRowAtIndex(currentIndex + i);
-            display.push(row.slice(0, params.width));
-        }
-        return display;
-    }
-}
-//# sourceMappingURL=vertical-scrolling-panel.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/scroller-builder.js
-
-
-var scroller_builder_ScrollerType;
-(function (ScrollerType) {
-    ScrollerType[ScrollerType["SideScrollingPanel"] = 0] = "SideScrollingPanel";
-    ScrollerType[ScrollerType["VerticalScrollingPanel"] = 1] = "VerticalScrollingPanel";
-})(scroller_builder_ScrollerType || (scroller_builder_ScrollerType = {}));
-class scroller_builder_ScrollerBuilder {
-    static build(scrollerType) {
-        switch (scrollerType) {
-            case scroller_builder_ScrollerType.SideScrollingPanel:
-                return new SideScrollingPanel();
-            case scroller_builder_ScrollerType.VerticalScrollingPanel:
-                return new VerticalScrollingPanel();
-        }
-    }
-}
-//# sourceMappingURL=scroller-builder.js.map
+//# sourceMappingURL=side-scroller.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/core/led-matrix.js
 
 
@@ -705,7 +667,6 @@ class led_matrix_LedMatrix {
     constructor(params) {
         this.onReady = new Event();
         this._params = this._validateParameters(params);
-        this._scrollerType = this._params.scrollerType;
         this._panel = new panel_Panel({
             board: new board_Board({
                 letterSpacing: this._params.letterSpacing,
@@ -715,7 +676,7 @@ class led_matrix_LedMatrix {
             increment: this._params.increment,
             reverse: this._params.reverse,
             width: this._params.panelWidth,
-            scroller: scroller_builder_ScrollerBuilder.build(this._params.scrollerType)
+            scroller: this._params.scroller
         });
         this.event = {
             newSequence: this._panel.NewSequence
@@ -732,8 +693,8 @@ class led_matrix_LedMatrix {
         this._size = value;
         this._panel.board.load(this.input, this._dictionary, this.size);
     }
-    get indexUpperBound() {
-        return this._panel.scroller.indexUpperBound(this._panel);
+    get loopEndIndex() {
+        return this._panel.scroller.loopEndIndex(this._panel);
     }
     addCharacters(characters) {
         this._dictionary.add(characters);
@@ -753,10 +714,10 @@ class led_matrix_LedMatrix {
     get usedCharacters() {
         return this._panel.board.characters;
     }
-    set spacing(value) {
+    set letterSpacing(value) {
         this._panel.board.letterSpacing = value;
     }
-    get spacing() {
+    get letterSpacing() {
         return this._panel.board.letterSpacing;
     }
     set padding(value) {
@@ -780,12 +741,11 @@ class led_matrix_LedMatrix {
     get sequence() {
         return this._panel.GetCurrentSequence();
     }
-    set scrollerType(value) {
-        this._scrollerType = value;
-        this._panel.scroller = scroller_builder_ScrollerBuilder.build(value);
+    set scroller(value) {
+        this._panel.scroller = value;
     }
-    get scrollerType() {
-        return this._scrollerType;
+    get scroller() {
+        return this._panel.scroller;
     }
     get reverse() {
         return this._panel.reverse;
@@ -808,7 +768,7 @@ class led_matrix_LedMatrix {
     _validateParameters(params) {
         let defaultParams = {
             increment: 1,
-            scrollerType: scroller_builder_ScrollerType.SideScrollingPanel,
+            scroller: new SideScroller(),
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,
@@ -820,8 +780,7 @@ class led_matrix_LedMatrix {
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
             params.size = this._valueOrDefault(params.size, defaultParams.size);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
-            params.scrollerType = this._valueOrDefault(params.scrollerType, defaultParams.scrollerType);
-            ;
+            params.scroller = this._valueOrDefault(params.scroller, defaultParams.scroller);
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
             params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
             return params;
@@ -833,6 +792,22 @@ class led_matrix_LedMatrix {
     }
 }
 //# sourceMappingURL=led-matrix.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/vertical-scroller.js
+class VerticalScroller {
+    loopEndIndex(panel) {
+        return panel.board.height - 1;
+    }
+    generatePanelFrameAtIndex(currentIndex, panel) {
+        let display = [];
+        for (let i = 0; i < panel.board.height; i++) {
+            let row;
+            row = panel.board.getRowAtIndex(currentIndex + i);
+            display.push(row.slice(0, panel.width));
+        }
+        return display;
+    }
+}
+//# sourceMappingURL=vertical-scroller.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer.js
 class Renderer {
     constructor(parameters) {}
@@ -1109,8 +1084,6 @@ class panel_player_PanelPlayer {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NearestNeighbor", function() { return NearestNeighbor; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerType", function() { return scroller_builder_ScrollerType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerBuilder", function() { return scroller_builder_ScrollerBuilder; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelPlayer", function() { return panel_player_PanelPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererType", function() { return renderer_builder_RendererType; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
@@ -1118,7 +1091,6 @@ class panel_player_PanelPlayer {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderers", function() { return canva_renderers_CanvaRenderers; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
-
 
 
 
