@@ -420,124 +420,6 @@ class board_Board {
 }
 ;
 //# sourceMappingURL=board.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/core/character-dictionary.js
-class CharacterDictionary {
-    constructor() {
-        this._characters = [];
-    }
-    get characters() {
-        return this._characters;
-    }
-    get height() {
-        return Math.max.apply(Math, this._characters.map(x => x.height));
-    }
-    get length() {
-        return this._characters.length;
-    }
-    find(input) {
-        const character = this._characters.filter(x => x.hasPattern(input));
-        if (character && character.length > 0) {
-            return character[0];
-        }
-        throw `Could not find character ${input} in the alphabet`;
-    }
-    add(pendingCharacters) {
-        const pendingPatterns = pendingCharacters.map(x => x.pattern);
-        const duplicatedPendingPatterns = pendingPatterns.filter((value, index, array) => {
-            return array.indexOf(value) != index;
-        });
-        if (duplicatedPendingPatterns.length > 0) {
-            throw `Pattern already used by another pending character`;
-        }
-        if (this._characters.length > 0) {
-            const alreadyAddedPatterns = this._characters.map(x => x.pattern);
-            const duplicatedPatterns = alreadyAddedPatterns.filter(value => {
-                return pendingPatterns.indexOf(value) != -1;
-            });
-            if (duplicatedPatterns.length > 0) {
-                throw `Pattern already used by another character`;
-            }
-        }
-        this._characters.push(...pendingCharacters);
-    }
-    edit(pendingCharacter) {
-        let edited = false;
-        this._characters.forEach((character, index, arr) => {
-            if (character.pattern == pendingCharacter.pattern && !edited) {
-                arr[index] = pendingCharacter;
-                edited = true;
-            }
-        });
-        if (!edited) {
-            throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted edit operation`;
-        }
-    }
-    delete(pendingCharacter) {
-        let deleted = false;
-        this._characters.forEach((character, index, arr) => {
-            if (character.pattern == pendingCharacter.pattern && !deleted) {
-                arr.splice(index, 1);
-                deleted = true;
-            }
-        });
-        if (!deleted) {
-            throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted delete operation`;
-        }
-    }
-}
-;
-//# sourceMappingURL=character-dictionary.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/core/character-json.js
-
-
-class character_json_CharactersJSON {
-    static import(path, success) {
-        fetch(path).then(response => {
-            return response.text();
-        }).then(response => {
-            success(character_json_CharactersJSON.parse(response));
-        }).catch(error => {
-            throw `Couldn't fetch file: ${path}`;
-        });
-    }
-    static export() {}
-    static parse(json) {
-        const data = JSON.parse(json);
-        if (data == null) {
-            throw 'Invalid character json file';
-        }
-        if (data.characters == null) {
-            throw 'Invalid character json file: Can\'t find property characters';
-        }
-        return data.characters.map(x => {
-            if (x.pattern == null) {
-                throw 'Invalid character json file: Can\'t find property patterns for a character';
-            }
-            if (x.output == null) {
-                throw 'Invalid character json file: Can\'t find property output for a character';
-            }
-            if (x.width == null) {
-                throw 'Invalid character json file: Can\'t find property width for a character';
-            }
-            return new character_Character(x.pattern, new BitArray(x.output.map(x => x)), x.width);
-        });
-    }
-    static stringify(characters) {
-        if (characters == null || characters.length == 0) {
-            return JSON.stringify("");
-        }
-        return JSON.stringify({
-            characters: characters.map(x => {
-                return {
-                    patterns: x.pattern,
-                    output: x.output.atIndexRange(0, x.output.size),
-                    width: x.width
-                };
-            })
-        });
-    }
-}
-//# sourceMappingURL=character-json.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/core/panel.js
 
 
@@ -639,6 +521,73 @@ class panel_Panel {
 }
 ;
 //# sourceMappingURL=panel.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/character-dictionary.js
+class CharacterDictionary {
+    constructor() {
+        this._characters = [];
+    }
+    get characters() {
+        return this._characters;
+    }
+    get height() {
+        return Math.max.apply(Math, this._characters.map(x => x.height));
+    }
+    get length() {
+        return this._characters.length;
+    }
+    find(input) {
+        const character = this._characters.filter(x => x.hasPattern(input));
+        if (character && character.length > 0) {
+            return character[0];
+        }
+        throw `Could not find character ${input} in the alphabet`;
+    }
+    add(pendingCharacters) {
+        const pendingPatterns = pendingCharacters.map(x => x.pattern);
+        const duplicatedPendingPatterns = pendingPatterns.filter((value, index, array) => {
+            return array.indexOf(value) != index;
+        });
+        if (duplicatedPendingPatterns.length > 0) {
+            throw `Pattern already used by another pending character`;
+        }
+        if (this._characters.length > 0) {
+            const alreadyAddedPatterns = this._characters.map(x => x.pattern);
+            const duplicatedPatterns = alreadyAddedPatterns.filter(value => {
+                return pendingPatterns.indexOf(value) != -1;
+            });
+            if (duplicatedPatterns.length > 0) {
+                throw `Pattern already used by another character`;
+            }
+        }
+        this._characters.push(...pendingCharacters);
+    }
+    edit(pendingCharacter) {
+        let edited = false;
+        this._characters.forEach((character, index, arr) => {
+            if (character.pattern == pendingCharacter.pattern && !edited) {
+                arr[index] = pendingCharacter;
+                edited = true;
+            }
+        });
+        if (!edited) {
+            throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted edit operation`;
+        }
+    }
+    delete(pendingCharacter) {
+        let deleted = false;
+        this._characters.forEach((character, index, arr) => {
+            if (character.pattern == pendingCharacter.pattern && !deleted) {
+                arr.splice(index, 1);
+                deleted = true;
+            }
+        });
+        if (!deleted) {
+            throw `Could not find character ${pendingCharacter.pattern} in the alphabet. Aborted delete operation`;
+        }
+    }
+}
+;
+//# sourceMappingURL=character-dictionary.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/side-scroller.js
 class SideScroller {
     loopEndIndex(params) {
@@ -808,6 +757,57 @@ class VerticalScroller {
     }
 }
 //# sourceMappingURL=vertical-scroller.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/character-json.js
+
+
+class character_json_CharactersJSON {
+    static import(path, success) {
+        fetch(path).then(response => {
+            return response.text();
+        }).then(response => {
+            success(character_json_CharactersJSON.parse(response));
+        }).catch(error => {
+            throw `Couldn't fetch file: ${path}`;
+        });
+    }
+    static export() {}
+    static parse(json) {
+        const data = JSON.parse(json);
+        if (data == null) {
+            throw 'Invalid character json file';
+        }
+        if (data.characters == null) {
+            throw 'Invalid character json file: Can\'t find property characters';
+        }
+        return data.characters.map(x => {
+            if (x.pattern == null) {
+                throw 'Invalid character json file: Can\'t find property patterns for a character';
+            }
+            if (x.output == null) {
+                throw 'Invalid character json file: Can\'t find property output for a character';
+            }
+            if (x.width == null) {
+                throw 'Invalid character json file: Can\'t find property width for a character';
+            }
+            return new character_Character(x.pattern, new BitArray(x.output.map(x => x)), x.width);
+        });
+    }
+    static stringify(characters) {
+        if (characters == null || characters.length == 0) {
+            return JSON.stringify("");
+        }
+        return JSON.stringify({
+            characters: characters.map(x => {
+                return {
+                    patterns: x.pattern,
+                    output: x.output.atIndexRange(0, x.output.size),
+                    width: x.width
+                };
+            })
+        });
+    }
+}
+//# sourceMappingURL=character-json.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer.js
 class Renderer {
     constructor(parameters) {}
@@ -1079,18 +1079,108 @@ class panel_player_PanelPlayer {
 }
 ;
 //# sourceMappingURL=panel-player.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/player/led-matrix-player.js
+
+
+
+
+class led_matrix_player_LedMatrixPlayer {
+    constructor(sequence, params) {
+        this.onReady = new Event();
+        this._params = this._validateParameters(params);
+        this._panelPlayer = new panel_player_PanelPlayer({
+            fps: this._params.fps,
+            renderer: this._params.renderer,
+            sequence: sequence
+        });
+        this.event = {
+            panelUpdate: this._panelPlayer.PanelUpdate,
+            reachingBoundary: this._panelPlayer.ReachingBoundary
+        };
+    }
+    get Ready() {
+        return this.onReady.expose();
+    }
+    index() {
+        this._panelPlayer.index;
+    }
+    set renderer(value) {
+        this._panelPlayer.renderer = value;
+    }
+    setRendererFromBuilder(value) {
+        this._panelPlayer.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.elementId);
+    }
+    get renderer() {
+        return this._panelPlayer.renderer;
+    }
+    set fps(value) {
+        this._panelPlayer.fps = value;
+    }
+    get fps() {
+        return this._panelPlayer.fps;
+    }
+    set sequence(value) {
+        this._panelPlayer.sequence = value;
+    }
+    get sequence() {
+        return this._panelPlayer.sequence;
+    }
+    play() {
+        this._panelPlayer.play();
+    }
+    stop() {
+        this._panelPlayer.stop();
+    }
+    pause() {
+        this._panelPlayer.pause();
+    }
+    resume() {
+        this._panelPlayer.resume();
+    }
+    step() {
+        this._panelPlayer.step();
+    }
+    seek(frame) {
+        this._panelPlayer.seek(frame);
+    }
+    _validateParameters(params) {
+        let defaultParams = {
+            fps: 30,
+            rendererType: renderer_builder_RendererType.ASCII,
+            elementId: 'led-matrix'
+        };
+        if (params) {
+            params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
+            params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
+            if (params.renderer instanceof Renderer) {
+                params.renderer = params.renderer;
+            } else {
+                params.renderer = renderer_builder_RendererBuilder.build(this._valueOrDefault(params.renderer.rendererType, defaultParams.rendererType), this._valueOrDefault(params.elementId, defaultParams.elementId));
+            }
+            return params;
+        }
+        defaultParams.renderer = renderer_builder_RendererBuilder.build(defaultParams.rendererType, defaultParams.elementId);
+        return defaultParams;
+    }
+    _valueOrDefault(value, defaultValue) {
+        return value ? value : defaultValue;
+    }
+}
+//# sourceMappingURL=led-matrix-player.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharactersJSON", function() { return character_json_CharactersJSON; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NearestNeighbor", function() { return NearestNeighbor; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelPlayer", function() { return panel_player_PanelPlayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererType", function() { return renderer_builder_RendererType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrixPlayer", function() { return led_matrix_player_LedMatrixPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderer", function() { return canva_renderer_CanvaRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderers", function() { return canva_renderers_CanvaRenderers; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererType", function() { return renderer_builder_RendererType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelPlayer", function() { return panel_player_PanelPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
+
 
 
 
