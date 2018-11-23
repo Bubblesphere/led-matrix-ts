@@ -81,7 +81,7 @@ describe('testing properties', () => {
     });
 
     test('Should return the correct patterns', () => {
-        expect(character.pattern).toEqual(['a']);
+        expect(character.pattern).toEqual('a');
     });
 
     test('Should return the correct output', () => {

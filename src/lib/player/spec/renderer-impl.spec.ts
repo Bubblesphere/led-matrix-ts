@@ -1,7 +1,6 @@
 import AsciiRenderer from "../rendering/ascii-renderer";
 
 describe('testing ASCIIRenderer', () => {
-    document.body.innerHTML = '<div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>';
 
     let renderer: AsciiRenderer;
     const defaultParams = {
@@ -24,15 +23,10 @@ describe('testing ASCIIRenderer', () => {
         });
 
         expect(renderer.parameters).toEqual({
-            element: document.getElementById('led-matrix'),
+            elementId: 'led-matrix',
             characterBitOn: 'X',
             characterBitOff: ' '
         });
-    });
-
-    test('Should render correctly', () => {
-        renderer.render([[1,1],[0,0]]);
-        expect(document.getElementById('led-matrix').innerHTML).toBe('AA\nBB\n');
     });
 });
 
