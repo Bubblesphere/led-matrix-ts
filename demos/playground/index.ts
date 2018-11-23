@@ -50,7 +50,7 @@ document.getElementById("pause-button").addEventListener("click", (e) => {
 });
 
 document.getElementById("tick-button").addEventListener("click", (e) => {
-  ledMatrix.tick();
+  ledMatrix.step();
 });
 
 document.getElementById("seek-button").addEventListener("click", (e) => {

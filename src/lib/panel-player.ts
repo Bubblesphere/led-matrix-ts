@@ -31,8 +31,9 @@ export class PanelPlayer {
   public get ReachingBoundary() { return this.onReachingBoundary.expose(); }
   
   constructor(params: PanelPlayerParameters) {
-    this.fps = params.fps;
     this._index = 0;
+
+    this.fps = params.fps;
     this._renderer = params.renderer;
     this._panelSequencer = params.panelSequencer;
   }
@@ -95,6 +96,11 @@ export class PanelPlayer {
   /** Pauses the panel player */
   public pause() {
     this._shouldUpdate = false;
+  }
+
+  /** Steps the panel player one frame */
+  public step() {
+    this._nextPanelFrame()
   }
 
   /**

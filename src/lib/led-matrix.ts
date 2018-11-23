@@ -106,7 +106,11 @@ export class LedMatrix implements LedMatrixParameters {
 
     public set size(value: number) {
         this._size = value;
+        
         this._board.load(this.input, this._dictionary, this.size);
+
+        // Any changes to the board requires to reassign it to the panel
+        this._panelPlayer.panelSequencer.board = this._board;
     }
 
     public get index() {
@@ -177,6 +181,8 @@ export class LedMatrix implements LedMatrixParameters {
 
     public set input(value: string) {
         this._board.load(value, this._dictionary);
+        // Any changes to the board requires to reassign it to the panel
+        this._panelPlayer.panelSequencer.board = this._board;
     }
 
     public get input() {
@@ -200,8 +206,8 @@ export class LedMatrix implements LedMatrixParameters {
         this._panelPlayer.resume();
     }
 
-    public tick() {
-        this._panelPlayer.tick();
+    public step() {
+        this._panelPlayer.step();
     }
 
     public seek(frame: number) {

@@ -201,16 +201,14 @@ export class Board {
    * @param input The input to load on the board
    * @param dictionnary The dictionnary for which the input is tested against
    */
-  public load(input: string, dictionnary: CharacterDictionary, size?: number): void {
+  public load(input: string, dictionnary: CharacterDictionary, size: number = 1): void {
     const escapeCharacter = '\\';
     const delimiterWord = {
       start: "(",
       end: ")"
     }
     this._characters = [];
-    if (size) {
-      this._size = size;
-    }
+    this._size = size;
     
     for(let i = 0; i < input.length; i++) {
       let characterBuffer = input[i];
