@@ -1,14 +1,21 @@
-import { LedMatrix } from '../../src/lib/led-matrix';
-import { PanelType } from '../../src/lib/panel-builder';
-import { AsciiRenderer } from '../../src/lib/rendering/ascii-renderer';
-import { CanvaRenderers } from '../../src/lib/rendering/canva-renderers';
-import { CharactersJSON } from '../../src/lib/character-json';
+import { LedMatrix } from '../../src/lib/core/led-matrix';
+import { PanelType } from '../../src/lib/core/panel-builder';
+import AsciiRenderer from '../../src/lib/player/rendering/ascii-renderer';
+import { CanvaRenderers } from '../../src/lib/player/rendering/canva-renderers';
+import { CharactersJSON } from '../../src/lib/core/character-json';
+import { LedMatrixPlayer } from '../../src/lib/player/led-matrix-player';
+
 
 const ledMatrix = new LedMatrix();
+const player = new LedMatrixPlayer(ledMatrix.sequence);
+
+ledMatrix.event.newSequence.on((params) => {
+    player.sequence = params.sequence
+})
 
 CharactersJSON.import("alphabett.json", (characters) => {
   ledMatrix.addCharacters(characters);
-  ledMatrix.play();
+  player.play();
 });
 
 
@@ -34,33 +41,33 @@ document.getElementById("padding-button").addEventListener("click", (e) => {
 });
 
 document.getElementById("play-button").addEventListener("click", (e) => {
-  ledMatrix.play();
+  player.play();
 });
 
 document.getElementById("stop-button").addEventListener("click", (e) => {
-  ledMatrix.stop();
+  player.stop();
 });
 
 document.getElementById("resume-button").addEventListener("click", (e) => {
-  ledMatrix.resume();
+  player.resume();
 });
 
 document.getElementById("pause-button").addEventListener("click", (e) => {
-  ledMatrix.pause();
+  player.pause();
 });
 
 document.getElementById("tick-button").addEventListener("click", (e) => {
-  ledMatrix.step();
+  player.step();
 });
 
 document.getElementById("seek-button").addEventListener("click", (e) => {
   const value = (document.getElementById("seek-value") as HTMLInputElement).value;
-  ledMatrix.seek(Number(value));
+  player.seek(Number(value));
 });
 
 document.getElementById("fps-button").addEventListener("click", (e) => {
   const value = (document.getElementById("fps-value") as HTMLInputElement).value;
-  ledMatrix.fps = Number(value);
+  player.fps = Number(value);
 });
 
 document.getElementById("increment-button").addEventListener("click", (e) => {
@@ -96,7 +103,7 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
     case "AsciiRenderer":
       document.getElementById("led-matrix-canvas").hidden = true;
       document.getElementById("led-matrix").hidden = false;
-      ledMatrix.renderer = new AsciiRenderer({
+      player.renderer = new AsciiRenderer({
         elementId: 'led-matrix',
         characterBitOn: 'X',
         characterBitOff: ' '
@@ -105,14 +112,14 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
     case "Rect":
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
-      ledMatrix.renderer = new CanvaRenderers.Rect({
+      player.renderer = new CanvaRenderers.Rect({
         elementId: 'led-matrix-canvas',
       })
       break;
     case "Ellipse":
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
-      ledMatrix.renderer = new CanvaRenderers.Ellipse({
+      player.renderer = new CanvaRenderers.Ellipse({
         elementId: 'led-matrix-canvas',
         colorBitOn: '#e74c3c',
         colorBitOff: '#ecf0f1',

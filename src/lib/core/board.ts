@@ -1,8 +1,9 @@
-import { Character } from './character';
-import { bit, BitArray } from './bit-array';
-import { Padding, DetailedPadding } from './types';
-import { CharacterDictionary } from './character-dictionary';
+import Character from './character';
+import BitArray, { bit } from '../utils/bit-array';
+import { Padding, DetailedPadding } from '../types';
+import CharacterDictionary from './character-dictionary';
 import { NearestNeighbor } from "./character-sizer";
+import { Event } from '../utils/event';
 
 export interface BoardParameters {
   letterSpacing: number
@@ -14,12 +15,15 @@ export interface BoardParameters {
  * The board creates the link between the dictionnary and the input. 
  * It's role is to create the matrix reprentation of the entire board
  */
-export class Board {
+export default class Board {
   private _characters: Array<Character>;
   private _letterSpacing: number;
   private _padding: DetailedPadding;
   private _input: string;
   private _size: number;
+
+  protected readonly onPropertyChange = new Event<void>();
+  public get PropertyChange() { return this.onPropertyChange.expose(); }
 
   /**
    * Creates a board
@@ -30,6 +34,7 @@ export class Board {
     this._letterSpacing = params.letterSpacing;
     this.padding = params.padding;
     this._size = params.size;
+    this.onPropertyChange.trigger();
   }
 
   /**
@@ -45,6 +50,7 @@ export class Board {
     }
 
     this._letterSpacing = value;
+    this.onPropertyChange.trigger();
   }
 
   /**
@@ -95,6 +101,8 @@ export class Board {
     } else {
       this._padding = value;
     }
+
+    this.onPropertyChange.trigger();
   }
 
   /**
@@ -242,6 +250,8 @@ export class Board {
       ));
     }
     this._input = input;
+
+    this.onPropertyChange.trigger();
   }
 
   private _horizontalPaddingWidth(): number {

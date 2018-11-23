@@ -1,10 +1,9 @@
-import { Board } from './board';
-import { Event } from './event';
-import { PanelFrame } from './types';
-import { Renderer } from './rendering/renderer';
-import { Exception } from './exception';
+import Board from './board';
+import { PanelFrame, Sequence } from '../types';
+import { Exception } from '../utils/exception';
+import { Event } from '../utils/event';
 
-export interface PanelSequencerParameters  {
+export interface PanelParameters  {
   /** The board for which the panel operates on */
   board: Board,
   /** Increment at each frame */
@@ -20,30 +19,34 @@ export interface PanelSequencerParameters  {
  * You can see it as a viewport moving through a board. 
  * It has control over starting, stopping, pausing, resuming, seeking, ticking.
  */
-export abstract class PanelSequencer {
-  readonly CLASS_NAME = PanelSequencer.name;
-  private _currentSequence: PanelFrame[];
+export abstract class Panel {
+  readonly CLASS_NAME = Panel.name;
+  private _initiated: boolean = false;
 
   private _increment: number;
   private _width: number;
   private _board: Board;
   private _reverse: boolean;
 
-  constructor(params: PanelSequencerParameters) {
+  constructor(params: PanelParameters) {
     this._width =  params.width;
     this._board = params.board;
     this._increment = params.increment;
     this._reverse = params.reverse;
-    this.renderCurrentSequence();
+    this._initiated = true;
+    this.updateCurrentSequence();
+
+    this._board.PropertyChange.on(() => {
+      this.updateCurrentSequence();
+    })
   }
 
-  protected abstract _generateDisplay(currentIndex: number): PanelFrame
+  protected readonly onNewSequence = new Event<{sequence: Sequence}>();
+  public get NewSequence() { return this.onNewSequence.expose(); }
+
+  protected abstract _generatePanelFrameAtIndex(currentIndex: number): PanelFrame
 
   public abstract get indexUpperBound(): number
-
-  public get currentSequence() {
-    return this._currentSequence;
-  }
   
   public get width() {
     return this._width;
@@ -65,41 +68,56 @@ export abstract class PanelSequencer {
     const widthDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'width');
     Exception.throwIfNull(value, widthDescription);
     Exception.throwIfNegative(value, widthDescription);
-    this._width = value;
-    this.renderCurrentSequence();
+    if (this._width != value) {
+      this._width = value;
+      this.updateCurrentSequence();
+    }
   }
 
   public set board(value: Board) {
     Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'board'));
-    this._board = value;
-    this.renderCurrentSequence();
+    if (this.board != value) {
+      this._board = value;
+      this.updateCurrentSequence(); 
+    }
   }
 
   public set increment(value: number) {
     const fpsDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
     Exception.throwIfNull(value, fpsDescription);
     Exception.throwIfNegative(value, fpsDescription);
-    this._increment = value;
-    this.renderCurrentSequence();
+    if (this._increment != value) {
+      this._increment = value;
+      this.updateCurrentSequence();
+    }
   }
 
   public set reverse(value: boolean) {
     const reverseDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'reverse');
     Exception.throwIfNull(value, reverseDescription);
-    this._reverse = value;
-    this.renderCurrentSequence();
+    if (value != this._reverse) {
+      this._reverse = value;
+      this.updateCurrentSequence();
+    }
   }
 
-  public renderCurrentSequence() {
-    let sequence = [];
+  public GetCurrentSequence(): Sequence {
+    let sequence: Sequence = [];
 
     let panelIndex = 0;
     for (let i = 0; i <= this.indexUpperBound; i++) {
       panelIndex = this._tickPanelIndex(panelIndex);
-      sequence.push(this._generateDisplay(panelIndex));
+      sequence.push(this._generatePanelFrameAtIndex(panelIndex));
     }
 
-    this._currentSequence = sequence;
+    return sequence;
+  }
+
+  public updateCurrentSequence() {
+    if (this._initiated) {
+      const sequence = this.GetCurrentSequence();
+      this.onNewSequence.trigger({ sequence });
+    }
   }
 
   private _tickPanelIndex(index: number): number {

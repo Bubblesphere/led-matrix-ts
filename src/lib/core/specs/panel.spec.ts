@@ -1,41 +1,31 @@
-import Panel from "../panel";
+import { Panel } from "../panel";
 import Board from "../board";
 import SideScrollingPanel from "../panels/side-scrolling-panel";
-import ASCIIRenderer from "../rendering/ascii-renderer";
-import Renderer from "../rendering/renderer";
 import CharacterDictionary from "../character-dictionary";
 import Character from "../character";
-import BitArray from "../bit-array";
+import BitArray from "../../utils/bit-array";
 
 
 let panel: Panel;
-let renderer: Renderer;
 let board: Board;
 
 beforeEach(() => {
     board = new Board({
         padding: [0],
-        spacing: 0,
+        letterSpacing: 0,
+        size: 1
     });
 
     const dict = new CharacterDictionary();
     dict.add([
-        new Character(['a'], new BitArray([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]), 14)
+        new Character('a', new BitArray([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]), 14)
     ])
 
     board.load('aaaaaaaaaaaa', dict);
 
-    renderer = new ASCIIRenderer({
-        characterBitOn: 'X',
-        characterBitOff: ' ',
-        element: document.getElementById("led-matrix")
-    });
-
     panel = new SideScrollingPanel({
         board: board,
-        renderer: renderer,
         increment: 1,
-        fps: 60,
         width: 80,
         reverse: false
     });
@@ -59,7 +49,7 @@ describe('testing width', () => {
         expect(panel.width).toBe(1);
     });
 });
-
+/*
 describe('testing fps', () => {
     test('Should throw an error when setting a null fps', () => {
         expect(() => { 
@@ -84,7 +74,7 @@ describe('testing fps', () => {
         expect(panel.fps).toBe(1);
     });
 });
-
+*/
 describe('testing board', () => {
     test('Should throw an error when setting a null board', () => {
         expect(() => { 
@@ -116,7 +106,7 @@ describe('testing increment', () => {
         expect(panel.increment).toBe(1);
     });
 });
-
+/*
 describe('testing renderer', () => {
     test('Should throw an error when setting a null renderer', () => {
         expect(() => { 
@@ -129,7 +119,7 @@ describe('testing renderer', () => {
         expect(panel.renderer).toEqual(renderer);
     });
 });
-
+*/
 describe('testing reverse', () => {
     test('Should throw an error when setting a null reverse', () => {
         expect(() => { 
@@ -143,7 +133,7 @@ describe('testing reverse', () => {
     });
 });
 
-
+/*
 describe('ui', () => {
     document.body.innerHTML = '<div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>'; 
 
@@ -283,3 +273,4 @@ describe('ui', () => {
         });
     });
 });
+*/

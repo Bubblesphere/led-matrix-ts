@@ -1,6 +1,6 @@
-import { CharactersJSONSchema } from "./types";
-import { Character } from "./character";
-import { BitArray, bit } from "./bit-array";
+import { CharactersJSONSchema } from "../types";
+import Character from "./character";
+import BitArray, { bit } from "../utils/bit-array";
 
 export class CharactersJSON {
     static import(path: string, success: (content: Character[]) => any) {

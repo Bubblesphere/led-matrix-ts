@@ -1,4 +1,4 @@
-import ASCIIRenderer from "../rendering/ascii-renderer";
+/*import ASCIIRenderer from "../rendering/ascii-renderer";
 import SideScrollingPanel from "../panels/side-scrolling-panel";
 import VerticalScrollingPanel from "../panels/vertical-scrolling-panel";
 import Board from "../board";
@@ -7,12 +7,6 @@ import Character from "../character";
 import CharacterDictionary from "../character-dictionary";
 import Renderer from "../rendering/renderer";
 
-/**
- * canva renderer
- * canva renderers
- * character json
- * panel builder
- */
 
 let renderer: Renderer;
 let board: Board;
@@ -80,3 +74,4 @@ describe('testing VerticalScrollingPanel', () => {
     });
 });
 
+*/

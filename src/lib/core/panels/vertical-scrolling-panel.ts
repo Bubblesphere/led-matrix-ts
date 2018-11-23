@@ -1,9 +1,9 @@
-import { bit } from "../bit-array";
-import { PanelSequencer, PanelSequencerParameters } from "../panel-sequencer";
-import { PanelFrame } from "../types";
+import { bit } from "../../utils/bit-array";
+import { PanelFrame } from "../../types";
+import { Panel, PanelParameters } from "../panel";
 
-export class VerticalScrollingPanel extends PanelSequencer {
-  constructor(params: PanelSequencerParameters) {
+export default class VerticalScrollingPanel extends Panel {
+  constructor(params: PanelParameters) {
     super(params);
   }
   
@@ -11,7 +11,7 @@ export class VerticalScrollingPanel extends PanelSequencer {
     return this.board.height - 1;
   }
 
-  protected _generateDisplay(currentIndex: number): PanelFrame {
+  protected _generatePanelFrameAtIndex(currentIndex: number): PanelFrame {
     let display: PanelFrame = [];
     for(let i = 0; i < this.board.height; i++) {
       let row: Array<bit>;

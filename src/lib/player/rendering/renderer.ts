@@ -1,4 +1,4 @@
-import { PanelFrame } from "../types";
+import { PanelFrame } from "../../types";
 
 export abstract class Renderer {
   protected _parameters: IRendererParameters;
@@ -20,12 +20,6 @@ export abstract class Renderer {
   }
   abstract get parameters(): IRendererParameters;
 }
-/*
-export interface IRenderer<T extends IRendererParameters> {
-  render(display: PanelFrame): void;
-  parameters(): T;
-}
-*/
 
 export interface IRendererParameters {
   elementId: string

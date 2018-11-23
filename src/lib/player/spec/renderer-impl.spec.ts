@@ -5,7 +5,7 @@ describe('testing ASCIIRenderer', () => {
 
     let renderer: AsciiRenderer;
     const defaultParams = {
-        element: document.getElementById('led-matrix'),
+        elementId: 'led-matrix',
         characterBitOn: 'A',
         characterBitOff: 'B'
     };
@@ -20,7 +20,7 @@ describe('testing ASCIIRenderer', () => {
 
     test('Should be able to retrieve default parameters if they\'re not passed', () => {
         renderer = new AsciiRenderer({
-            element: document.getElementById('led-matrix')
+            elementId: 'led-matrix'
         });
 
         expect(renderer.parameters).toEqual({

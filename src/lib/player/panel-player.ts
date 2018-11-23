@@ -1,19 +1,24 @@
-import { Event } from './event';
-import { PanelFrame } from './types';
+import { Event } from '../utils/event';
+import { PanelFrame, Sequence } from '../types';
 import { Renderer } from './rendering/renderer';
-import { PanelSequencer } from './panel-sequencer';
-import { Exception } from './exception';
+import { Exception } from '../utils/exception';
+import { RendererBuilder, RendererType } from './rendering/renderer-builder';
 
 export interface PanelPlayerParameters  {
   renderer: Renderer,
   fps: number,
-  panelSequencer: PanelSequencer
+  sequence: Sequence
+}
+
+interface SetRendererBuilderParameters {
+  rendererType: RendererType,
+  elementId: string
 }
 
 export class PanelPlayer {
-  readonly CLASS_NAME = PanelSequencer.name;
+  readonly CLASS_NAME = PanelPlayer.name;
   private _index: number;
-  private _panelSequencer: PanelSequencer;
+  private _sequence: Sequence;
 
   private _renderer: Renderer;
   private _fps: number;
@@ -35,12 +40,12 @@ export class PanelPlayer {
 
     this.fps = params.fps;
     this._renderer = params.renderer;
-    this._panelSequencer = params.panelSequencer;
+    this._sequence = params.sequence;
   }
 
-  /** Gets the panel player's sequencer */
-  public get panelSequencer() {
-    return this._panelSequencer;
+  /** Gets the panel player's panel */
+  public get sequence() {
+    return this._sequence;
   }
 
   /** Gets the panel player's index */
@@ -56,6 +61,11 @@ export class PanelPlayer {
   /** Gets the panel player's renderer */
   public get renderer() {
     return this._renderer;
+  }
+
+  public set sequence(value: Sequence) {
+    Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'sequence'));
+    this._sequence = value;
   }
 
   /** Sets the panel's fps */
@@ -110,32 +120,37 @@ export class PanelPlayer {
   public seek(frame: number) {
     const seekDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'seek');
     Exception.throwIfNull(frame, seekDescription);
-    Exception.throwIfNotBetween(frame, seekDescription, 0, this._panelSequencer.currentSequence.length);
+    Exception.throwIfNotBetween(frame, seekDescription, 0, this._sequence.length);
     this._index = frame;
     this._render();
   }
 
+  public setRendererFromBuilder(value: SetRendererBuilderParameters) {
+      this.renderer = RendererBuilder.build(value.rendererType, value.elementId);
+  }
+
   /* Moves the panel a single step */
   private _nextPanelFrame(): void {
+    Exception.throwIfNull(this._sequence, Exception.getDescriptionForProperty(this.CLASS_NAME, 'sequence'))
     this._incrementIndex();
     this._render();
   }
 
   /* Renders the panel's current frame using the renderer */
   private _render() {
-    this.onPanelUpdate.trigger({ display: this._panelSequencer.currentSequence[this._index] });
-    this._renderer.render(this._panelSequencer.currentSequence[this._index]);
+    this.onPanelUpdate.trigger({ display: this._sequence[this._index] });
+    this._renderer.render(this._sequence[this._index]);
   }
 
   /* Increments the panel next index */
   private _incrementIndex() {
-    const reachedBoundary = this._index >= this._panelSequencer.currentSequence.length;
+    const reachedBoundary = this._index >= this._sequence.length;
 
     if (reachedBoundary) {
       this.onReachingBoundary.trigger();
     }
 
-    this._index = (this._index + 1) % this._panelSequencer.currentSequence.length;
+    this._index = (this._index + 1) % this._sequence.length;
   }
 
   /* Starts the looping process */
