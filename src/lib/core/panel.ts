@@ -1,8 +1,8 @@
 import Board from './board';
-import { PanelFrame, Sequence } from '../types';
+import { Sequence } from '../types';
 import { Exception } from '../utils/exception';
 import { Event } from '../utils/event';
-import { Scroller } from './scrollers/scroller-builder';
+import { Scroller } from './scrollers/scroller';
 
 export interface PanelParameters  {
   /** The board for which the panel operates on */

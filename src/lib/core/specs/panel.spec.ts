@@ -3,7 +3,7 @@ import Board from "../board";
 import CharacterDictionary from "../character-dictionary";
 import Character from "../character";
 import BitArray from "../../utils/bit-array";
-import { ScrollerBuilder, ScrollerType } from "../scrollers/scroller-builder";
+import SideScrollingPanel from "../scrollers/side-scrolling-panel";
 
 
 let panel: Panel;
@@ -28,7 +28,7 @@ beforeEach(() => {
         increment: 1,
         width: 80,
         reverse: false,
-        scroller: ScrollerBuilder.build(ScrollerType.SideScrollingPanel)
+        scroller: new SideScrollingPanel()
     });
 });
 

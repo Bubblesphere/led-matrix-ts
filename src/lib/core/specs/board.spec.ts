@@ -177,7 +177,7 @@ describe('testing load', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
             new Character('a', new BitArray([0]), 1),
-            new Character('(long)', new BitArray([0]), 1)
+            new Character('long', new BitArray([0]), 1)
         ])
 
         expect(() => {
@@ -192,7 +192,7 @@ describe('testing load', () => {
     test('Should be able to retrieve multicharacter pattern character', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character('(long)', new BitArray([0]), 1)
+            new Character('long', new BitArray([0]), 1)
         ])
 
         board.load('(long)', dictionary);
@@ -209,18 +209,20 @@ describe('testing load', () => {
         expect(board.width).toBeGreaterThan(0);
     });
 
-    test('Should be able to escape bracket using tilde', () => {
+    /*
+    test('Should be able to escape word using tilde', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
             new Character('(', new BitArray([0, 0]), 2),
             new Character('a', new BitArray([0, 0]), 2),
             new Character(')', new BitArray([0, 0]), 2),
-            new Character('(a)', new BitArray([0]), 1)
+            new Character('b', new BitArray([0]), 1)
         ])
 
         board.load('((a)', dictionary);
         expect(board.width).toBe(6);
     });
+    */
 
 
     test('Should throw an error if the last character is a \\ and it\'s not escaped', () => {

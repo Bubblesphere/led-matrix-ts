@@ -1,10 +1,10 @@
 import { bit } from "../../utils/bit-array";
 import { PanelFrame } from "../../types";
-import { Panel, PanelParameters } from "../panel";
-import { Scroller } from "./scroller-builder";
+import {  PanelParameters } from "../panel";
+import { Scroller } from "./scroller";
 
-export default class VerticalScrollingPanel implements Scroller {
-  public indexUpperBound(params: PanelParameters): number {
+export default class VerticalScroller implements Scroller {
+  public loopEndIndex(params: PanelParameters): number {
     return params.board.height - 1;
   }
 

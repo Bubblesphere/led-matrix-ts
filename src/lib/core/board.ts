@@ -135,9 +135,6 @@ export default class Board {
   public get height() {
     // vertical padding + size of tallest character
     if (this._characters.length > 0) {
-      console.log(this._verticalPaddingWidth() + 
-      this._characters
-        .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height);
       return this._verticalPaddingWidth() + 
         this._characters
           .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;

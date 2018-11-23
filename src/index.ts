@@ -8,7 +8,7 @@ export * from './lib/core/character-json';
 export * from './lib/core/character-sizer';
 export * from './lib/core/led-matrix';
 export * from './lib/core/panel';
-export * from './lib/core/scrollers/scroller-builder';
+export * from './lib/core/scrollers/scroller';
 export * from './lib/core/scrollers/side-scrolling-panel';
 export * from './lib/core/scrollers/vertical-scrolling-panel';
 

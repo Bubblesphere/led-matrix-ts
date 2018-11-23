@@ -1,10 +1,11 @@
 import Board from "./board";
 import { Panel } from "./panel";
-import { ScrollerBuilder, ScrollerType } from "./scrollers/scroller-builder";
 import { Padding, Sequence } from "../types";
 import { Event, IEvent } from "../utils/event";
 import CharacterDictionary from "./character-dictionary";
 import Character from "./character";
+import { Scroller } from "./scrollers/scroller";
+import SideScrollingPanel from "./scrollers/side-scrolling-panel";
 
 interface ExposedBoardParameters {
     letterSpacing?: number
@@ -13,7 +14,7 @@ interface ExposedBoardParameters {
 }
 
 interface ExposedPanelParameters {
-    scrollerType?: ScrollerType,
+    scroller?: Scroller,
     /** Increment at each frame */
     increment?: number,
     /** The width of the panel in bits displayed */
@@ -32,7 +33,6 @@ export class LedMatrix implements LedMatrixParameters {
 
     private _dictionary: CharacterDictionary;
     private _panel: Panel;
-    private _scrollerType: ScrollerType;
     private _size: number;
 
     private readonly onReady = new Event<void>();
@@ -43,7 +43,6 @@ export class LedMatrix implements LedMatrixParameters {
     constructor(params?: LedMatrixParameters) {
         this._params = this._validateParameters(params);
 
-        this._scrollerType = this._params.scrollerType;
         this._panel = new Panel({
             board: new Board({
                 letterSpacing: this._params.letterSpacing,
@@ -53,7 +52,7 @@ export class LedMatrix implements LedMatrixParameters {
             increment: this._params.increment,
             reverse: this._params.reverse,
             width: this._params.panelWidth,
-            scroller: ScrollerBuilder.build(this._params.scrollerType)
+            scroller: this._params.scroller
         })
 
         this.event = {
@@ -140,13 +139,12 @@ export class LedMatrix implements LedMatrixParameters {
         return this._panel.GetCurrentSequence();
     }
 
-    public set scrollerType(value: ScrollerType) {
-        this._scrollerType = value;
-        this._panel.scroller = ScrollerBuilder.build(value);
+    public set scroller(value: Scroller) {
+        this._panel.scroller = value;
     }
 
-    public get scrollerType() {
-        return this._scrollerType;
+    public get scroller() {
+        return this._panel.scroller;
     }
 
     public get reverse() {
@@ -173,12 +171,11 @@ export class LedMatrix implements LedMatrixParameters {
         return this._panel.width;
     }
 
-
     // LedMatrix private
     private _validateParameters(params: LedMatrixParameters) {
         let defaultParams: LedMatrixParameters = {
             increment: 1,
-            scrollerType: ScrollerType.SideScrollingPanel,
+            scroller: new SideScrollingPanel(),
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,
@@ -191,7 +188,7 @@ export class LedMatrix implements LedMatrixParameters {
             params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
             params.size = this._valueOrDefault(params.size, defaultParams.size);
             params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
-            params.scrollerType = this._valueOrDefault(params.scrollerType, defaultParams.scrollerType);;
+            params.scroller = this._valueOrDefault(params.scroller, defaultParams.scroller);
             params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
             params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
 

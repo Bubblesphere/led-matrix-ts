@@ -4,16 +4,22 @@ import CharacterDictionary from "../character-dictionary";
 import Character from "../character";
 import BitArray from "../../utils/bit-array";
 import { Panel } from "../panel";
-import { ScrollerBuilder, ScrollerType } from "../scrollers/scroller-builder";
+import SideScrollingPanel from "../scrollers/side-scrolling-panel";
 
 let panel: Panel;
 let board: Board;
 
 beforeEach(() => {
-    board = new Board({
-        padding: [0],
-        letterSpacing: 0,
-        size: 1
+    panel = new Panel({
+        board: new Board({
+            padding: [0],
+            letterSpacing: 0,
+            size: 1
+        }),
+        increment: 1,
+        width: 80,
+        reverse: false,
+        scroller: new SideScrollingPanel()
     });
 
     const dict = new CharacterDictionary();
@@ -21,18 +27,13 @@ beforeEach(() => {
         new Character('a', new BitArray([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]), 14)
     ])
 
-    board.load('aaaaaaaaaaaa', dict);
-
-    panel = new Panel({
-        board: board,
-        increment: 1,
-        width: 80,
-        reverse: false,
-        scroller: ScrollerBuilder.build(ScrollerType.SideScrollingPanel)
-    });
+    this.panel.board.load('aaaaaaaaaaaa', dict);
 });
 
 describe('testing on/off', () => {
     document.body.innerHTML = '<div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>';
-
+    
+    test('Should return true', () => {
+        expect(1).toBe(1);
+    });
 });
