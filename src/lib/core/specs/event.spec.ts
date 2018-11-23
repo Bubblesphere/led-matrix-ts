@@ -2,9 +2,9 @@
 import Board from "../board";
 import CharacterDictionary from "../character-dictionary";
 import Character from "../character";
-import BitArray, { bit } from "../../utils/bit-array";
-import SideScrollingPanel from "../panels/side-scrolling-panel";
+import BitArray from "../../utils/bit-array";
 import { Panel } from "../panel";
+import { ScrollerBuilder, ScrollerType } from "../scrollers/scroller-builder";
 
 let panel: Panel;
 let board: Board;
@@ -23,11 +23,12 @@ beforeEach(() => {
 
     board.load('aaaaaaaaaaaa', dict);
 
-    panel = new SideScrollingPanel({
+    panel = new Panel({
         board: board,
         increment: 1,
         width: 80,
-        reverse: false
+        reverse: false,
+        scroller: ScrollerBuilder.build(ScrollerType.SideScrollingPanel)
     });
 });
 

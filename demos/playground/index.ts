@@ -1,5 +1,5 @@
 import { LedMatrix } from '../../src/lib/core/led-matrix';
-import { PanelType } from '../../src/lib/core/panel-builder';
+import { ScrollerType } from '../../src/lib/core/scrollers/scroller-builder';
 import AsciiRenderer from '../../src/lib/player/rendering/ascii-renderer';
 import { CanvaRenderers } from '../../src/lib/player/rendering/canva-renderers';
 import { CharactersJSON } from '../../src/lib/core/character-json';
@@ -89,10 +89,10 @@ document.getElementById("panelType-select").addEventListener("click", (e) => {
   const value = (document.getElementById("panelType-select") as HTMLInputElement).value;
   switch (value) {
     case "SideScrollingPanel":
-      ledMatrix.panelType = PanelType.SideScrollingPanel;
+      ledMatrix.scrollerType = ScrollerType.SideScrollingPanel;
       break;
     case "VerticalScrollingPanel":
-      ledMatrix.panelType = PanelType.VerticalScrollingPanel;
+      ledMatrix.scrollerType = ScrollerType.VerticalScrollingPanel;
       break;
   }
 });

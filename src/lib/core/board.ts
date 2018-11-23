@@ -135,6 +135,9 @@ export default class Board {
   public get height() {
     // vertical padding + size of tallest character
     if (this._characters.length > 0) {
+      console.log(this._verticalPaddingWidth() + 
+      this._characters
+        .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height);
       return this._verticalPaddingWidth() + 
         this._characters
           .reduce((accumulator, current) => current.height > accumulator.height ? current : accumulator).height;
@@ -152,7 +155,7 @@ export default class Board {
 
     if (index < this._padding[3] || index >= this.width - this._padding[1]) {
       // Column is padding
-      return this._createBitOffArrayOfLength(this.height);
+      return this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
     }
 
     let accumulator = this._padding[3];
@@ -174,7 +177,7 @@ export default class Board {
       accumulator += this._letterSpacing;
       if (accumulator > index) {
         // Column is space
-        toReturn = this._createBitOffArrayOfLength(this.height);
+        toReturn = this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
         return true;
       }
     });
