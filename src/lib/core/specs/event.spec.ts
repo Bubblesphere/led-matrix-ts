@@ -4,13 +4,11 @@ import CharacterDictionary from "../character-dictionary";
 import Character from "../character";
 import BitArray from "../../utils/bit-array";
 import { Panel } from "../panel";
-import SideScrollingPanel from "../scrollers/side-scrolling-panel";
+import SideScrollingPanel from "../scrollers/side-scroller";
 
 let panel: Panel;
-let board: Board;
-
 beforeEach(() => {
-    panel = new Panel({
+    this.panel = new Panel({
         board: new Board({
             padding: [0],
             letterSpacing: 0,

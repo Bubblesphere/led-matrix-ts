@@ -3,8 +3,8 @@ import AsciiRenderer from '../../src/lib/player/rendering/ascii-renderer';
 import { CanvaRenderers } from '../../src/lib/player/rendering/canva-renderers';
 import { CharactersJSON } from '../../src/lib/core/character-json';
 import { LedMatrixPlayer } from '../../src/lib/player/led-matrix-player';
-import SideScrollingPanel from '../../src/lib/core/scrollers/side-scrolling-panel';
-import VerticalScrollingPanel from '../../src/lib/core/scrollers/vertical-scrolling-panel';
+import VerticalScroller from '../../src/lib/core/scrollers/vertical-scroller';
+import SideScroller from '../../src/lib/core/scrollers/side-scroller';
 
 
 const ledMatrix = new LedMatrix();
@@ -32,7 +32,7 @@ document.getElementById("size-button").addEventListener("click", (e) => {
 
 document.getElementById("spacing-button").addEventListener("click", (e) => {
   const value = (document.getElementById("spacing-value") as HTMLInputElement).value;
-  ledMatrix.spacing = Number(value);
+  ledMatrix.letterSpacing = Number(value);
 });
 
 document.getElementById("padding-button").addEventListener("click", (e) => {
@@ -90,10 +90,10 @@ document.getElementById("panelType-select").addEventListener("click", (e) => {
   const value = (document.getElementById("panelType-select") as HTMLInputElement).value;
   switch (value) {
     case "SideScrollingPanel":
-      ledMatrix.scroller = new SideScrollingPanel();
+      ledMatrix.scroller = new SideScroller();
       break;
     case "VerticalScrollingPanel":
-      ledMatrix.scroller = new VerticalScrollingPanel();
+      ledMatrix.scroller = new VerticalScroller();
       break;
   }
 });

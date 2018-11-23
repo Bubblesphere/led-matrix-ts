@@ -110,9 +110,9 @@ export class Panel {
     let sequence: Sequence = [];
 
     let panelIndex = 0;
-    for (let i = 0; i <= this._params.scroller.indexUpperBound(this._params); i++) {
+    for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
       panelIndex = this._tickPanelIndex(panelIndex);
-      sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this._params));
+      sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
     }
 
     return sequence;
@@ -130,10 +130,10 @@ export class Panel {
   }
 
   private _incrementIndex(index: number): number {
-    return index >= this._params.scroller.indexUpperBound(this._params) ? 0 : index + this._params.increment;
+    return index >= this._params.scroller.loopEndIndex(this) ? 0 : index + this._params.increment;
   }
 
   private _decrementIndex(index: number): number {
-    return index === 0 ? this._params.scroller.indexUpperBound(this._params) : index - this._params.increment;
+    return index === 0 ? this._params.scroller.loopEndIndex(this) : index - this._params.increment;
   }
 };

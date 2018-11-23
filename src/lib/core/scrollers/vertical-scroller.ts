@@ -1,19 +1,19 @@
 import { bit } from "../../utils/bit-array";
 import { PanelFrame } from "../../types";
-import {  PanelParameters } from "../panel";
+import { Panel } from "../panel";
 import { Scroller } from "./scroller";
 
 export default class VerticalScroller implements Scroller {
-  public loopEndIndex(params: PanelParameters): number {
-    return params.board.height - 1;
+  public loopEndIndex(panel: Panel): number {
+    return panel.board.height - 1;
   }
 
-  public generatePanelFrameAtIndex(currentIndex: number, params: PanelParameters): PanelFrame {
+  public generatePanelFrameAtIndex(currentIndex: number, panel: Panel): PanelFrame {
     let display: PanelFrame = [];
-    for(let i = 0; i < params.board.height; i++) {
+    for(let i = 0; i < panel.board.height; i++) {
       let row: Array<bit>;
-      row = params.board.getRowAtIndex(currentIndex + i);
-      display.push(row.slice(0, params.width));
+      row = panel.board.getRowAtIndex(currentIndex + i);
+      display.push(row.slice(0, panel.width));
     }
     return display;
   }

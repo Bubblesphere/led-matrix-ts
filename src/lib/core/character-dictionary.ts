@@ -10,37 +10,31 @@ export default class CharacterDictionary {
     this._characters = [];
   }
 
+  /** Returns the different characters in the dictionary */
+  public get characters() {
+    return this._characters
+  }
+
+  /** Returns the height of the tallest character within the dictionary */
+  public get height() {
+    return Math.max.apply(Math, this._characters.map(x => x.height))
+  }
+
+  /** Returns the length of the dictionary */
+  public get length() {
+    return this._characters.length;
+  }
+
   /**
-   * Finds an input within the dictionary 
-   * @param input The input corresponding
-   */
+ * Finds an input within the dictionary 
+ * @param input The input corresponding
+ */
   public find(input: string): Character {
     const character = this._characters.filter(x => x.hasPattern(input));
     if (character && character.length > 0) {
       return character[0];
     }
     throw `Could not find character ${input} in the alphabet`;
-  }
-
-  /**
-   * Returns the different characters in the dictionary
-   */
-  public get characters() {
-    return this._characters
-  }
-
-  /**
-   * Returns the height of the tallest character within the dictionary
-   */
-  public get height() {
-    return Math.max.apply(Math, this._characters.map(x => x.height))
-  }
-
-  /**
-   * Returns the length of the dictionary
-   */
-  public get length() {
-    return this._characters.length;
   }
 
   /**

@@ -5,7 +5,7 @@ import { Event, IEvent } from "../utils/event";
 import CharacterDictionary from "./character-dictionary";
 import Character from "./character";
 import { Scroller } from "./scrollers/scroller";
-import SideScrollingPanel from "./scrollers/side-scrolling-panel";
+import SideScrollingPanel from "./scrollers/side-scroller";
 
 interface ExposedBoardParameters {
     letterSpacing?: number
@@ -73,8 +73,8 @@ export class LedMatrix implements LedMatrixParameters {
         this._panel.board.load(this.input, this._dictionary, this.size);
     }
 
-    public get indexUpperBound() {
-        return this._panel.scroller.indexUpperBound(this._panel);
+    public get loopEndIndex() {
+        return this._panel.scroller.loopEndIndex(this._panel);
     }
 
     // CharacterDictionary
@@ -102,11 +102,11 @@ export class LedMatrix implements LedMatrixParameters {
         return this._panel.board.characters;
     }
 
-    public set spacing(value: number) {
+    public set letterSpacing(value: number) {
         this._panel.board.letterSpacing = value;
     }
 
-    public get spacing() {
+    public get letterSpacing() {
         return this._panel.board.letterSpacing;
     }
 
