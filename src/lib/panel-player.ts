@@ -1,8 +1,8 @@
-import { Board } from './board';
 import { Event } from './event';
 import { PanelFrame } from './types';
 import { Renderer } from './rendering/renderer';
 import { PanelSequencer } from './panel-sequencer';
+import { Exception } from './exception';
 
 export interface PanelPlayerParameters  {
   renderer: Renderer,
@@ -11,6 +11,7 @@ export interface PanelPlayerParameters  {
 }
 
 export class PanelPlayer {
+  readonly CLASS_NAME = PanelSequencer.name;
   private _index: number;
   private _panelSequencer: PanelSequencer;
 
@@ -18,7 +19,7 @@ export class PanelPlayer {
   private _fps: number;
 
   private _shouldUpdate: boolean;
-  private _fpsInterval: number;
+  private _fpsIntervalLengthInMs: number;
   private _now: number;
   private _then: number;
   private _elapsed: number;
@@ -36,160 +37,127 @@ export class PanelPlayer {
     this._panelSequencer = params.panelSequencer;
   }
 
+  /** Gets the panel player's sequencer */
   public get panelSequencer() {
     return this._panelSequencer;
   }
 
+  /** Gets the panel player's index */
   public get index() {
     return this._index;
   }
 
-  public set fps(value: number) {
-    // validation
-    if (value == null) {
-      throw `Panel's fps cannot be set to null`;
-    }
-    if (value < 0) {
-      throw `Panel's fps cannot be set to a negative number (${value})`;
-    }
-    const maxFps = 60;
-    if (value > maxFps) {
-      throw `Panel's fps has to be lower than ${maxFps}`;
-    }
-    this._fps = value;
-    this._fpsInterval = 1000 / this._fps;
-  }
-
+  /** Gets the panel player's fps */
   public get fps() {
     return this._fps;
   }
 
-  /**
-   * Sets the panel's renderer
-   */
-  public set renderer(value: Renderer) {
-    // validation
-    if (value == null) {
-      throw `Panel's renderer cannot be set to null`;
-    }
-    this._renderer = value;
-  }
-
-  /**
-   * Gets the panel's renderer
-   */
+  /** Gets the panel player's renderer */
   public get renderer() {
     return this._renderer;
   }
 
-  /**
-   * Starts the panel
-   */
+  /** Sets the panel's fps */
+  public set fps(value: number) {
+    const fpsDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
+    Exception.throwIfNull(value, fpsDescription);
+    Exception.throwIfNotBetween(value, fpsDescription, 0, 60);
+    this._fps = value;
+    this._fpsIntervalLengthInMs = 1000 / this._fps;
+  }
+
+  /** Sets the panel player's renderer */
+  public set renderer(value: Renderer) {
+    Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'renderer'))
+    this._renderer = value;
+    this._render();
+  }
+
+  /** Starts the panel player */
   public play() {
     this._index = 0;
-    this._draw();
+    this._render();
     this._startLoop();
   }
 
-  /**
-   * Stops the panel
-   */
+  /** Stops the panel player */
   public stop() {
     this._index = 0;
-    this._draw();
+    this._render();
     this._shouldUpdate = false;
   }
 
-  /**
-   * Resumes the panel
-   */
+  /** Resumes the panel player */
   public resume() {
     this._startLoop();
   }
 
-  /**
-   * Pauses the panel
-   */
+  /** Pauses the panel player */
   public pause() {
     this._shouldUpdate = false;
   }
 
   /**
-   * Seeks the panel
+   * Seeks the panel player
    * @param frame The frame to seek to
    */
   public seek(frame: number) {
-    if (frame == null || frame < 0 || frame > this._panelSequencer.cachedSequence.length) {
-      throw `Seek expects a value between 0 and ${this._panelSequencer.cachedSequence.length}`;
-    }
+    const seekDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'seek');
+    Exception.throwIfNull(frame, seekDescription);
+    Exception.throwIfNotBetween(frame, seekDescription, 0, this._panelSequencer.currentSequence.length);
     this._index = frame;
-    this._draw();
+    this._render();
   }
 
-  /**
-   * Ticks the panel a single step
-   */
-  public tick() {
-    this._step();
-  }
-
-  /**
-   * Moves the panel a single step
-   */
-  private _step(): void {
+  /* Moves the panel a single step */
+  private _nextPanelFrame(): void {
     this._incrementIndex();
-    this._draw();
+    this._render();
   }
 
-  /**
-   * Displays the panel for an index
-   */
-  private _draw() {
-    this.onPanelUpdate.trigger({ display: this._panelSequencer.cachedSequence[this._index] });
-    this._renderer.render(this._panelSequencer.cachedSequence[this._index]);
+  /* Renders the panel's current frame using the renderer */
+  private _render() {
+    this.onPanelUpdate.trigger({ display: this._panelSequencer.currentSequence[this._index] });
+    this._renderer.render(this._panelSequencer.currentSequence[this._index]);
   }
 
-  /**
-   * Increments the panel next index
-   */
+  /* Increments the panel next index */
   private _incrementIndex() {
-    if (this._index >= this._panelSequencer.cachedSequence.length) {
+    const reachedBoundary = this._index >= this._panelSequencer.currentSequence.length;
+
+    if (reachedBoundary) {
       this.onReachingBoundary.trigger();
-      this._index = 0;
-    } else {
-      this._index += 1;
     }
+
+    this._index = (this._index + 1) % this._panelSequencer.currentSequence.length;
   }
 
-  /**
-   * Starts the looping process
-   */
+  /* Starts the looping process */
   private _startLoop() {
     this._then = Date.now();
     this._shouldUpdate = true;
     this._loop();
   }
 
-  /**
-   * Steps at an interval of the panel's fps
-   */
+  /* Steps at an interval of the panel's fps */
   private _loop(): void {
     requestAnimationFrame(this._loop.bind(this));
     if (this._shouldUpdate) {
-      this._onNextFrame(this._step.bind(this));
+      this._callIfReadyForNextFrame(this._nextPanelFrame.bind(this));
     }
   }
 
-  private _onNextFrame(callback: () => any) {
+  /* Calls the callback if ready next frame (fps based) */
+  private _callIfReadyForNextFrame(callback: () => any) {
     this._now = Date.now();
     this._elapsed = this._now - this._then;
 
     // if enough time has elapsed, draw the next frame
-    if (this._elapsed > this._fpsInterval) {
+    if (this._elapsed > this._fpsIntervalLengthInMs) {
 
         // Get ready for next frame by setting then=now, but also adjust for your
         // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
-        this._then = this._now - (this._elapsed % this._fpsInterval);
+        this._then = this._now - (this._elapsed % this._fpsIntervalLengthInMs);
 
         // Put your drawing code here
         callback();

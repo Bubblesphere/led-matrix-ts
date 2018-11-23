@@ -23,7 +23,7 @@ export interface PanelSequencerParameters  {
 export abstract class PanelSequencer {
   readonly CLASS_NAME = PanelSequencer.name;
   private _currentSequence: PanelFrame[];
-  
+
   private _increment: number;
   private _width: number;
   private _board: Board;
@@ -41,7 +41,7 @@ export abstract class PanelSequencer {
 
   public abstract get indexUpperBound(): number
 
-  public get cachedSequence() {
+  public get currentSequence() {
     return this._currentSequence;
   }
   
@@ -62,30 +62,30 @@ export abstract class PanelSequencer {
   }
   
   public set width(value: number) {
-    const valueDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'width');
-    Exception.throwOnNull(value, valueDescription);
-    Exception.throwIfNegative(value, valueDescription);
+    const widthDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'width');
+    Exception.throwIfNull(value, widthDescription);
+    Exception.throwIfNegative(value, widthDescription);
     this._width = value;
     this.renderCurrentSequence();
   }
 
   public set board(value: Board) {
-    Exception.throwOnNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'board'));
+    Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'board'));
     this._board = value;
     this.renderCurrentSequence();
   }
 
   public set increment(value: number) {
-    const valueDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
-    Exception.throwOnNull(value, valueDescription);
-    Exception.throwIfNegative(value, valueDescription);
+    const fpsDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
+    Exception.throwIfNull(value, fpsDescription);
+    Exception.throwIfNegative(value, fpsDescription);
     this._increment = value;
     this.renderCurrentSequence();
   }
 
   public set reverse(value: boolean) {
-    const valueDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'reverse');
-    Exception.throwOnNull(value, valueDescription);
+    const reverseDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'reverse');
+    Exception.throwIfNull(value, reverseDescription);
     this._reverse = value;
     this.renderCurrentSequence();
   }
