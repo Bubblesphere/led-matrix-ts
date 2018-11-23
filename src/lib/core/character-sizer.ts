@@ -1,4 +1,4 @@
-import { bit } from "./bit-array";
+import { bit } from "../utils/bit-array";
 
 export class NearestNeighbor {
     static scale(matrix: bit[], width: number, factor: number) {

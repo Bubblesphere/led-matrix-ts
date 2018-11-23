@@ -1,6 +1,6 @@
 import Board from '../board';
 import Character from '../character';
-import BitArray, { bit } from '../bit-array';
+import BitArray, { bit } from '../../utils/bit-array';
 import CharacterDictionary from '../character-dictionary';
 
 let board: Board;
@@ -8,27 +8,28 @@ let board: Board;
 
 beforeEach(() => {
     board = new Board({
-        spacing: 0,
-        padding: [0]
+        letterSpacing: 0,
+        padding: [0],
+        size: 1
     });
 })
 
 describe('testing spacing', () => {
     test('Should throw an error when setting a null spacing', () => {
         expect(() => { 
-            board.spacing = null
+            board.letterSpacing = null
         }).toThrow();
     });
 
     test('Should throw an error when setting a negative spacing', () => {
         expect(() => { 
-            board.spacing = -1;
+            board.letterSpacing = -1;
         }).toThrow();
     });
 
     test('Should set spacing when it\'s a positive number', () => {
-        board.spacing = 1;
-        expect(board.spacing).toBe(1);
+        board.letterSpacing = 1;
+        expect(board.letterSpacing).toBe(1);
     });
 });
 
@@ -69,11 +70,11 @@ describe('testing width', () => {
         const characterWidth = 1;
 
         board.padding = [0, paddingRight, 0, paddingLeft];
-        board.spacing = spacing;
+        board.letterSpacing = spacing;
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([0]), characterWidth),
-            new Character(['b'], new BitArray([0]), characterWidth)
+            new Character('a', new BitArray([0]), characterWidth),
+            new Character('b', new BitArray([0]), characterWidth)
         ])
         board.load('ab', dictionary);
 
@@ -90,8 +91,8 @@ describe('testing height', () => {
         board.padding = [paddingTop, 0, paddingBottom, 0];
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([0,0]), 1), // tallest character
-            new Character(['b'], new BitArray([0]), 1)
+            new Character('a', new BitArray([0,0]), 1), // tallest character
+            new Character('b', new BitArray([0]), 1)
         ])
         board.load('ab', dictionary);
         
@@ -107,7 +108,7 @@ describe('testing getColumnAtIndex', () => {
         board.padding = [0, paddingRight, 0, paddingLeft];
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([1, 1]), 1)
+            new Character('a', new BitArray([1, 1]), 1)
         ])
         board.load('a', dictionary);
         
@@ -116,10 +117,10 @@ describe('testing getColumnAtIndex', () => {
     });
 
     test('Should return an array of 0 the size of height when column is spacing', () => {
-        board.spacing = 1;
+        board.letterSpacing = 1;
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([1, 1]), 1)
+            new Character('a', new BitArray([1, 1]), 1)
         ])
         board.load('aa', dictionary);
         
@@ -129,7 +130,7 @@ describe('testing getColumnAtIndex', () => {
     test('Should return an array of bit corresponding to the character when column is a character', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([1, 1, 0]), 1)
+            new Character('a', new BitArray([1, 1, 0]), 1)
         ])
         board.load('aa', dictionary);
         
@@ -145,7 +146,7 @@ describe('testing getRowAtIndex', () => {
         board.padding = [paddingTop, 0, paddingBottom, 0];
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([1, 1]), 2)
+            new Character('a', new BitArray([1, 1]), 2)
         ])
         board.load('a', dictionary);
         
@@ -160,10 +161,10 @@ describe('testing getRowAtIndex', () => {
         const character = [1, 1] as bit[];
 
         board.padding = [0, paddingRight, 0 , paddingLeft];
-        board.spacing = spacing;
+        board.letterSpacing = spacing;
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray(character), character.length)
+            new Character('a', new BitArray(character), character.length)
         ])
         board.load('aa', dictionary);
 
@@ -175,62 +176,64 @@ describe('testing load', () => {
     test('Should throw an error if there\'s no ending bracket in a multicharacter input', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([0]), 1),
-            new Character(['[long]'], new BitArray([0]), 1)
+            new Character('a', new BitArray([0]), 1),
+            new Character('long', new BitArray([0]), 1)
         ])
 
         expect(() => {
-            board.load('[long', dictionary);
+            board.load('(long', dictionary);
         }).toThrow();
 
         expect(() => {
-            board.load('a[long', dictionary);
+            board.load('a(long', dictionary);
         }).toThrow();
     });
 
     test('Should be able to retrieve multicharacter pattern character', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['[long]'], new BitArray([0]), 1)
+            new Character('long', new BitArray([0]), 1)
         ])
 
-        board.load('[long]', dictionary);
+        board.load('(long)', dictionary);
         expect(board.width).toBeGreaterThan(0);
     });
 
     test('Should be able to retrieve a character', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['a'], new BitArray([0]), 1)
+            new Character('a', new BitArray([0]), 1)
         ])
 
         board.load('a', dictionary);
         expect(board.width).toBeGreaterThan(0);
     });
 
-    test('Should be able to escape bracket using tilde', () => {
+    /*
+    test('Should be able to escape word using tilde', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['['], new BitArray([0, 0]), 2),
-            new Character(['a'], new BitArray([0, 0]), 2),
-            new Character([']'], new BitArray([0, 0]), 2),
-            new Character(['[a]'], new BitArray([0]), 1)
+            new Character('(', new BitArray([0, 0]), 2),
+            new Character('a', new BitArray([0, 0]), 2),
+            new Character(')', new BitArray([0, 0]), 2),
+            new Character('b', new BitArray([0]), 1)
         ])
 
-        board.load('~[a]', dictionary);
+        board.load('((a)', dictionary);
         expect(board.width).toBe(6);
     });
+    */
 
 
-    test('Should throw an error if the last character is a tilde and it\'s not escaped', () => {
+    test('Should throw an error if the last character is a \\ and it\'s not escaped', () => {
         const dictionary = new CharacterDictionary();
         dictionary.add([
-            new Character(['~'], new BitArray([0, 0]), 2),
-            new Character(['a'], new BitArray([0, 0]), 2)
+            new Character('', new BitArray([0, 0]), 2),
+            new Character('a', new BitArray([0, 0]), 2)
         ])
 
         expect(() => {
-            board.load('a~', dictionary);
+            board.load('a\\', dictionary);
         }).toThrow();
     });
 });

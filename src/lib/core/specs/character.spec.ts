@@ -1,16 +1,16 @@
 import Character from "../character";
-import BitArray from "../bit-array";
+import BitArray from "../../utils/bit-array";
 
 describe('testing Character constructor', () => {
     test('Should throw an exception if the output is smaller than the character\'s width', () => {
         expect(() => {
-            return new Character(['a'], new BitArray([0]), 2);
+            return new Character('a', new BitArray([0]), 2);
         }).toThrow();
     });
 
     test('Should throw an exception if the output isn\'t divisible by the character\'s width', () => {
         expect(() => {
-            return new Character(['a'], new BitArray([0, 0, 0]), 2);
+            return new Character('a', new BitArray([0, 0, 0]), 2);
         }).toThrow();
     });
 });
@@ -19,7 +19,7 @@ describe('testing getColumn', () => {
     let character: Character;
 
     beforeEach(() => {
-        character = new Character(['a'], new BitArray([1, 0, 0, 1]), 2);
+        character = new Character('a', new BitArray([1, 0, 0, 1]), 2);
     });
 
     test('Should throw an exception if the index is negative', () => {
@@ -44,7 +44,7 @@ describe('testing getRow', () => {
     let character: Character;
 
     beforeEach(() => {
-        character = new Character(['a'], new BitArray([1, 0, 0, 1]), 2);
+        character = new Character('a', new BitArray([1, 0, 0, 1]), 2);
     });
 
     test('Should throw an exception if the index is negative', () => {
@@ -69,7 +69,7 @@ describe('testing properties', () => {
     let character: Character;
 
     beforeEach(() => {
-        character = new Character(['a'], new BitArray([1, 0, 0, 1]), 2);
+        character = new Character('a', new BitArray([1, 0, 0, 1]), 2);
     });
 
     test('Should return the correct width', () => {
@@ -81,7 +81,7 @@ describe('testing properties', () => {
     });
 
     test('Should return the correct patterns', () => {
-        expect(character.patterns).toEqual(['a']);
+        expect(character.pattern).toEqual('a');
     });
 
     test('Should return the correct output', () => {
@@ -91,11 +91,11 @@ describe('testing properties', () => {
 
 describe('testing hasPattern', () => {
     test('Should return false if the character doesn\'t have the pattern', () => {
-        const character = new Character(['a'], new BitArray([1, 0, 0, 1]), 2);
+        const character = new Character('a', new BitArray([1, 0, 0, 1]), 2);
         expect(character.hasPattern('b')).toBeFalsy();
     });
     test('Should return true if the character has the pattern', () => {
-        const character = new Character(['a'], new BitArray([1, 0, 0, 1]), 2);
+        const character = new Character('a', new BitArray([1, 0, 0, 1]), 2);
         expect(character.hasPattern('a')).toBeTruthy();
     });
 });

@@ -86,7 +86,67 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./dist/esm/lib/bit-array.js
+// CONCATENATED MODULE: ./dist/esm/lib/core/character.js
+class Character {
+    constructor(pattern, output, width) {
+        this._pattern = pattern;
+        this._output = output;
+        if (output.size >= width) {
+            this._width = width;
+        } else {
+            throw `Output size (${output.size}) can't be smaller than the character's width (${width})`;
+        }
+        if (output.size % width === 0) {
+            this._height = output.size / width;
+        } else {
+            throw `Output size (${output.size}) must be divisible by the character's width (${width})`;
+        }
+    }
+    getColumn(index) {
+        if (index < 0) {
+            throw `Index (${index}) cannot be negative`;
+        }
+        if (index >= this._width) {
+            throw `Index (${index}) is greater than the width of the character (${this._width})`;
+        }
+        let column = [];
+        for (let i = 0; i < this._height; i++) {
+            column.push(this._output.atIndex(i * this._width + index));
+        }
+        return column;
+    }
+    getRow(index) {
+        if (index < 0) {
+            throw `Index (${index}) cannot be negative`;
+        }
+        if (index >= this._height) {
+            throw `Index (${index}) is greater than the height of the character (${this._height})`;
+        }
+        let row = [];
+        for (let i = 0; i < this._width; i++) {
+            row.push(this._output.atIndex(index * this._width + i));
+        }
+        return row;
+    }
+    get width() {
+        return this._width;
+    }
+    get height() {
+        return this._height;
+    }
+    get pattern() {
+        return this._pattern;
+    }
+    get output() {
+        return this._output;
+    }
+    hasPattern(input) {
+        return this._pattern == input;
+    }
+}
+;
+//# sourceMappingURL=character.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/utils/bit-array.js
 class BitArray {
     constructor(values) {
         this._bitPerIndex = 8;
@@ -152,67 +212,7 @@ class BitArray {
 }
 ;
 //# sourceMappingURL=bit-array.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/character.js
-class Character {
-    constructor(pattern, output, width) {
-        this._pattern = pattern;
-        this._output = output;
-        if (output.size >= width) {
-            this._width = width;
-        } else {
-            throw `Output size (${output.size}) can't be smaller than the character's width (${width})`;
-        }
-        if (output.size % width === 0) {
-            this._height = output.size / width;
-        } else {
-            throw `Output size (${output.size}) must be divisible by the character's width (${width})`;
-        }
-    }
-    getColumn(index) {
-        if (index < 0) {
-            throw `Index (${index}) cannot be negative`;
-        }
-        if (index >= this._width) {
-            throw `Index (${index}) is greater than the width of the character (${this._width})`;
-        }
-        let column = [];
-        for (let i = 0; i < this._height; i++) {
-            column.push(this._output.atIndex(i * this._width + index));
-        }
-        return column;
-    }
-    getRow(index) {
-        if (index < 0) {
-            throw `Index (${index}) cannot be negative`;
-        }
-        if (index >= this._height) {
-            throw `Index (${index}) is greater than the height of the character (${this._height})`;
-        }
-        let row = [];
-        for (let i = 0; i < this._width; i++) {
-            row.push(this._output.atIndex(index * this._width + i));
-        }
-        return row;
-    }
-    get width() {
-        return this._width;
-    }
-    get height() {
-        return this._height;
-    }
-    get pattern() {
-        return this._pattern;
-    }
-    get output() {
-        return this._output;
-    }
-    hasPattern(input) {
-        return this._pattern == input;
-    }
-}
-;
-//# sourceMappingURL=character.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/character-sizer.js
+// CONCATENATED MODULE: ./dist/esm/lib/core/character-sizer.js
 class NearestNeighbor {
     static scale(matrix, width, factor) {
         const ratio = 1 / factor;
@@ -231,16 +231,41 @@ class NearestNeighbor {
     }
 }
 //# sourceMappingURL=character-sizer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/board.js
+// CONCATENATED MODULE: ./dist/esm/lib/utils/event.js
+class Event {
+    constructor() {
+        this.handlers = [];
+    }
+    on(handler) {
+        this.handlers.push(handler);
+    }
+    off(handler) {
+        this.handlers = this.handlers.filter(h => h !== handler);
+    }
+    trigger(data) {
+        this.handlers.slice(0).forEach(h => h(data));
+    }
+    expose() {
+        return this;
+    }
+}
+//# sourceMappingURL=event.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/board.js
+
 
 
 
 class board_Board {
     constructor(params) {
+        this.onPropertyChange = new Event();
         this._characters = [];
         this._letterSpacing = params.letterSpacing;
         this.padding = params.padding;
         this._size = params.size;
+        this.onPropertyChange.trigger();
+    }
+    get PropertyChange() {
+        return this.onPropertyChange.expose();
     }
     set letterSpacing(value) {
         if (value == null) {
@@ -250,6 +275,7 @@ class board_Board {
             throw `Board's spacing cannot be set to a negative number (${value})`;
         }
         this._letterSpacing = value;
+        this.onPropertyChange.trigger();
     }
     get letterSpacing() {
         return this._letterSpacing;
@@ -279,6 +305,7 @@ class board_Board {
         } else {
             this._padding = value;
         }
+        this.onPropertyChange.trigger();
     }
     get padding() {
         return this._padding;
@@ -301,7 +328,7 @@ class board_Board {
     getColumnAtIndex(index) {
         index %= this.width;
         if (index < this._padding[3] || index >= this.width - this._padding[1]) {
-            return this._createBitOffArrayOfLength(this.height);
+            return this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
         }
         let accumulator = this._padding[3];
         let toReturn;
@@ -314,7 +341,7 @@ class board_Board {
             }
             accumulator += this._letterSpacing;
             if (accumulator > index) {
-                toReturn = this._createBitOffArrayOfLength(this.height);
+                toReturn = this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
                 return true;
             }
         });
@@ -329,16 +356,14 @@ class board_Board {
         charactersWithSpace = charactersWithSpace.slice(0, charactersWithSpace.length - this._letterSpacing);
         return this._createBitOffArrayOfLength(this._padding[3]).concat(charactersWithSpace).concat(this._createBitOffArrayOfLength(this._padding[1]));
     }
-    load(input, dictionnary, size) {
+    load(input, dictionnary, size = 1) {
         const escapeCharacter = '\\';
         const delimiterWord = {
             start: "(",
             end: ")"
         };
         this._characters = [];
-        if (size) {
-            this._size = size;
-        }
+        this._size = size;
         for (let i = 0; i < input.length; i++) {
             let characterBuffer = input[i];
             if (characterBuffer === escapeCharacter) {
@@ -359,6 +384,7 @@ class board_Board {
             this._characters.push(new Character(character.pattern, new BitArray(NearestNeighbor.scale(character.output.atIndexRange(0, character.output.size), character.width, this._size)), character.width * this._size));
         }
         this._input = input;
+        this.onPropertyChange.trigger();
     }
     _horizontalPaddingWidth() {
         return this._padding[1] + this._padding[3];
@@ -375,7 +401,7 @@ class board_Board {
 }
 ;
 //# sourceMappingURL=board.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/character-dictionary.js
+// CONCATENATED MODULE: ./dist/esm/lib/core/character-dictionary.js
 class CharacterDictionary {
     constructor() {
         this._characters = [];
@@ -442,7 +468,7 @@ class CharacterDictionary {
 }
 ;
 //# sourceMappingURL=character-dictionary.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/character-json.js
+// CONCATENATED MODULE: ./dist/esm/lib/core/character-json.js
 
 
 class character_json_CharactersJSON {
@@ -493,259 +519,321 @@ class character_json_CharactersJSON {
     }
 }
 //# sourceMappingURL=character-json.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/event.js
-class Event {
-    constructor() {
-        this.handlers = [];
+// CONCATENATED MODULE: ./dist/esm/lib/utils/exception.js
+class Exception {
+    static throwIfNull(value, valueDescription) {
+        if (value == null) {
+            throw `${valueDescription} property cannot be set to null`;
+        }
     }
-    on(handler) {
-        this.handlers.push(handler);
+    static throwIfNegative(value, valueDescription) {
+        if (value < 0) {
+            throw `${valueDescription} property cannot be set to a negative number (${value})`;
+        }
     }
-    off(handler) {
-        this.handlers = this.handlers.filter(h => h !== handler);
+    static throwIfNotBetween(value, valueDescription, rangeFrom, rangeTo) {
+        if (value < rangeFrom || value > rangeTo) {
+            throw `Seek expects a value between ${rangeFrom} and ${rangeTo}`;
+        }
     }
-    trigger(data) {
-        this.handlers.slice(0).forEach(h => h(data));
-    }
-    expose() {
-        return this;
+    static getDescriptionForProperty(className, methodName) {
+        return `${className}'s ${methodName}`;
     }
 }
-//# sourceMappingURL=event.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/panel.js
+//# sourceMappingURL=exception.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/panel.js
+
 
 class panel_Panel {
     constructor(params) {
-        this.onPanelUpdate = new Event();
-        this.onReachingBoundary = new Event();
-        this.width = params.width;
-        this.fps = params.fps;
-        this._board = params.board;
-        this._index = 0;
-        this._increment = params.increment;
-        this.display = [];
-        this._renderer = params.renderer;
-        this._reverse = params.reverse;
+        this.CLASS_NAME = panel_Panel.name;
+        this._initiated = false;
+        this.onNewSequence = new Event();
+        this._params = params;
+        this._initiated = true;
+        this.updateCurrentSequence();
+        this._params.board.PropertyChange.on(() => {
+            this.updateCurrentSequence();
+        });
     }
-    get PanelUpdate() {
-        return this.onPanelUpdate.expose();
-    }
-    get ReachingBoundary() {
-        return this.onReachingBoundary.expose();
-    }
-    get index() {
-        return this._index;
-    }
-    set width(value) {
-        if (value == null) {
-            throw `Panel's width cannot be set to null`;
-        }
-        if (value < 0) {
-            throw `Panel's width cannot be set to a negative number (${value})`;
-        }
-        this._width = value;
+    get NewSequence() {
+        return this.onNewSequence.expose();
     }
     get width() {
-        return this._width;
-    }
-    set fps(value) {
-        if (value == null) {
-            throw `Panel's fps cannot be set to null`;
-        }
-        if (value < 0) {
-            throw `Panel's fps cannot be set to a negative number (${value})`;
-        }
-        const maxFps = 60;
-        if (value > maxFps) {
-            throw `Panel's fps has to be lower than ${maxFps}`;
-        }
-        this._fps = value;
-        this._fpsInterval = 1000 / this._fps;
-    }
-    get fps() {
-        return this._fps;
-    }
-    set board(value) {
-        if (value == null) {
-            throw `Panel's board cannot be set to null`;
-        }
-        this._board = value;
+        return this._params.width;
     }
     get board() {
-        return this._board;
-    }
-    set increment(value) {
-        if (value == null) {
-            throw `Panel's fps cannot be set to a null value`;
-        }
-        if (value < 0) {
-            throw `Panel's fps cannot be set to a negative number (${value})`;
-        }
-        this._increment = value;
+        return this._params.board;
     }
     get increment() {
-        return this._increment;
-    }
-    set renderer(value) {
-        if (value == null) {
-            throw `Panel's renderer cannot be set to null`;
-        }
-        this._renderer = value;
-    }
-    get renderer() {
-        return this._renderer;
-    }
-    set reverse(value) {
-        if (value == null) {
-            throw `Panel's reverse cannot be set to null`;
-        }
-        this._reverse = value;
+        return this._params.increment;
     }
     get reverse() {
-        return this._reverse;
+        return this._params.reverse;
     }
-    play() {
-        this._index = 0;
-        this._draw();
-        this._startLoop();
+    get scroller() {
+        return this._params.scroller;
     }
-    stop() {
-        this._index = 0;
-        this._draw();
-        this._shouldUpdate = false;
-    }
-    resume() {
-        this._startLoop();
-    }
-    pause() {
-        this._shouldUpdate = false;
-    }
-    seek(frame) {
-        if (frame == null || frame < 0 || frame > this.indexUpperBound) {
-            throw `Seek expects a value between 0 and ${this.indexUpperBound}`;
-        }
-        this._index = frame;
-        this._draw();
-    }
-    tick() {
-        this._step();
-    }
-    _step() {
-        this._tickIndex();
-        this._draw();
-    }
-    _draw() {
-        this._resetPanel();
-        this._generateDisplay(this._index);
-        this.onPanelUpdate.trigger({ display: this.display });
-        this._renderer.render(this.display);
-    }
-    _tickIndex() {
-        this._reverse ? this._decrementIndex() : this._incrementIndex();
-    }
-    _resetPanel() {
-        this.display.splice(0, this.display.length);
-        for (let i = 0; i < this._board.height; i++) {
-            this.display.push(Array.apply(null, Array(this.width)).map(Number.prototype.valueOf, 0));
+    set width(value) {
+        const widthDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'width');
+        Exception.throwIfNull(value, widthDescription);
+        Exception.throwIfNegative(value, widthDescription);
+        if (this._params.width != value) {
+            this._params.width = value;
+            this.updateCurrentSequence();
         }
     }
-    _incrementIndex() {
-        if (this._index >= this.indexUpperBound) {
-            this.onReachingBoundary.trigger();
-            this._index = 0;
-        } else {
-            this._index += this._increment;
+    set board(value) {
+        Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'board'));
+        if (this._params.board != value) {
+            this._params.board = value;
+            this.updateCurrentSequence();
         }
     }
-    _decrementIndex() {
-        if (this._index === 0) {
-            this.onReachingBoundary.trigger();
-            this._index = this.indexUpperBound;
-        } else {
-            this._index -= this._increment;
+    set increment(value) {
+        const fpsDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
+        Exception.throwIfNull(value, fpsDescription);
+        Exception.throwIfNegative(value, fpsDescription);
+        if (this._params.increment != value) {
+            this._params.increment = value;
+            this.updateCurrentSequence();
         }
     }
-    _startLoop() {
-        this._then = Date.now();
-        this._startTime = this._then;
-        this._shouldUpdate = true;
-        this._loop();
-    }
-    _loop() {
-        requestAnimationFrame(this._loop.bind(this));
-        if (this._shouldUpdate) {
-            this._onNextFrame(this._step.bind(this));
+    set reverse(value) {
+        const reverseDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'reverse');
+        Exception.throwIfNull(value, reverseDescription);
+        if (value != this._params.reverse) {
+            this._params.reverse = value;
+            this.updateCurrentSequence();
         }
     }
-    _onNextFrame(callback) {
-        this._now = Date.now();
-        this._elapsed = this._now - this._then;
-        if (this._elapsed > this._fpsInterval) {
-            this._then = this._now - this._elapsed % this._fpsInterval;
-            callback();
+    set scroller(value) {
+        const reverseDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'reverse');
+        Exception.throwIfNull(value, reverseDescription);
+        if (value != this._params.scroller) {
+            this._params.scroller = value;
+            this.updateCurrentSequence();
         }
+    }
+    GetCurrentSequence() {
+        let sequence = [];
+        let panelIndex = 0;
+        for (let i = 0; i <= this._params.scroller.indexUpperBound(this._params); i++) {
+            panelIndex = this._tickPanelIndex(panelIndex);
+            sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this._params));
+        }
+        return sequence;
+    }
+    updateCurrentSequence() {
+        if (this._initiated) {
+            const sequence = this.GetCurrentSequence();
+            this.onNewSequence.trigger({ sequence });
+        }
+    }
+    _tickPanelIndex(index) {
+        return this._params.reverse ? this._decrementIndex(index) : this._incrementIndex(index);
+    }
+    _incrementIndex(index) {
+        return index >= this._params.scroller.indexUpperBound(this._params) ? 0 : index + this._params.increment;
+    }
+    _decrementIndex(index) {
+        return index === 0 ? this._params.scroller.indexUpperBound(this._params) : index - this._params.increment;
     }
 }
 ;
 //# sourceMappingURL=panel.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/panels/side-scrolling-panel.js
-
-class side_scrolling_panel_SideScrollingPanel extends panel_Panel {
-    constructor(params) {
-        super(params);
+// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/side-scrolling-panel.js
+class SideScrollingPanel {
+    indexUpperBound(params) {
+        return params.board.width - 1;
     }
-    get indexUpperBound() {
-        return this.board.width - 1;
-    }
-    _generateDisplay(currentIndex) {
-        for (let i = 0; i < this.width; i++) {
-            let column;
-            column = this.board.getColumnAtIndex(currentIndex + i);
-            for (let j = 0; j < this.board.height; j++) {
-                this.display[j][i] = column[j];
-            }
+    generatePanelFrameAtIndex(currentIndex, params) {
+        let columns = [];
+        for (let i = 0; i < params.width; i++) {
+            columns.push(params.board.getColumnAtIndex(currentIndex + i));
         }
+        let display = [];
+        for (let i = 0; i < columns[0].length; i++) {
+            display.push(columns.map(x => x[i]));
+        }
+        return display;
     }
 }
 //# sourceMappingURL=side-scrolling-panel.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/panels/vertical-scrolling-panel.js
-
-class vertical_scrolling_panel_VerticalScrollingPanel extends panel_Panel {
-    constructor(params) {
-        super(params);
+// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/vertical-scrolling-panel.js
+class VerticalScrollingPanel {
+    indexUpperBound(params) {
+        return params.board.height - 1;
     }
-    get indexUpperBound() {
-        return this.board.height - 1;
-    }
-    _generateDisplay(currentIndex) {
-        for (let i = 0; i < this.board.height; i++) {
+    generatePanelFrameAtIndex(currentIndex, params) {
+        let display = [];
+        for (let i = 0; i < params.board.height; i++) {
             let row;
-            row = this.board.getRowAtIndex(currentIndex + i);
-            this.display[i] = row.slice(0, this.width);
+            row = params.board.getRowAtIndex(currentIndex + i);
+            display.push(row.slice(0, params.width));
         }
+        return display;
     }
 }
 //# sourceMappingURL=vertical-scrolling-panel.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/panel-builder.js
+// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/scroller-builder.js
 
 
-var panel_builder_PanelType;
-(function (PanelType) {
-    PanelType[PanelType["SideScrollingPanel"] = 0] = "SideScrollingPanel";
-    PanelType[PanelType["VerticalScrollingPanel"] = 1] = "VerticalScrollingPanel";
-})(panel_builder_PanelType || (panel_builder_PanelType = {}));
-class panel_builder_PanelBuilder {
-    static build(panelType, params) {
-        switch (panelType) {
-            case panel_builder_PanelType.SideScrollingPanel:
-                return new side_scrolling_panel_SideScrollingPanel(params);
-            case panel_builder_PanelType.VerticalScrollingPanel:
-                return new vertical_scrolling_panel_VerticalScrollingPanel(params);
+var scroller_builder_ScrollerType;
+(function (ScrollerType) {
+    ScrollerType[ScrollerType["SideScrollingPanel"] = 0] = "SideScrollingPanel";
+    ScrollerType[ScrollerType["VerticalScrollingPanel"] = 1] = "VerticalScrollingPanel";
+})(scroller_builder_ScrollerType || (scroller_builder_ScrollerType = {}));
+class scroller_builder_ScrollerBuilder {
+    static build(scrollerType) {
+        switch (scrollerType) {
+            case scroller_builder_ScrollerType.SideScrollingPanel:
+                return new SideScrollingPanel();
+            case scroller_builder_ScrollerType.VerticalScrollingPanel:
+                return new VerticalScrollingPanel();
         }
     }
 }
-//# sourceMappingURL=panel-builder.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/renderer.js
+//# sourceMappingURL=scroller-builder.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/led-matrix.js
+
+
+
+
+
+class led_matrix_LedMatrix {
+    constructor(params) {
+        this.onReady = new Event();
+        this._params = this._validateParameters(params);
+        this._scrollerType = this._params.scrollerType;
+        this._panel = new panel_Panel({
+            board: new board_Board({
+                letterSpacing: this._params.letterSpacing,
+                padding: this._params.padding,
+                size: this._params.size
+            }),
+            increment: this._params.increment,
+            reverse: this._params.reverse,
+            width: this._params.panelWidth,
+            scroller: scroller_builder_ScrollerBuilder.build(this._params.scrollerType)
+        });
+        this.event = {
+            newSequence: this._panel.NewSequence
+        };
+        this._dictionary = new CharacterDictionary();
+    }
+    get Ready() {
+        return this.onReady.expose();
+    }
+    get size() {
+        return this._size;
+    }
+    set size(value) {
+        this._size = value;
+        this._panel.board.load(this.input, this._dictionary, this.size);
+    }
+    get indexUpperBound() {
+        return this._panel.scroller.indexUpperBound(this._panel);
+    }
+    addCharacters(characters) {
+        this._dictionary.add(characters);
+    }
+    addCharacter(character) {
+        this._dictionary.add([character]);
+    }
+    editCharacter(character) {
+        this._dictionary.edit(character);
+    }
+    deleteCharacter(character) {
+        this._dictionary.delete(character);
+    }
+    get loadedCharacters() {
+        return this._dictionary.characters;
+    }
+    get usedCharacters() {
+        return this._panel.board.characters;
+    }
+    set spacing(value) {
+        this._panel.board.letterSpacing = value;
+    }
+    get spacing() {
+        return this._panel.board.letterSpacing;
+    }
+    set padding(value) {
+        this._panel.board.padding = value;
+    }
+    get padding() {
+        return this._panel.board.padding;
+    }
+    get width() {
+        return this._panel.board.width;
+    }
+    get height() {
+        return this._panel.board.height;
+    }
+    set input(value) {
+        this._panel.board.load(value, this._dictionary);
+    }
+    get input() {
+        return this._panel.board.input;
+    }
+    get sequence() {
+        return this._panel.GetCurrentSequence();
+    }
+    set scrollerType(value) {
+        this._scrollerType = value;
+        this._panel.scroller = scroller_builder_ScrollerBuilder.build(value);
+    }
+    get scrollerType() {
+        return this._scrollerType;
+    }
+    get reverse() {
+        return this._panel.reverse;
+    }
+    set increment(value) {
+        this._panel.increment = value;
+    }
+    get increment() {
+        return this._panel.increment;
+    }
+    set reverse(value) {
+        this._panel.reverse = value;
+    }
+    set viewportWidth(value) {
+        this._panel.width = value;
+    }
+    get viewportWidth() {
+        return this._panel.width;
+    }
+    _validateParameters(params) {
+        let defaultParams = {
+            increment: 1,
+            scrollerType: scroller_builder_ScrollerType.SideScrollingPanel,
+            reverse: false,
+            panelWidth: 80,
+            letterSpacing: 2,
+            padding: [0, 4],
+            size: 1
+        };
+        if (params) {
+            params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
+            params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
+            params.size = this._valueOrDefault(params.size, defaultParams.size);
+            params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
+            params.scrollerType = this._valueOrDefault(params.scrollerType, defaultParams.scrollerType);
+            ;
+            params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
+            params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
+            return params;
+        }
+        return defaultParams;
+    }
+    _valueOrDefault(value, defaultValue) {
+        return value ? value : defaultValue;
+    }
+}
+//# sourceMappingURL=led-matrix.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer.js
 class Renderer {
     constructor(parameters) {}
     render(display) {
@@ -762,7 +850,7 @@ class Renderer {
     }
 }
 //# sourceMappingURL=renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderer.js
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canva-renderer.js
 
 class canva_renderer_CanvaRenderer extends Renderer {
     constructor(parameters) {
@@ -815,7 +903,7 @@ class canva_renderer_CanvaRenderer extends Renderer {
     }
 }
 //# sourceMappingURL=canva-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/canva-renderers.js
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canva-renderers.js
 
 var canva_renderers_CanvaRenderers;
 (function (CanvaRenderers) {
@@ -845,7 +933,7 @@ var canva_renderers_CanvaRenderers;
     CanvaRenderers.Rect = Rect;
 })(canva_renderers_CanvaRenderers || (canva_renderers_CanvaRenderers = {}));
 //# sourceMappingURL=canva-renderers.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/rendering/ascii-renderer.js
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/ascii-renderer.js
 
 class ascii_renderer_AsciiRenderer extends Renderer {
     constructor(parameters) {
@@ -873,7 +961,7 @@ class ascii_renderer_AsciiRenderer extends Renderer {
     }
 }
 //# sourceMappingURL=ascii-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/renderer-builder.js
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer-builder.js
 
 
 var renderer_builder_RendererType;
@@ -901,245 +989,135 @@ class renderer_builder_RendererBuilder {
     }
 }
 //# sourceMappingURL=renderer-builder.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/panel-recorder.js
-class PanelRecorder {
-    static getSequence(panel) {
-        let sequence = [];
-        panel.PanelUpdate.on(panelFrame => {
-            sequence.push(panelFrame.display);
-        });
-        let prevIndex = panel.index;
-        let i = 0;
-        panel.seek(0);
-        for (let i = 0; i <= panel.indexUpperBound; i++) {
-            panel.tick();
-        }
-        panel.seek(prevIndex);
-        return sequence;
-    }
-}
-//# sourceMappingURL=panel-recorder.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/led-matrix.js
+// CONCATENATED MODULE: ./dist/esm/lib/player/panel-player.js
 
 
 
-
-
-
-
-class led_matrix_LedMatrix {
+class panel_player_PanelPlayer {
     constructor(params) {
-        this.onReady = new Event();
-        this._params = this._validateParameters(params);
-        this._board = new board_Board({
-            letterSpacing: this._params.letterSpacing,
-            padding: this._params.padding,
-            size: this._params.size
-        });
-        this._panelType = this._params.panelType;
-        this._panel = panel_builder_PanelBuilder.build(this._params.panelType, {
-            board: this._board,
-            renderer: this._params.renderer,
-            fps: this._params.fps,
-            increment: this._params.increment,
-            reverse: this._params.reverse,
-            width: this._params.panelWidth
-        });
-        this.event = {
-            panelUpdate: this._panel.PanelUpdate,
-            reachingBoundary: this._panel.ReachingBoundary,
-            ready: this.Ready
-        };
-        this._dictionary = new CharacterDictionary();
+        this.CLASS_NAME = panel_player_PanelPlayer.name;
+        this.onPanelUpdate = new Event();
+        this.onReachingBoundary = new Event();
+        this._index = 0;
+        this.fps = params.fps;
+        this._renderer = params.renderer;
+        this._sequence = params.sequence;
     }
-    get Ready() {
-        return this.onReady.expose();
+    get PanelUpdate() {
+        return this.onPanelUpdate.expose();
     }
-    get size() {
-        return this._size;
+    get ReachingBoundary() {
+        return this.onReachingBoundary.expose();
     }
-    set size(value) {
-        this._size = value;
-        this._board.load(this.input, this._dictionary, this.size);
+    get sequence() {
+        return this._sequence;
     }
     get index() {
-        return this._panel.index;
-    }
-    get indexUpperBound() {
-        return this._panel.indexUpperBound;
-    }
-    getSequence() {
-        return PanelRecorder.getSequence(this._panel);
-    }
-    addCharacters(characters) {
-        this._dictionary.add(characters);
-    }
-    addCharacter(character) {
-        this._dictionary.add([character]);
-    }
-    editCharacter(character) {
-        this._dictionary.edit(character);
-    }
-    deleteCharacter(character) {
-        this._dictionary.delete(character);
-    }
-    get loadedCharacters() {
-        return this._dictionary.characters;
-    }
-    get usedCharacters() {
-        return this._board.characters;
-    }
-    set spacing(value) {
-        this._board.letterSpacing = value;
-        this._panel.board = this._board;
-    }
-    get spacing() {
-        return this._board.letterSpacing;
-    }
-    set padding(value) {
-        this._board.padding = value;
-        this._panel.board = this._board;
-    }
-    get padding() {
-        return this._board.padding;
-    }
-    get width() {
-        return this._board.width;
-    }
-    get height() {
-        return this._board.height;
-    }
-    set input(value) {
-        this._board.load(value, this._dictionary);
-    }
-    get input() {
-        return this._board.input;
-    }
-    play() {
-        this._panel.play();
-    }
-    stop() {
-        this._panel.stop();
-    }
-    pause() {
-        this._panel.pause();
-    }
-    resume() {
-        this._panel.resume();
-    }
-    tick() {
-        this._panel.tick();
-    }
-    seek(frame) {
-        this._panel.seek(frame);
-    }
-    set panelType(value) {
-        this._panelType = value;
-        this._panel.stop();
-        this._panel = panel_builder_PanelBuilder.build(this._panelType, {
-            board: this._board,
-            renderer: this._panel.renderer,
-            fps: this._panel.fps,
-            increment: this._panel.increment,
-            reverse: this._panel.reverse,
-            width: this._panel.width
-        });
-        this._panel.play();
-    }
-    get panelType() {
-        return this._panelType;
-    }
-    set renderer(value) {
-        this._panel.renderer = value;
-    }
-    setRendererFromBuilder(value) {
-        this._panel.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.elementId);
-    }
-    get renderer() {
-        return this._panel.renderer;
-    }
-    set fps(value) {
-        this._panel.fps = value;
+        return this._index;
     }
     get fps() {
-        return this._panel.fps;
+        return this._fps;
     }
-    set increment(value) {
-        this._panel.increment = value;
+    get renderer() {
+        return this._renderer;
     }
-    get increment() {
-        return this._panel.increment;
+    set sequence(value) {
+        Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'sequence'));
+        this._sequence = value;
     }
-    set reverse(value) {
-        this._panel.reverse = value;
+    set fps(value) {
+        const fpsDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
+        Exception.throwIfNull(value, fpsDescription);
+        Exception.throwIfNotBetween(value, fpsDescription, 0, 60);
+        this._fps = value;
+        this._fpsIntervalLengthInMs = 1000 / this._fps;
     }
-    get reverse() {
-        return this._panel.reverse;
+    set renderer(value) {
+        Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'renderer'));
+        this._renderer = value;
+        this._render();
     }
-    set viewportWidth(value) {
-        this._panel.width = value;
+    play() {
+        this._index = 0;
+        this._render();
+        this._startLoop();
     }
-    get viewportWidth() {
-        return this._panel.width;
+    stop() {
+        this._index = 0;
+        this._render();
+        this._shouldUpdate = false;
     }
-    _validateParameters(params) {
-        let defaultParams = {
-            fps: 30,
-            increment: 1,
-            panelType: panel_builder_PanelType.SideScrollingPanel,
-            rendererType: renderer_builder_RendererType.ASCII,
-            elementId: 'led-matrix',
-            reverse: false,
-            panelWidth: 80,
-            letterSpacing: 2,
-            padding: [0, 4],
-            size: 1
-        };
-        if (params) {
-            params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
-            params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
-            params.size = this._valueOrDefault(params.size, defaultParams.size);
-            params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
-            params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
-            params.panelType = this._valueOrDefault(params.panelType, defaultParams.panelType);
-            ;
-            params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
-            params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
-            if (params.renderer instanceof Renderer) {
-                params.renderer = params.renderer;
-            } else {
-                params.renderer = renderer_builder_RendererBuilder.build(this._valueOrDefault(params.renderer.rendererType, defaultParams.rendererType), this._valueOrDefault(params.elementId, defaultParams.elementId));
-            }
-            return params;
+    resume() {
+        this._startLoop();
+    }
+    pause() {
+        this._shouldUpdate = false;
+    }
+    step() {
+        this._nextPanelFrame();
+    }
+    seek(frame) {
+        const seekDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'seek');
+        Exception.throwIfNull(frame, seekDescription);
+        Exception.throwIfNotBetween(frame, seekDescription, 0, this._sequence.length);
+        this._index = frame;
+        this._render();
+    }
+    setRendererFromBuilder(value) {
+        this.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.elementId);
+    }
+    _nextPanelFrame() {
+        Exception.throwIfNull(this._sequence, Exception.getDescriptionForProperty(this.CLASS_NAME, 'sequence'));
+        this._incrementIndex();
+        this._render();
+    }
+    _render() {
+        this.onPanelUpdate.trigger({ display: this._sequence[this._index] });
+        this._renderer.render(this._sequence[this._index]);
+    }
+    _incrementIndex() {
+        const reachedBoundary = this._index >= this._sequence.length;
+        if (reachedBoundary) {
+            this.onReachingBoundary.trigger();
         }
-        defaultParams.renderer = renderer_builder_RendererBuilder.build(defaultParams.rendererType, defaultParams.elementId);
-        return defaultParams;
+        this._index = (this._index + 1) % this._sequence.length;
     }
-    _valueOrDefault(value, defaultValue) {
-        return value ? value : defaultValue;
+    _startLoop() {
+        this._then = Date.now();
+        this._shouldUpdate = true;
+        this._loop();
+    }
+    _loop() {
+        requestAnimationFrame(this._loop.bind(this));
+        if (this._shouldUpdate) {
+            this._callIfReadyForNextFrame(this._nextPanelFrame.bind(this));
+        }
+    }
+    _callIfReadyForNextFrame(callback) {
+        this._now = Date.now();
+        this._elapsed = this._now - this._then;
+        if (this._elapsed > this._fpsIntervalLengthInMs) {
+            this._then = this._now - this._elapsed % this._fpsIntervalLengthInMs;
+            callback();
+        }
     }
 }
-//# sourceMappingURL=led-matrix.js.map
+;
+//# sourceMappingURL=panel-player.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return board_Board; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Character", function() { return Character; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharacterDictionary", function() { return CharacterDictionary; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CharactersJSON", function() { return character_json_CharactersJSON; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NearestNeighbor", function() { return NearestNeighbor; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelType", function() { return panel_builder_PanelType; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelBuilder", function() { return panel_builder_PanelBuilder; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerType", function() { return scroller_builder_ScrollerType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerBuilder", function() { return scroller_builder_ScrollerBuilder; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelPlayer", function() { return panel_player_PanelPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererType", function() { return renderer_builder_RendererType; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideScrollingPanel", function() { return side_scrolling_panel_SideScrollingPanel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VerticalScrollingPanel", function() { return vertical_scrolling_panel_VerticalScrollingPanel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AsciiRenderer", function() { return ascii_renderer_AsciiRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderer", function() { return canva_renderer_CanvaRenderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderers", function() { return canva_renderers_CanvaRenderers; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
 
 
 

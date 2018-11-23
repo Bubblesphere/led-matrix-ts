@@ -1,4 +1,4 @@
-import { PanelFrame } from "../../lib/types";
+import { PanelFrame } from "../../types";
 import { Renderer, IRendererParameters } from "./renderer";
 
 export interface CanvaRendererParameter extends IRendererParameters {
