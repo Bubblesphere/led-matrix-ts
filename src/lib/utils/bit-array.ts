@@ -9,7 +9,7 @@ interface IBitArray {
   atIndexRange: (index: number, count: number) => bit[]
 }
 
-export class BitArray implements IBitArray {
+export default class BitArray implements IBitArray {
   private _array: Uint8Array;
   private _size: number;
   private _pointer: number;

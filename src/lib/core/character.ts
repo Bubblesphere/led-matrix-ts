@@ -1,9 +1,11 @@
-import { BitArray, bit } from "./bit-array";
+import BitArray, { bit } from "../utils/bit-array";
+import { Exception } from "../utils/exception";
 
 /**
  * The character holds information about the visual representation of a character
  */
-export class Character {
+export default class Character {
+  readonly CLASS_NAME = Character.name;
   private _pattern: string;
   private _output: BitArray;
   private _width: number;
@@ -30,19 +32,33 @@ export class Character {
       throw `Output size (${output.size}) must be divisible by the character's width (${width})`; 
     }
   }
+
+  /** Gets the width of the character */
+  public get width() {
+    return this._width;
+  }
+
+  /** Gets the height of the character */
+  public get height() {
+    return this._height;
+  }
+
+  /** Gets the pattern of the character */
+  public get pattern() {
+    return this._pattern;
+  }
+
+  /** Gets the output of the character */
+  public get output() {
+    return this._output;
+  }
   
   /**
    * Gets a column of the character at an index
    * @param index The index of the column
    */
   public getColumn(index: number): bit[] {
-    if (index < 0) {
-      throw `Index (${index}) cannot be negative`;
-    }
-
-    if (index >= this._width) {
-      throw `Index (${index}) is greater than the width of the character (${this._width})`;
-    }
+    Exception.throwIfNotBetween(index, Exception.getDescriptionForProperty(this.CLASS_NAME, 'getColumn'), 0, this._width - 1);
 
     let column:bit[] = [];
     for(let i = 0; i < this._height; i++) {
@@ -57,13 +73,7 @@ export class Character {
    * @param index The index of the row
    */
   public getRow(index: number): bit[] {
-    if (index < 0) {
-      throw `Index (${index}) cannot be negative`;
-    }
-
-    if (index >= this._height) {
-      throw `Index (${index}) is greater than the height of the character (${this._height})`;
-    }
+    Exception.throwIfNotBetween(index, Exception.getDescriptionForProperty(this.CLASS_NAME, 'getRow'), 0, this._height - 1);
 
     let row: bit[] = [];
     for(let i = 0; i < this._width; i++) {
@@ -71,34 +81,6 @@ export class Character {
     }
 
     return row;
-  }
-
-  /**
-   * Gets the width of the character
-   */
-  public get width() {
-    return this._width;
-  }
-
-  /**
-   * Gets the height of the character
-   */
-  public get height() {
-    return this._height;
-  }
-
-  /**
-   * Gets the pattern of the character
-   */
-  public get pattern() {
-    return this._pattern;
-  }
-
-  /**
-   * Gets the output of the character
-   */
-  public get output() {
-    return this._output;
   }
 
   /**

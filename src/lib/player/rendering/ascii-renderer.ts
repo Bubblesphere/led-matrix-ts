@@ -1,12 +1,12 @@
 import { Renderer, IRendererParameters } from "./renderer";
-import { PanelFrame } from "../types";
+import { PanelFrame } from "../../types";
 
 export interface AsciiRendererParameter extends IRendererParameters  {
   characterBitOn?: string,
   characterBitOff?: string
 }
 
-export class AsciiRenderer extends Renderer {
+export default class AsciiRenderer extends Renderer {
   protected _parameters: AsciiRendererParameter;
 
   constructor(parameters: AsciiRendererParameter) {

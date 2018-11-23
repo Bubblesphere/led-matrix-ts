@@ -1,4 +1,4 @@
-import { bit } from "./bit-array";
+import { bit } from "./utils/bit-array";
 
 export interface CharactersJSONSchema {
     height: number,
@@ -11,6 +11,7 @@ export interface CharacterJSONSchema {
     width: number
 }
 
+export type Sequence = PanelFrame[];
 export type PanelFrame = Array<Array<bit>>;
 export type PanelRenderer = (display: PanelFrame, ...other: any[]) => any
 

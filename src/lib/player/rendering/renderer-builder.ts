@@ -1,6 +1,6 @@
-import { CanvaRenderers } from "./rendering/canva-renderers";
-import { AsciiRenderer } from "./rendering/ascii-renderer";
-import { Renderer,  } from "./rendering/renderer";
+import { CanvaRenderers } from "./canva-renderers";
+import AsciiRenderer from "./ascii-renderer";
+import { Renderer } from "./renderer";
 export enum RendererType {
     ASCII,
     CanvasSquare,

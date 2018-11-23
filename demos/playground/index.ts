@@ -1,14 +1,22 @@
-import { LedMatrix } from '../../src/lib/led-matrix';
-import { PanelType } from '../../src/lib/panel-builder';
-import { AsciiRenderer } from '../../src/lib/rendering/ascii-renderer';
-import { CanvaRenderers } from '../../src/lib/rendering/canva-renderers';
-import { CharactersJSON } from '../../src/lib/character-json';
+import { LedMatrix } from '../../src/lib/core/led-matrix';
+import AsciiRenderer from '../../src/lib/player/rendering/ascii-renderer';
+import { CanvaRenderers } from '../../src/lib/player/rendering/canva-renderers';
+import { CharactersJSON } from '../../src/lib/core/character-json';
+import { LedMatrixPlayer } from '../../src/lib/player/led-matrix-player';
+import VerticalScroller from '../../src/lib/core/scrollers/vertical-scroller';
+import SideScroller from '../../src/lib/core/scrollers/side-scroller';
+
 
 const ledMatrix = new LedMatrix();
+const player = new LedMatrixPlayer(ledMatrix.sequence);
+
+ledMatrix.event.newSequence.on((params) => {
+    player.sequence = params.sequence
+})
 
 CharactersJSON.import("alphabett.json", (characters) => {
   ledMatrix.addCharacters(characters);
-  ledMatrix.play();
+  player.play();
 });
 
 
@@ -24,7 +32,7 @@ document.getElementById("size-button").addEventListener("click", (e) => {
 
 document.getElementById("spacing-button").addEventListener("click", (e) => {
   const value = (document.getElementById("spacing-value") as HTMLInputElement).value;
-  ledMatrix.spacing = Number(value);
+  ledMatrix.letterSpacing = Number(value);
 });
 
 document.getElementById("padding-button").addEventListener("click", (e) => {
@@ -34,33 +42,33 @@ document.getElementById("padding-button").addEventListener("click", (e) => {
 });
 
 document.getElementById("play-button").addEventListener("click", (e) => {
-  ledMatrix.play();
+  player.play();
 });
 
 document.getElementById("stop-button").addEventListener("click", (e) => {
-  ledMatrix.stop();
+  player.stop();
 });
 
 document.getElementById("resume-button").addEventListener("click", (e) => {
-  ledMatrix.resume();
+  player.resume();
 });
 
 document.getElementById("pause-button").addEventListener("click", (e) => {
-  ledMatrix.pause();
+  player.pause();
 });
 
 document.getElementById("tick-button").addEventListener("click", (e) => {
-  ledMatrix.tick();
+  player.step();
 });
 
 document.getElementById("seek-button").addEventListener("click", (e) => {
   const value = (document.getElementById("seek-value") as HTMLInputElement).value;
-  ledMatrix.seek(Number(value));
+  player.seek(Number(value));
 });
 
 document.getElementById("fps-button").addEventListener("click", (e) => {
   const value = (document.getElementById("fps-value") as HTMLInputElement).value;
-  ledMatrix.fps = Number(value);
+  player.fps = Number(value);
 });
 
 document.getElementById("increment-button").addEventListener("click", (e) => {
@@ -82,10 +90,10 @@ document.getElementById("panelType-select").addEventListener("click", (e) => {
   const value = (document.getElementById("panelType-select") as HTMLInputElement).value;
   switch (value) {
     case "SideScrollingPanel":
-      ledMatrix.panelType = PanelType.SideScrollingPanel;
+      ledMatrix.scroller = new SideScroller();
       break;
     case "VerticalScrollingPanel":
-      ledMatrix.panelType = PanelType.VerticalScrollingPanel;
+      ledMatrix.scroller = new VerticalScroller();
       break;
   }
 });
@@ -96,7 +104,7 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
     case "AsciiRenderer":
       document.getElementById("led-matrix-canvas").hidden = true;
       document.getElementById("led-matrix").hidden = false;
-      ledMatrix.renderer = new AsciiRenderer({
+      player.renderer = new AsciiRenderer({
         elementId: 'led-matrix',
         characterBitOn: 'X',
         characterBitOff: ' '
@@ -105,14 +113,14 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
     case "Rect":
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
-      ledMatrix.renderer = new CanvaRenderers.Rect({
+      player.renderer = new CanvaRenderers.Rect({
         elementId: 'led-matrix-canvas',
       })
       break;
     case "Ellipse":
       document.getElementById("led-matrix-canvas").hidden = false;
       document.getElementById("led-matrix").hidden = true;
-      ledMatrix.renderer = new CanvaRenderers.Ellipse({
+      player.renderer = new CanvaRenderers.Ellipse({
         elementId: 'led-matrix-canvas',
         colorBitOn: '#e74c3c',
         colorBitOff: '#ecf0f1',
