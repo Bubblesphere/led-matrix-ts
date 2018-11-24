@@ -1,27 +1,28 @@
-import { CanvaRenderers } from "./canva-renderers";
+import { CanvasRenderers } from "./canvas-renderers";
 import { AsciiRenderer } from "./ascii-renderer";
 import { Renderer } from "./renderer";
-export enum RendererType {
-    ASCII,
-    CanvasSquare,
-    CanvasCircle
+
+export enum RendererTypes {
+  ASCII,
+  CanvasSquare,
+  CanvasCircle
 }
 
 export class RendererBuilder {
-    static build(rendererType: RendererType, elementId: string) : Renderer {
-        switch(rendererType) {
-            case RendererType.ASCII:
-                return new AsciiRenderer({
-                    elementId: elementId
-                });
-            case RendererType.CanvasSquare:
-                return new CanvaRenderers.Rect({
-                    elementId: elementId
-                });
-            case RendererType.CanvasCircle:
-                return new CanvaRenderers.Ellipse({
-                    elementId: elementId
-                })
-        }
+  static build(rendererType: RendererTypes, elementId: string): Renderer {
+    switch (rendererType) {
+      case RendererTypes.ASCII:
+        return new AsciiRenderer({
+          elementId: elementId
+        });
+      case RendererTypes.CanvasSquare:
+        return new CanvasRenderers.Rect({
+          elementId: elementId
+        });
+      case RendererTypes.CanvasCircle:
+        return new CanvasRenderers.Ellipse({
+          elementId: elementId
+        })
     }
+  }
 }

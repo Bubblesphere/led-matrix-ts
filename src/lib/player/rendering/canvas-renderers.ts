@@ -1,9 +1,8 @@
-import { CanvaRenderer, CanvaRendererParameter } from "./canva-renderer";
-import { Renderer } from './renderer';
+import { CanvasRenderer, CanvasRendererParameter } from "./canvas-renderer";
 
-export namespace CanvaRenderers {
-  export class Ellipse extends CanvaRenderer  {
-    constructor(parameters: CanvaRendererParameter) {
+export namespace CanvasRenderers {
+  export class Ellipse extends CanvasRenderer  {
+    constructor(parameters: CanvasRendererParameter) {
       super(parameters)
     }
     
@@ -19,8 +18,8 @@ export namespace CanvaRenderers {
     }
   }
 
-  export class Rect extends CanvaRenderer {
-    constructor(parameters: CanvaRendererParameter) {
+  export class Rect extends CanvasRenderer {
+    constructor(parameters: CanvasRendererParameter) {
       super(parameters);
     }
 

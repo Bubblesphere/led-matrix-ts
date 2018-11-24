@@ -37,7 +37,7 @@ export class Panel {
     })
   }
 
-  protected readonly onNewSequence = new Event<{sequence: Sequence}>();
+  protected readonly onNewSequence = new Event<Sequence>();
   public get NewSequence() { return this.onNewSequence.expose(); }
 
   public get width() {
@@ -121,7 +121,7 @@ export class Panel {
   public updateCurrentSequence() {
     if (this._initiated) {
       const sequence = this.GetCurrentSequence();
-      this.onNewSequence.trigger({ sequence });
+      this.onNewSequence.trigger(sequence);
     }
   }
 
