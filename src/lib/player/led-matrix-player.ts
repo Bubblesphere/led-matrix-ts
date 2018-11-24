@@ -3,27 +3,14 @@ import { PanelFrame, Sequence } from "../types";
 import { Event, IEvent } from "../utils/event";
 import { Renderer } from "./rendering/renderer";
 import { PanelPlayer } from "./panel-player";
-import { RendererBuilder, RendererType } from "./rendering/renderer-builder";
-
-interface SetRendererBuilderParameters {
-  rendererType: RendererType,
-  elementId: string
-}
-
-interface RendererBuilderParameters {
-  rendererType?: RendererType,
-  elementId?: string
-}
+import { CanvasRenderers } from "./rendering/canvas-renderers";
 
 interface ExposedPlayerParameters {
-  renderer?: Renderer | RendererBuilderParameters,
+  renderer?: Renderer,
   fps?: number
 }
 
-export type LedMatrixWebPlayerParameters =
-  ExposedPlayerParameters &
-  RendererBuilderParameters;
-
+export type LedMatrixWebPlayerParameters = ExposedPlayerParameters;
 
 export class LedMatrixPlayer implements LedMatrixWebPlayerParameters {
   private _params: LedMatrixWebPlayerParameters;
@@ -58,10 +45,6 @@ export class LedMatrixPlayer implements LedMatrixWebPlayerParameters {
 
   public set renderer(value: Renderer) {
     this._panelPlayer.renderer = value;
-  }
-
-  public setRendererFromBuilder(value: SetRendererBuilderParameters) {
-    this._panelPlayer.renderer = RendererBuilder.build(value.rendererType, value.elementId);
   }
 
   public get renderer() {
@@ -111,24 +94,18 @@ export class LedMatrixPlayer implements LedMatrixWebPlayerParameters {
   private _validateParameters(params: LedMatrixWebPlayerParameters) {
     let defaultParams: LedMatrixWebPlayerParameters = {
       fps: 30,
-      rendererType: RendererType.ASCII,
-      elementId: 'led-matrix',
+      renderer: new CanvasRenderers.Rect({
+        elementId: 'led-matrix'
+      })
     }
 
     if (params) {
       params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
       params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
 
-      if (params.renderer instanceof Renderer) {
-        params.renderer = params.renderer;
-      } else {
-        params.renderer = RendererBuilder.build(this._valueOrDefault(params.renderer.rendererType, defaultParams.rendererType), this._valueOrDefault(params.elementId, defaultParams.elementId));
-      }
-
       return params;
     }
 
-    defaultParams.renderer = RendererBuilder.build(defaultParams.rendererType, defaultParams.elementId);
     return defaultParams;
   }
 

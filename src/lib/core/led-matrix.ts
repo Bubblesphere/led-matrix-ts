@@ -37,7 +37,7 @@ export class LedMatrix implements LedMatrixParameters {
 
     private readonly onReady = new Event<void>();
     public event: {
-        newSequence: IEvent<{ sequence: Sequence; }>,
+        newSequence: IEvent<Sequence>,
     };
 
     constructor(params?: LedMatrixParameters) {

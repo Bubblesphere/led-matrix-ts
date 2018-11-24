@@ -1,17 +1,17 @@
 import { PanelFrame } from "../../types";
 import { Renderer, IRendererParameters } from "./renderer";
 
-export interface CanvaRendererParameter extends IRendererParameters {
+export interface CanvasRendererParameter extends IRendererParameters {
   colorBitOn?: string,
   colorBitOff?: string,
   colorStrokeOn?: string,
   colorStrokeOff?: string
 }
 
-export abstract class CanvaRenderer extends Renderer   {
-  protected _parameters: CanvaRendererParameter;
+export abstract class CanvasRenderer extends Renderer   {
+  protected _parameters: CanvasRendererParameter;
 
-  constructor(parameters: CanvaRendererParameter) {
+  constructor(parameters: CanvasRendererParameter) {
     super(parameters);
     this._parameters = {
       elementId: parameters.elementId,
