@@ -2,7 +2,7 @@ import { Event } from '../utils/event';
 import { PanelFrame, Sequence } from '../types';
 import { Renderer } from './rendering/renderer';
 import { Exception } from '../utils/exception';
-import { RendererBuilder, RendererType } from './rendering/renderer-builder';
+import { RendererBuilder, RendererTypes } from './rendering/renderer-builder';
 
 export interface PanelPlayerParameters  {
   renderer: Renderer,
@@ -11,7 +11,7 @@ export interface PanelPlayerParameters  {
 }
 
 interface SetRendererBuilderParameters {
-  rendererType: RendererType,
+  rendererType: RendererTypes,
   elementId: string
 }
 
