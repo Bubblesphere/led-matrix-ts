@@ -506,7 +506,7 @@ class panel_Panel {
     updateCurrentSequence() {
         if (this._initiated) {
             const sequence = this.GetCurrentSequence();
-            this.onNewSequence.trigger({ sequence });
+            this.onNewSequence.trigger(sequence);
         }
     }
     _tickPanelIndex(index) {
@@ -757,6 +757,25 @@ class VerticalScroller {
     }
 }
 //# sourceMappingURL=vertical-scroller.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/core/scrollers/scroller-builder.js
+
+
+var scroller_builder_ScrollerTypes;
+(function (ScrollerTypes) {
+    ScrollerTypes[ScrollerTypes["Side"] = 0] = "Side";
+    ScrollerTypes[ScrollerTypes["Vertical"] = 1] = "Vertical";
+})(scroller_builder_ScrollerTypes || (scroller_builder_ScrollerTypes = {}));
+class scroller_builder_ScrollerBuilder {
+    static build(scrollerType, elementId) {
+        switch (scrollerType) {
+            case scroller_builder_ScrollerTypes.Side:
+                return new SideScroller();
+            case scroller_builder_ScrollerTypes.Vertical:
+                return new VerticalScroller();
+        }
+    }
+}
+//# sourceMappingURL=scroller-builder.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/core/character-json.js
 
 
@@ -825,9 +844,9 @@ class Renderer {
     }
 }
 //# sourceMappingURL=renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canva-renderer.js
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canvas-renderer.js
 
-class canva_renderer_CanvaRenderer extends Renderer {
+class canvas_renderer_CanvasRenderer extends Renderer {
     constructor(parameters) {
         super(parameters);
         this._parameters = {
@@ -877,12 +896,12 @@ class canva_renderer_CanvaRenderer extends Renderer {
         renderBitsOfValue(1, this._parameters.colorBitOn, this._parameters.colorStrokeOn);
     }
 }
-//# sourceMappingURL=canva-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canva-renderers.js
+//# sourceMappingURL=canvas-renderer.js.map
+// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canvas-renderers.js
 
-var canva_renderers_CanvaRenderers;
-(function (CanvaRenderers) {
-    class Ellipse extends canva_renderer_CanvaRenderer {
+var canvas_renderers_CanvasRenderers;
+(function (CanvasRenderers) {
+    class Ellipse extends canvas_renderer_CanvasRenderer {
         constructor(parameters) {
             super(parameters);
         }
@@ -895,8 +914,8 @@ var canva_renderers_CanvaRenderers;
             ctx.ellipse(w * j + radW, h * i + radH, radW, radH, 0, 0, 2 * Math.PI);
         }
     }
-    CanvaRenderers.Ellipse = Ellipse;
-    class Rect extends canva_renderer_CanvaRenderer {
+    CanvasRenderers.Ellipse = Ellipse;
+    class Rect extends canvas_renderer_CanvasRenderer {
         constructor(parameters) {
             super(parameters);
         }
@@ -905,9 +924,9 @@ var canva_renderers_CanvaRenderers;
         }
         moveToNextBit(ctx, i, j, w, h) {}
     }
-    CanvaRenderers.Rect = Rect;
-})(canva_renderers_CanvaRenderers || (canva_renderers_CanvaRenderers = {}));
-//# sourceMappingURL=canva-renderers.js.map
+    CanvasRenderers.Rect = Rect;
+})(canvas_renderers_CanvasRenderers || (canvas_renderers_CanvasRenderers = {}));
+//# sourceMappingURL=canvas-renderers.js.map
 // CONCATENATED MODULE: ./dist/esm/lib/player/rendering/ascii-renderer.js
 
 class ascii_renderer_AsciiRenderer extends Renderer {
@@ -939,25 +958,25 @@ class ascii_renderer_AsciiRenderer extends Renderer {
 // CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer-builder.js
 
 
-var renderer_builder_RendererType;
-(function (RendererType) {
-    RendererType[RendererType["ASCII"] = 0] = "ASCII";
-    RendererType[RendererType["CanvasSquare"] = 1] = "CanvasSquare";
-    RendererType[RendererType["CanvasCircle"] = 2] = "CanvasCircle";
-})(renderer_builder_RendererType || (renderer_builder_RendererType = {}));
+var renderer_builder_RendererTypes;
+(function (RendererTypes) {
+    RendererTypes[RendererTypes["ASCII"] = 0] = "ASCII";
+    RendererTypes[RendererTypes["CanvasSquare"] = 1] = "CanvasSquare";
+    RendererTypes[RendererTypes["CanvasCircle"] = 2] = "CanvasCircle";
+})(renderer_builder_RendererTypes || (renderer_builder_RendererTypes = {}));
 class renderer_builder_RendererBuilder {
     static build(rendererType, elementId) {
         switch (rendererType) {
-            case renderer_builder_RendererType.ASCII:
+            case renderer_builder_RendererTypes.ASCII:
                 return new ascii_renderer_AsciiRenderer({
                     elementId: elementId
                 });
-            case renderer_builder_RendererType.CanvasSquare:
-                return new canva_renderers_CanvaRenderers.Rect({
+            case renderer_builder_RendererTypes.CanvasSquare:
+                return new canvas_renderers_CanvasRenderers.Rect({
                     elementId: elementId
                 });
-            case renderer_builder_RendererType.CanvasCircle:
-                return new canva_renderers_CanvaRenderers.Ellipse({
+            case renderer_builder_RendererTypes.CanvasCircle:
+                return new canvas_renderers_CanvasRenderers.Ellipse({
                     elementId: elementId
                 });
         }
@@ -1083,7 +1102,6 @@ class panel_player_PanelPlayer {
 
 
 
-
 class led_matrix_player_LedMatrixPlayer {
     constructor(sequence, params) {
         this.onReady = new Event();
@@ -1106,9 +1124,6 @@ class led_matrix_player_LedMatrixPlayer {
     }
     set renderer(value) {
         this._panelPlayer.renderer = value;
-    }
-    setRendererFromBuilder(value) {
-        this._panelPlayer.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.elementId);
     }
     get renderer() {
         return this._panelPlayer.renderer;
@@ -1146,20 +1161,15 @@ class led_matrix_player_LedMatrixPlayer {
     _validateParameters(params) {
         let defaultParams = {
             fps: 30,
-            rendererType: renderer_builder_RendererType.ASCII,
-            elementId: 'led-matrix'
+            renderer: new canvas_renderers_CanvasRenderers.Rect({
+                elementId: 'led-matrix'
+            })
         };
         if (params) {
             params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
             params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
-            if (params.renderer instanceof Renderer) {
-                params.renderer = params.renderer;
-            } else {
-                params.renderer = renderer_builder_RendererBuilder.build(this._valueOrDefault(params.renderer.rendererType, defaultParams.rendererType), this._valueOrDefault(params.elementId, defaultParams.elementId));
-            }
             return params;
         }
-        defaultParams.renderer = renderer_builder_RendererBuilder.build(defaultParams.rendererType, defaultParams.elementId);
         return defaultParams;
     }
     _valueOrDefault(value, defaultValue) {
@@ -1169,6 +1179,8 @@ class led_matrix_player_LedMatrixPlayer {
 //# sourceMappingURL=led-matrix-player.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerTypes", function() { return scroller_builder_ScrollerTypes; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerBuilder", function() { return scroller_builder_ScrollerBuilder; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SideScroller", function() { return SideScroller; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "VerticalScroller", function() { return VerticalScroller; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Board", function() { return board_Board; });
@@ -1179,15 +1191,16 @@ class led_matrix_player_LedMatrixPlayer {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrixPlayer", function() { return led_matrix_player_LedMatrixPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AsciiRenderer", function() { return ascii_renderer_AsciiRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderer", function() { return canva_renderer_CanvaRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvaRenderers", function() { return canva_renderers_CanvaRenderers; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererType", function() { return renderer_builder_RendererType; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvasRenderer", function() { return canvas_renderer_CanvasRenderer; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvasRenderers", function() { return canvas_renderers_CanvasRenderers; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererTypes", function() { return renderer_builder_RendererTypes; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelPlayer", function() { return panel_player_PanelPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Exception", function() { return Exception; });
+
 
 
 
