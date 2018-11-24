@@ -24,4 +24,6 @@ export * from './lib/player/rendering/renderer';
 export * from './lib/player/panel-player';
 
 //utils
+export * from './lib/utils/bit-array';
 export * from './lib/utils/event';
+export * from './lib/utils/exception';

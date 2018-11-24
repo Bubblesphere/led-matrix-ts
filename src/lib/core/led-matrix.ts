@@ -1,11 +1,11 @@
-import Board from "./board";
+import { Board } from "./board";
 import { Panel } from "./panel";
 import { Padding, Sequence } from "../types";
 import { Event, IEvent } from "../utils/event";
-import CharacterDictionary from "./character-dictionary";
-import Character from "./character";
+import { CharacterDictionary } from "./character-dictionary";
+import { Character } from "./character";
 import { Scroller } from "./scrollers/scroller";
-import SideScrollingPanel from "./scrollers/side-scroller";
+import { SideScroller } from "./scrollers/side-scroller";
 
 interface ExposedBoardParameters {
     letterSpacing?: number
@@ -175,7 +175,7 @@ export class LedMatrix implements LedMatrixParameters {
     private _validateParameters(params: LedMatrixParameters) {
         let defaultParams: LedMatrixParameters = {
             increment: 1,
-            scroller: new SideScrollingPanel(),
+            scroller: new SideScroller(),
             reverse: false,
             panelWidth: 80,
             letterSpacing: 2,

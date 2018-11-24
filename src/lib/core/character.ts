@@ -1,10 +1,10 @@
-import BitArray, { bit } from "../utils/bit-array";
+import { BitArray, bit } from "../utils/bit-array";
 import { Exception } from "../utils/exception";
 
 /**
  * The character holds information about the visual representation of a character
  */
-export default class Character {
+export class Character {
   readonly CLASS_NAME = Character.name;
   private _pattern: string;
   private _output: BitArray;

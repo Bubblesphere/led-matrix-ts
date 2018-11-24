@@ -3,7 +3,7 @@ import { PanelFrame } from "../../types";
 import { Panel } from "../panel";
 import { Scroller } from "./scroller";
 
-export default class SideScroller implements Scroller {
+export class SideScroller implements Scroller {
   public loopEndIndex(params: Panel): number {
     return params.board.width - 1;
   }
