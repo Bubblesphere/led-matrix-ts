@@ -1,7 +1,7 @@
-import Board from '../board';
-import Character from '../character';
-import BitArray, { bit } from '../../utils/bit-array';
-import CharacterDictionary from '../character-dictionary';
+import { Board } from '../board';
+import { Character } from '../character';
+import { BitArray, bit } from '../../utils/bit-array';
+import { CharacterDictionary } from '../character-dictionary';
 
 let board: Board;
 

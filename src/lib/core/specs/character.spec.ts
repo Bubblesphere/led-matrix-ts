@@ -1,5 +1,5 @@
-import Character from "../character";
-import BitArray from "../../utils/bit-array";
+import { Character } from "../character";
+import { BitArray } from "../../utils/bit-array";
 
 describe('testing Character constructor', () => {
     test('Should throw an exception if the output is smaller than the character\'s width', () => {

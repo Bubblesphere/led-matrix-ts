@@ -1,6 +1,6 @@
-import Character from "../character";
-import BitArray from "../../utils/bit-array";
-import CharacterDictionary from "../character-dictionary";
+import { Character } from "../character";
+import { BitArray } from "../../utils/bit-array";
+import { CharacterDictionary } from "../character-dictionary";
 
 let dictionary: CharacterDictionary;
 
