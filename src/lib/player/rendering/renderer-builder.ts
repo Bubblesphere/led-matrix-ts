@@ -1,5 +1,5 @@
 import { CanvaRenderers } from "./canva-renderers";
-import AsciiRenderer from "./ascii-renderer";
+import { AsciiRenderer } from "./ascii-renderer";
 import { Renderer } from "./renderer";
 export enum RendererType {
     ASCII,

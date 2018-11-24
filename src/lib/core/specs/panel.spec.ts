@@ -1,9 +1,9 @@
 import { Panel } from "../panel";
-import Board from "../board";
-import CharacterDictionary from "../character-dictionary";
-import Character from "../character";
-import BitArray from "../../utils/bit-array";
-import SideScroller from "../scrollers/side-scroller";
+import { Board } from "../board";
+import { CharacterDictionary } from "../character-dictionary";
+import { Character } from "../character";
+import { BitArray } from "../../utils/bit-array";
+import { SideScroller } from "../scrollers/side-scroller";
 
 
 let panel: Panel;

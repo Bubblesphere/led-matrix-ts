@@ -1,7 +1,7 @@
-import Character from './character';
-import BitArray, { bit } from '../utils/bit-array';
+import { Character } from './character';
+import { BitArray, bit } from '../utils/bit-array';
 import { Padding, DetailedPadding } from '../types';
-import CharacterDictionary from './character-dictionary';
+import { CharacterDictionary } from './character-dictionary';
 import { NearestNeighbor } from "./character-sizer";
 import { Event } from '../utils/event';
 import { Exception } from '../utils/exception';
@@ -16,7 +16,7 @@ export interface BoardParameters {
  * The board creates the link between the dictionnary and the input. 
  * Its role is to create the matrix reprentation of the entire board
  */
-export default class Board {
+export class Board {
   readonly CLASS_NAME = Board.name;
   private _characters: Array<Character>;
   private _letterSpacing: number;

@@ -1,9 +1,9 @@
-import Character from './character';
+import { Character } from './character';
 
 /**
  * The dictionary contains different characters which are accessible via the find method
  */
-export default class CharacterDictionary {
+export class CharacterDictionary {
   private _characters: Character[];
 
   constructor() {

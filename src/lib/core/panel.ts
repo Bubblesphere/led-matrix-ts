@@ -1,4 +1,4 @@
-import Board from './board';
+import { Board } from './board';
 import { Sequence } from '../types';
 import { Exception } from '../utils/exception';
 import { Event } from '../utils/event';

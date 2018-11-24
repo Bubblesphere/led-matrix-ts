@@ -1,10 +1,10 @@
 
-import Board from "../board";
-import CharacterDictionary from "../character-dictionary";
-import Character from "../character";
-import BitArray from "../../utils/bit-array";
+import { Board } from "../board";
+import { CharacterDictionary } from "../character-dictionary";
+import { Character } from "../character";
+import { BitArray } from "../../utils/bit-array";
 import { Panel } from "../panel";
-import SideScrollingPanel from "../scrollers/side-scroller";
+import { SideScroller } from "../scrollers/side-scroller";
 
 let panel: Panel;
 beforeEach(() => {
@@ -17,7 +17,7 @@ beforeEach(() => {
         increment: 1,
         width: 80,
         reverse: false,
-        scroller: new SideScrollingPanel()
+        scroller: new SideScroller()
     });
 
     const dict = new CharacterDictionary();

@@ -1,9 +1,9 @@
-import SideScroller from "../scrollers/side-scroller";
-import VerticalScroller from "../scrollers/vertical-scroller";
-import Board from "../board";
-import BitArray from "../../utils/bit-array";
-import Character from "../character";
-import CharacterDictionary from "../character-dictionary";
+import { SideScroller } from "../scrollers/side-scroller";
+import { VerticalScroller } from "../scrollers/vertical-scroller";
+import { Board } from "../board";
+import { BitArray } from "../../utils/bit-array";
+import { Character } from "../character";
+import { CharacterDictionary } from "../character-dictionary";
 import { Panel } from "../panel";
 
 

@@ -1,4 +1,4 @@
-import AsciiRenderer from "../rendering/ascii-renderer";
+import { AsciiRenderer } from "../rendering/ascii-renderer";
 
 describe('testing ASCIIRenderer', () => {
 
