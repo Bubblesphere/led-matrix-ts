@@ -8,7 +8,7 @@ export enum ScrollerTypes {
 }
 
 export class ScrollerBuilder {
-  static build(scrollerType: ScrollerTypes, elementId: string): Scroller {
+  static build(scrollerType: ScrollerTypes): Scroller {
     switch (scrollerType) {
       case ScrollerTypes.Side:
         return new SideScroller();
