@@ -151,9 +151,12 @@ export class Board {
         toReturn = this._createBitOffArrayOfLength(this._padding[0])
           .concat(characterColumn)
           .concat(this._createBitOffArrayOfLength(this._padding[2]))
-          // Character might be shorter than the tallest character
-          // If so, append 0s to make up the difference in size
-          .concat(characterColumn.length < this.height ? this._createBitOffArrayOfLength(this.height - characterColumn.length) : []);
+        
+        // Character might be shorter than the tallest character
+        // If so, append 0s to make up the difference in size
+        if (toReturn.length < this.height) {
+          toReturn.concat(this._createBitOffArrayOfLength(this.height - characterColumn.length));
+        }
 
         return true;
       }
