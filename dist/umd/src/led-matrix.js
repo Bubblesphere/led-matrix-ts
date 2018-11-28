@@ -358,7 +358,7 @@ class board_Board {
             }
             accumulator += this._letterSpacing;
             if (accumulator > index) {
-                toReturn = this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
+                toReturn = this._createBitOffArrayOfLength(this.height);
                 return true;
             }
         });
