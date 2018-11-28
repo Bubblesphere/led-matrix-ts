@@ -163,7 +163,7 @@ export class Board {
       accumulator += this._letterSpacing;
       if (accumulator > index) {
         // Column is space
-        toReturn = this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
+        toReturn = this._createBitOffArrayOfLength(this.height);
         return true;
       }
     });
