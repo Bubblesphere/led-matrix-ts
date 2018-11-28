@@ -4,7 +4,7 @@ import { Exception } from '../utils/exception';
 import { Event } from '../utils/event';
 import { Scroller } from './scrollers/scroller';
 
-export interface PanelParameters  {
+export interface PanelParameters {
   /** The board for which the panel operates on */
   board: Board,
   /** Increment at each frame */
@@ -26,9 +26,10 @@ export class Panel {
   private _initiated: boolean = false;
 
   private _params: PanelParameters;
+  private _latestCurrentSequenceUuid: number = 0;
 
   constructor(params: PanelParameters) {
-    this._params =  params;
+    this._params = params;
     this._initiated = true;
     this.updateCurrentSequence();
 
@@ -59,7 +60,7 @@ export class Panel {
   public get scroller() {
     return this._params.scroller;
   }
-  
+
   public set width(value: number) {
     const widthDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'width');
     Exception.throwIfNull(value, widthDescription);
@@ -74,7 +75,7 @@ export class Panel {
     Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'board'));
     if (this._params.board != value) {
       this._params.board = value;
-      this.updateCurrentSequence(); 
+      this.updateCurrentSequence();
     }
   }
 
@@ -106,22 +107,31 @@ export class Panel {
     }
   }
 
-  public GetCurrentSequence(): Sequence {
-    let sequence: Sequence = [];
+  public GetCurrentSequence(): Promise<Sequence> {
+    return new Promise((resolve) => {
+      let sequence: Sequence = [];
 
-    let panelIndex = 0;
-    for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
-      panelIndex = this._tickPanelIndex(panelIndex);
-      sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
-    }
+      let panelIndex = 0;
+      for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
+        sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
+        panelIndex = this._tickPanelIndex(panelIndex);
+      }
 
-    return sequence;
+      resolve(sequence);
+
+    })
+
   }
 
   public updateCurrentSequence() {
     if (this._initiated) {
-      const sequence = this.GetCurrentSequence();
-      this.onNewSequence.trigger(sequence);
+      const currentUuid = this._latestCurrentSequenceUuid + 1;
+      this._latestCurrentSequenceUuid += currentUuid;
+      this.GetCurrentSequence().then((sequence) => {
+        if (currentUuid == this._latestCurrentSequenceUuid) {
+          this.onNewSequence.trigger(sequence);
+        }
+      });
     }
   }
 

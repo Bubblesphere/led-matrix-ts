@@ -1,6 +1,5 @@
 
-import { PanelFrame, Sequence } from "../types";
-import { Event, IEvent } from "../utils/event";
+import { PanelFrame, Sequence, Event, IEvent } from '../../src/index';
 import { Renderer } from "./rendering/renderer";
 import { PanelPlayer } from "./panel-player";
 import { CanvasRenderers } from "./rendering/canvas-renderers";
