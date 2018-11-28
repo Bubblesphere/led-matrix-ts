@@ -737,19 +737,19 @@ class led_matrix_LedMatrix {
             size: 1
         };
         if (params) {
-            params.letterSpacing = this._valueOrDefault(params.letterSpacing, defaultParams.letterSpacing);
-            params.padding = this._valueOrDefault(params.padding, defaultParams.padding);
-            params.size = this._valueOrDefault(params.size, defaultParams.size);
-            params.increment = this._valueOrDefault(params.increment, defaultParams.increment);
-            params.scroller = this._valueOrDefault(params.scroller, defaultParams.scroller);
-            params.reverse = this._valueOrDefault(params.reverse, defaultParams.reverse);
-            params.panelWidth = this._valueOrDefault(params.panelWidth, defaultParams.panelWidth);
+            params.letterSpacing = this._valueOrDefaultIfNull(params.letterSpacing, defaultParams.letterSpacing);
+            params.padding = this._valueOrDefaultIfNull(params.padding, defaultParams.padding);
+            params.size = this._valueOrDefaultIfNull(params.size, defaultParams.size);
+            params.increment = this._valueOrDefaultIfNull(params.increment, defaultParams.increment);
+            params.scroller = this._valueOrDefaultIfNull(params.scroller, defaultParams.scroller);
+            params.reverse = this._valueOrDefaultIfNull(params.reverse, defaultParams.reverse);
+            params.panelWidth = this._valueOrDefaultIfNull(params.panelWidth, defaultParams.panelWidth);
             return params;
         }
         return defaultParams;
     }
-    _valueOrDefault(value, defaultValue) {
-        return value ? value : defaultValue;
+    _valueOrDefaultIfNull(value, defaultValue) {
+        return value == null ? defaultValue : value;
     }
 }
 //# sourceMappingURL=led-matrix.js.map
