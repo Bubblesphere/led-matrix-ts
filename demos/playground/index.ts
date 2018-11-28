@@ -6,17 +6,21 @@ import { VerticalScroller } from '../../src/lib/core/scrollers/vertical-scroller
 import { AsciiRenderer } from '../player/rendering/ascii-renderer';
 import { CanvasRenderers } from '../player/rendering/canvas-renderers';
 
-
 const ledMatrix = new LedMatrix();
-const player = new LedMatrixPlayer(null);
+const player = new LedMatrixPlayer({
+  fps: 60,
+  renderer: new AsciiRenderer({
+    elementId: "led-matrix"
+  })
+});
 
 ledMatrix.event.newSequence.on((sequence) => {
-    player.sequence = sequence
+  player.sequence = sequence;
 })
 
 CharactersJSON.import("alphabett.json", (characters) => {
   ledMatrix.addCharacters(characters);
-  player.play();
+  ledMatrix.input = "hello world";
 });
 
 

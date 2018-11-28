@@ -13,6 +13,7 @@ export type LedMatrixWebPlayerParameters = ExposedPlayerParameters;
 
 export class LedMatrixPlayer implements LedMatrixWebPlayerParameters {
   private _params: LedMatrixWebPlayerParameters;
+  private _initialized: boolean = false;
 
   private _panelPlayer: PanelPlayer;
 
@@ -22,12 +23,12 @@ export class LedMatrixPlayer implements LedMatrixWebPlayerParameters {
     reachingBoundary: IEvent<void>
   };
 
-  constructor(sequence: Sequence, params?: LedMatrixWebPlayerParameters) {
+  constructor(params?: LedMatrixWebPlayerParameters) {
     this._params = this._validateParameters(params);
     this._panelPlayer = new PanelPlayer({
       fps: this._params.fps,
       renderer: this._params.renderer as Renderer,
-      sequence: sequence
+      sequence: null
     });
 
     this.event = {
@@ -60,6 +61,10 @@ export class LedMatrixPlayer implements LedMatrixWebPlayerParameters {
 
   public set sequence(value: Sequence) {
     this._panelPlayer.sequence = value;
+    if (!this._initialized) {
+      this.play();
+      this._initialized = true;
+    }
   }
 
   public get sequence() {

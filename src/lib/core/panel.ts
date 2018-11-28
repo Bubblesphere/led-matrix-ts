@@ -118,17 +118,15 @@ export class Panel {
       }
 
       resolve(sequence);
-
-    })
-
+    });
   }
 
   public updateCurrentSequence() {
     if (this._initiated) {
-      const currentUuid = this._latestCurrentSequenceUuid + 1;
-      this._latestCurrentSequenceUuid += currentUuid;
+      this._latestCurrentSequenceUuid += 1;
+      const currentUuid = this._latestCurrentSequenceUuid;
       this.GetCurrentSequence().then((sequence) => {
-        if (currentUuid == this._latestCurrentSequenceUuid) {
+        if (currentUuid == this._latestCurrentSequenceUuid && sequence[0].length > 0) {
           this.onNewSequence.trigger(sequence);
         }
       });

@@ -35,16 +35,20 @@
     <h2>index.ts</h2>
     <xmp>
       const ledMatrix = new LedMatrix();
-
+      const player = new LedMatrixPlayer();
+      
+      ledMatrix.event.newSequence.on((sequence) => {
+        player.sequence = sequence;
+      })
+      
       CharactersJSON.import("customAlphabet.json", (characters) => {
         ledMatrix.addCharacters(characters);
         ledMatrix.input = "(smiley)";
-        ledMatrix.play();
       });
-      
     </xmp>
 
-    <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
+    
+    <canvas id="led-matrix" width="1000" height="200"></canvas>
 
     <script src="alphabet-bundle.js"></script>
   </body>
