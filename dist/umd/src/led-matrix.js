@@ -350,7 +350,10 @@ class board_Board {
             accumulator += character.width;
             if (accumulator > index) {
                 const characterColumn = character.getColumn(index - (accumulator - character.width));
-                toReturn = this._createBitOffArrayOfLength(this._padding[0]).concat(characterColumn).concat(this._createBitOffArrayOfLength(this._padding[2])).concat(characterColumn.length < this.height ? this._createBitOffArrayOfLength(this.height - characterColumn.length) : []);
+                toReturn = this._createBitOffArrayOfLength(this._padding[0]).concat(characterColumn).concat(this._createBitOffArrayOfLength(this._padding[2]));
+                if (toReturn.length < this.height) {
+                    toReturn.concat(this._createBitOffArrayOfLength(this.height - characterColumn.length));
+                }
                 return true;
             }
             accumulator += this._letterSpacing;
@@ -427,6 +430,7 @@ class panel_Panel {
     constructor(params) {
         this.CLASS_NAME = panel_Panel.name;
         this._initiated = false;
+        this._latestCurrentSequenceUuid = 0;
         this.onNewSequence = new Event();
         this._params = params;
         this._initiated = true;
@@ -495,18 +499,25 @@ class panel_Panel {
         }
     }
     GetCurrentSequence() {
-        let sequence = [];
-        let panelIndex = 0;
-        for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
-            panelIndex = this._tickPanelIndex(panelIndex);
-            sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
-        }
-        return sequence;
+        return new Promise(resolve => {
+            let sequence = [];
+            let panelIndex = 0;
+            for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
+                sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
+                panelIndex = this._tickPanelIndex(panelIndex);
+            }
+            resolve(sequence);
+        });
     }
     updateCurrentSequence() {
         if (this._initiated) {
-            const sequence = this.GetCurrentSequence();
-            this.onNewSequence.trigger(sequence);
+            this._latestCurrentSequenceUuid += 1;
+            const currentUuid = this._latestCurrentSequenceUuid;
+            this.GetCurrentSequence().then(sequence => {
+                if (currentUuid == this._latestCurrentSequenceUuid && sequence[0].length > 0) {
+                    this.onNewSequence.trigger(sequence);
+                }
+            });
         }
     }
     _tickPanelIndex(index) {
@@ -641,6 +652,7 @@ class led_matrix_LedMatrix {
     set size(value) {
         this._size = value;
         this._panel.board.load(this.input, this._dictionary, this.size);
+        this._panel.GetCurrentSequence();
     }
     get loopEndIndex() {
         return this._panel.scroller.loopEndIndex(this._panel);
@@ -766,7 +778,7 @@ var scroller_builder_ScrollerTypes;
     ScrollerTypes[ScrollerTypes["Vertical"] = 1] = "Vertical";
 })(scroller_builder_ScrollerTypes || (scroller_builder_ScrollerTypes = {}));
 class scroller_builder_ScrollerBuilder {
-    static build(scrollerType, elementId) {
+    static build(scrollerType) {
         switch (scrollerType) {
             case scroller_builder_ScrollerTypes.Side:
                 return new SideScroller();
@@ -827,356 +839,6 @@ class character_json_CharactersJSON {
     }
 }
 //# sourceMappingURL=character-json.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer.js
-class Renderer {
-    constructor(parameters) {}
-    render(display) {
-        if (this._parameters.element == null) {
-            this._parameters.element = document.getElementById(this._parameters.elementId);
-            if (this._parameters.element == null) {
-                throw `Could not find the element to render led matrix`;
-            }
-        } else {
-            if (this._parameters.element.clientHeight == 0 || this._parameters.element.clientWidth == 0) {
-                this._parameters.element = document.getElementById(this._parameters.elementId);
-            }
-        }
-    }
-}
-//# sourceMappingURL=renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canvas-renderer.js
-
-class canvas_renderer_CanvasRenderer extends Renderer {
-    constructor(parameters) {
-        super(parameters);
-        this._parameters = {
-            elementId: parameters.elementId,
-            element: parameters.element,
-            colorBitOn: parameters.colorBitOn ? parameters.colorBitOn : "#00B16A",
-            colorBitOff: parameters.colorBitOff ? parameters.colorBitOff : "#22313F",
-            colorStrokeOn: parameters.colorStrokeOn ? parameters.colorStrokeOn : "#67809F",
-            colorStrokeOff: parameters.colorStrokeOff ? parameters.colorStrokeOff : "#67809F"
-        };
-    }
-    get parameters() {
-        return this._parameters;
-    }
-    get element() {
-        return this._parameters.element;
-    }
-    render(display) {
-        super.render(display);
-        const ctx = this.element.getContext("2d");
-        if (this.element.width != this.element.clientWidth && this.element.clientWidth != 0) {
-            this.element.width = this.element.clientWidth;
-        }
-        if (this.element.height != this.element.clientHeight && this.element.clientHeight != 0) {
-            this.element.height = this.element.clientHeight;
-        }
-        ctx.clearRect(0, 0, this.element.width, this.element.height);
-        const widthEachBit = Math.floor(this.element.width / display[0].length);
-        const heightEachBit = Math.floor(this.element.height / display.length);
-        ctx.lineWidth = 1;
-        const renderBitsOfValue = (value, fillColor, strokeColor) => {
-            ctx.strokeStyle = strokeColor;
-            ctx.fillStyle = fillColor;
-            ctx.beginPath();
-            for (var i = 0; i < display.length; i++) {
-                for (var j = 0; j < display[i].length; j++) {
-                    if (display[i][j] == value) {
-                        this.moveToNextBit(ctx, i, j, widthEachBit, heightEachBit);
-                        this.drawBit(ctx, i, j, widthEachBit, heightEachBit);
-                    }
-                }
-            }
-            ctx.fill();
-            ctx.stroke();
-        };
-        renderBitsOfValue(0, this._parameters.colorBitOff, this._parameters.colorStrokeOff);
-        renderBitsOfValue(1, this._parameters.colorBitOn, this._parameters.colorStrokeOn);
-    }
-}
-//# sourceMappingURL=canvas-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/canvas-renderers.js
-
-var canvas_renderers_CanvasRenderers;
-(function (CanvasRenderers) {
-    class Ellipse extends canvas_renderer_CanvasRenderer {
-        constructor(parameters) {
-            super(parameters);
-        }
-        moveToNextBit(ctx, i, j, w, h) {
-            ctx.moveTo(w * (j + 1), h * (i + 1) - h / 2);
-        }
-        drawBit(ctx, i, j, w, h) {
-            const radW = w / 2;
-            const radH = h / 2;
-            ctx.ellipse(w * j + radW, h * i + radH, radW, radH, 0, 0, 2 * Math.PI);
-        }
-    }
-    CanvasRenderers.Ellipse = Ellipse;
-    class Rect extends canvas_renderer_CanvasRenderer {
-        constructor(parameters) {
-            super(parameters);
-        }
-        drawBit(context, i, j, w, h) {
-            return context.rect(w * j, h * i, w, h);
-        }
-        moveToNextBit(ctx, i, j, w, h) {}
-    }
-    CanvasRenderers.Rect = Rect;
-})(canvas_renderers_CanvasRenderers || (canvas_renderers_CanvasRenderers = {}));
-//# sourceMappingURL=canvas-renderers.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/ascii-renderer.js
-
-class ascii_renderer_AsciiRenderer extends Renderer {
-    constructor(parameters) {
-        super(parameters);
-        this._parameters = {
-            elementId: parameters.elementId,
-            element: parameters.element,
-            characterBitOn: parameters.characterBitOn ? parameters.characterBitOn : "X",
-            characterBitOff: parameters.characterBitOff ? parameters.characterBitOff : " "
-        };
-    }
-    get parameters() {
-        return this._parameters;
-    }
-    render(display) {
-        super.render(display);
-        let output = "";
-        for (var i = 0; i < display.length; i++) {
-            for (var j = 0; j < display[i].length; j++) {
-                output += display[i][j] == 1 ? this._parameters.characterBitOn : this._parameters.characterBitOff;
-            }
-            output += '\n';
-        }
-        this._parameters.element.innerHTML = output;
-    }
-}
-//# sourceMappingURL=ascii-renderer.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/rendering/renderer-builder.js
-
-
-var renderer_builder_RendererTypes;
-(function (RendererTypes) {
-    RendererTypes[RendererTypes["ASCII"] = 0] = "ASCII";
-    RendererTypes[RendererTypes["CanvasSquare"] = 1] = "CanvasSquare";
-    RendererTypes[RendererTypes["CanvasCircle"] = 2] = "CanvasCircle";
-})(renderer_builder_RendererTypes || (renderer_builder_RendererTypes = {}));
-class renderer_builder_RendererBuilder {
-    static build(rendererType, elementId) {
-        switch (rendererType) {
-            case renderer_builder_RendererTypes.ASCII:
-                return new ascii_renderer_AsciiRenderer({
-                    elementId: elementId
-                });
-            case renderer_builder_RendererTypes.CanvasSquare:
-                return new canvas_renderers_CanvasRenderers.Rect({
-                    elementId: elementId
-                });
-            case renderer_builder_RendererTypes.CanvasCircle:
-                return new canvas_renderers_CanvasRenderers.Ellipse({
-                    elementId: elementId
-                });
-        }
-    }
-}
-//# sourceMappingURL=renderer-builder.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/panel-player.js
-
-
-
-class panel_player_PanelPlayer {
-    constructor(params) {
-        this.CLASS_NAME = panel_player_PanelPlayer.name;
-        this.onPanelUpdate = new Event();
-        this.onReachingBoundary = new Event();
-        this._index = 0;
-        this.fps = params.fps;
-        this._renderer = params.renderer;
-        this._sequence = params.sequence;
-    }
-    get PanelUpdate() {
-        return this.onPanelUpdate.expose();
-    }
-    get ReachingBoundary() {
-        return this.onReachingBoundary.expose();
-    }
-    get sequence() {
-        return this._sequence;
-    }
-    get index() {
-        return this._index;
-    }
-    get fps() {
-        return this._fps;
-    }
-    get renderer() {
-        return this._renderer;
-    }
-    set sequence(value) {
-        Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'sequence'));
-        this._sequence = value;
-    }
-    set fps(value) {
-        const fpsDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'fps');
-        Exception.throwIfNull(value, fpsDescription);
-        Exception.throwIfNotBetween(value, fpsDescription, 0, 60);
-        this._fps = value;
-        this._fpsIntervalLengthInMs = 1000 / this._fps;
-    }
-    set renderer(value) {
-        Exception.throwIfNull(value, Exception.getDescriptionForProperty(this.CLASS_NAME, 'renderer'));
-        this._renderer = value;
-        this._render();
-    }
-    play() {
-        this._index = 0;
-        this._render();
-        this._startLoop();
-    }
-    stop() {
-        this._index = 0;
-        this._render();
-        this._shouldUpdate = false;
-    }
-    resume() {
-        this._startLoop();
-    }
-    pause() {
-        this._shouldUpdate = false;
-    }
-    step() {
-        this._nextPanelFrame();
-    }
-    seek(frame) {
-        const seekDescription = Exception.getDescriptionForProperty(this.CLASS_NAME, 'seek');
-        Exception.throwIfNull(frame, seekDescription);
-        Exception.throwIfNotBetween(frame, seekDescription, 0, this._sequence.length);
-        this._index = frame;
-        this._render();
-    }
-    setRendererFromBuilder(value) {
-        this.renderer = renderer_builder_RendererBuilder.build(value.rendererType, value.elementId);
-    }
-    _nextPanelFrame() {
-        Exception.throwIfNull(this._sequence, Exception.getDescriptionForProperty(this.CLASS_NAME, 'sequence'));
-        this._incrementIndex();
-        this._render();
-    }
-    _render() {
-        this.onPanelUpdate.trigger({ display: this._sequence[this._index] });
-        this._renderer.render(this._sequence[this._index]);
-    }
-    _incrementIndex() {
-        const reachedBoundary = this._index >= this._sequence.length;
-        if (reachedBoundary) {
-            this.onReachingBoundary.trigger();
-        }
-        this._index = (this._index + 1) % this._sequence.length;
-    }
-    _startLoop() {
-        this._then = Date.now();
-        this._shouldUpdate = true;
-        this._loop();
-    }
-    _loop() {
-        requestAnimationFrame(this._loop.bind(this));
-        if (this._shouldUpdate) {
-            this._callIfReadyForNextFrame(this._nextPanelFrame.bind(this));
-        }
-    }
-    _callIfReadyForNextFrame(callback) {
-        this._now = Date.now();
-        this._elapsed = this._now - this._then;
-        if (this._elapsed > this._fpsIntervalLengthInMs) {
-            this._then = this._now - this._elapsed % this._fpsIntervalLengthInMs;
-            callback();
-        }
-    }
-}
-;
-//# sourceMappingURL=panel-player.js.map
-// CONCATENATED MODULE: ./dist/esm/lib/player/led-matrix-player.js
-
-
-
-class led_matrix_player_LedMatrixPlayer {
-    constructor(sequence, params) {
-        this.onReady = new Event();
-        this._params = this._validateParameters(params);
-        this._panelPlayer = new panel_player_PanelPlayer({
-            fps: this._params.fps,
-            renderer: this._params.renderer,
-            sequence: sequence
-        });
-        this.event = {
-            panelUpdate: this._panelPlayer.PanelUpdate,
-            reachingBoundary: this._panelPlayer.ReachingBoundary
-        };
-    }
-    get Ready() {
-        return this.onReady.expose();
-    }
-    index() {
-        this._panelPlayer.index;
-    }
-    set renderer(value) {
-        this._panelPlayer.renderer = value;
-    }
-    get renderer() {
-        return this._panelPlayer.renderer;
-    }
-    set fps(value) {
-        this._panelPlayer.fps = value;
-    }
-    get fps() {
-        return this._panelPlayer.fps;
-    }
-    set sequence(value) {
-        this._panelPlayer.sequence = value;
-    }
-    get sequence() {
-        return this._panelPlayer.sequence;
-    }
-    play() {
-        this._panelPlayer.play();
-    }
-    stop() {
-        this._panelPlayer.stop();
-    }
-    pause() {
-        this._panelPlayer.pause();
-    }
-    resume() {
-        this._panelPlayer.resume();
-    }
-    step() {
-        this._panelPlayer.step();
-    }
-    seek(frame) {
-        this._panelPlayer.seek(frame);
-    }
-    _validateParameters(params) {
-        let defaultParams = {
-            fps: 30,
-            renderer: new canvas_renderers_CanvasRenderers.Rect({
-                elementId: 'led-matrix'
-            })
-        };
-        if (params) {
-            params.fps = this._valueOrDefault(params.fps, defaultParams.fps);
-            params.renderer = this._valueOrDefault(params.renderer, defaultParams.renderer);
-            return params;
-        }
-        return defaultParams;
-    }
-    _valueOrDefault(value, defaultValue) {
-        return value ? value : defaultValue;
-    }
-}
-//# sourceMappingURL=led-matrix-player.js.map
 // CONCATENATED MODULE: ./dist/esm/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrix", function() { return led_matrix_LedMatrix; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ScrollerTypes", function() { return scroller_builder_ScrollerTypes; });
@@ -1189,24 +851,9 @@ class led_matrix_player_LedMatrixPlayer {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "NearestNeighbor", function() { return NearestNeighbor; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Character", function() { return character_Character; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Panel", function() { return panel_Panel; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "LedMatrixPlayer", function() { return led_matrix_player_LedMatrixPlayer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AsciiRenderer", function() { return ascii_renderer_AsciiRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvasRenderer", function() { return canvas_renderer_CanvasRenderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CanvasRenderers", function() { return canvas_renderers_CanvasRenderers; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererTypes", function() { return renderer_builder_RendererTypes; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RendererBuilder", function() { return renderer_builder_RendererBuilder; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PanelPlayer", function() { return panel_player_PanelPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BitArray", function() { return BitArray; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Exception", function() { return Exception; });
-
-
-
-
-
-
-
 
 
 
