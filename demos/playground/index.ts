@@ -1,22 +1,26 @@
 import { LedMatrix } from '../../src/lib/core/led-matrix';
-import AsciiRenderer from '../../src/lib/player/rendering/ascii-renderer';
-import { CanvaRenderers } from '../../src/lib/player/rendering/canva-renderers';
 import { CharactersJSON } from '../../src/lib/core/character-json';
-import { LedMatrixPlayer } from '../../src/lib/player/led-matrix-player';
-import VerticalScroller from '../../src/lib/core/scrollers/vertical-scroller';
-import SideScroller from '../../src/lib/core/scrollers/side-scroller';
-
+import { LedMatrixPlayer } from '../player/led-matrix-player';
+import { SideScroller } from '../../src/lib/core/scrollers/side-scroller';
+import { VerticalScroller } from '../../src/lib/core/scrollers/vertical-scroller';
+import { AsciiRenderer } from '../player/rendering/ascii-renderer';
+import { CanvasRenderers } from '../player/rendering/canvas-renderers';
 
 const ledMatrix = new LedMatrix();
-const player = new LedMatrixPlayer(ledMatrix.sequence);
+const player = new LedMatrixPlayer({
+  fps: 60,
+  renderer: new AsciiRenderer({
+    elementId: "led-matrix"
+  })
+});
 
-ledMatrix.event.newSequence.on((params) => {
-    player.sequence = params.sequence
+ledMatrix.event.newSequence.on((sequence) => {
+  player.sequence = sequence;
 })
 
 CharactersJSON.import("alphabett.json", (characters) => {
   ledMatrix.addCharacters(characters);
-  player.play();
+  ledMatrix.input = "hello world";
 });
 
 
@@ -102,7 +106,7 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
   const value = (document.getElementById("renderer-select") as HTMLInputElement).value;
   switch (value) {
     case "AsciiRenderer":
-      document.getElementById("led-matrix-canvas").hidden = true;
+      document.getElementById("led-matrix").hidden = true;
       document.getElementById("led-matrix").hidden = false;
       player.renderer = new AsciiRenderer({
         elementId: 'led-matrix',
@@ -111,16 +115,16 @@ document.getElementById("renderer-select").addEventListener("click", (e) => {
       });
       break;
     case "Rect":
-      document.getElementById("led-matrix-canvas").hidden = false;
+      document.getElementById("led-matrix").hidden = false;
       document.getElementById("led-matrix").hidden = true;
-      player.renderer = new CanvaRenderers.Rect({
+      player.renderer = new CanvasRenderers.Rect({
         elementId: 'led-matrix-canvas',
       })
       break;
     case "Ellipse":
-      document.getElementById("led-matrix-canvas").hidden = false;
+      document.getElementById("led-matrix").hidden = false;
       document.getElementById("led-matrix").hidden = true;
-      player.renderer = new CanvaRenderers.Ellipse({
+      player.renderer = new CanvasRenderers.Ellipse({
         elementId: 'led-matrix-canvas',
         colorBitOn: '#e74c3c',
         colorBitOff: '#ecf0f1',

@@ -71,6 +71,7 @@ export class LedMatrix implements LedMatrixParameters {
     public set size(value: number) {
         this._size = value;
         this._panel.board.load(this.input, this._dictionary, this.size);
+        this._panel.GetCurrentSequence();
     }
 
     public get loopEndIndex() {

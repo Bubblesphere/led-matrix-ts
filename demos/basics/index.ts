@@ -1,16 +1,15 @@
 import { LedMatrix } from '../../src/lib/core/led-matrix';
 import { CharactersJSON } from '../../src/lib/core/character-json';
-import { LedMatrixPlayer } from '../../src/lib/player/led-matrix-player';
+import { LedMatrixPlayer } from '../player/led-matrix-player';
 
 const ledMatrix = new LedMatrix();
-const player = new LedMatrixPlayer(ledMatrix.sequence);
+const player = new LedMatrixPlayer();
 
-ledMatrix.event.newSequence.on((params) => {
-    player.sequence = params.sequence
+ledMatrix.event.newSequence.on((sequence) => {
+  player.sequence = sequence;
 })
 
 CharactersJSON.import("alphabet.json", (characters) => {
-    ledMatrix.addCharacters(characters);
-    ledMatrix.input = "hello world";
-    player.play();
+  ledMatrix.addCharacters(characters);
+  ledMatrix.input = "hello world";
 });

@@ -14,15 +14,19 @@
 
     <xmp>
       const ledMatrix = new LedMatrix();
+      const player = new LedMatrixPlayer();
+      
+      ledMatrix.event.newSequence.on((sequence) => {
+        player.sequence = sequence;
+      })
       
       CharactersJSON.import("alphabet.json", (characters) => {
-          ledMatrix.addCharacters(characters);
-          ledMatrix.input = "hello world";
-          ledMatrix.play();
-      });      
+        ledMatrix.addCharacters(characters);
+        ledMatrix.input = "hello world";
+      });
     </xmp>
 
-    <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
+    <canvas id="led-matrix" width="1000" height="200"></canvas>
 
     <script src="basics-bundle.js"></script>
   </body>
