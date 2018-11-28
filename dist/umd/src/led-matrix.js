@@ -342,7 +342,7 @@ class board_Board {
     getColumnAtIndex(index) {
         index %= this.width;
         if (index < this._padding[3] || index >= this.width - this._padding[1]) {
-            return this._createBitOffArrayOfLength(this.height + this._verticalPaddingWidth());
+            return this._createBitOffArrayOfLength(this.height);
         }
         let accumulator = this._padding[3];
         let toReturn;
