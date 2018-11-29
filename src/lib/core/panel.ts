@@ -112,7 +112,7 @@ export class Panel {
       let sequence: Sequence = [];
 
       let panelIndex = 0;
-      for (let i = 0; i <= this._params.scroller.loopEndIndex(this); i++) {
+      for (let i = 0; i < this._params.scroller.loopEndIndex(this) / this.increment; i++) {
         sequence.push(this._params.scroller.generatePanelFrameAtIndex(panelIndex, this));
         panelIndex = this._tickPanelIndex(panelIndex);
       }
