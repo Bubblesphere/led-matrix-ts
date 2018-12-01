@@ -155,7 +155,7 @@ export class Board {
         // Character might be shorter than the tallest character
         // If so, append 0s to make up the difference in size
         if (toReturn.length < this.height) {
-          toReturn.concat(this._createBitOffArrayOfLength(this.height - characterColumn.length));
+          toReturn = toReturn.concat(this._createBitOffArrayOfLength(this.height - characterColumn.length));
         }
 
         return true;
