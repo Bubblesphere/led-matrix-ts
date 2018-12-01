@@ -178,9 +178,9 @@ export class LedMatrix implements LedMatrixParameters {
             increment: 1,
             scroller: new SideScroller(),
             reverse: false,
-            panelWidth: 80,
+            panelWidth: 78,
             letterSpacing: 2,
-            padding: [0, 4],
+            padding: [0, 20, 0, 0],
             size: 1
         }
 
