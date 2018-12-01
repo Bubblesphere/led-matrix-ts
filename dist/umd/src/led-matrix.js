@@ -352,7 +352,7 @@ class board_Board {
                 const characterColumn = character.getColumn(index - (accumulator - character.width));
                 toReturn = this._createBitOffArrayOfLength(this._padding[0]).concat(characterColumn).concat(this._createBitOffArrayOfLength(this._padding[2]));
                 if (toReturn.length < this.height) {
-                    toReturn.concat(this._createBitOffArrayOfLength(this.height - characterColumn.length));
+                    toReturn = toReturn.concat(this._createBitOffArrayOfLength(this.height - characterColumn.length));
                 }
                 return true;
             }
