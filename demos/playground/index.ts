@@ -1,10 +1,10 @@
 import { LedMatrix } from '../../src/lib/core/led-matrix';
 import { CharactersJSON } from '../../src/lib/core/character-json';
-import { LedMatrixPlayer } from '../player/led-matrix-player';
 import { SideScroller } from '../../src/lib/core/scrollers/side-scroller';
 import { VerticalScroller } from '../../src/lib/core/scrollers/vertical-scroller';
-import { AsciiRenderer } from '../player/rendering/ascii-renderer';
-import { CanvasRenderers } from '../player/rendering/canvas-renderers';
+import { AsciiRenderer } from '../../src/lib/core/player/rendering/ascii-renderer';
+import { LedMatrixPlayer } from '../../src/lib/core/player/led-matrix-player';
+import { CanvasRenderers } from '../../src/lib/core/player/rendering/canvas-renderers';
 
 const ledMatrix = new LedMatrix();
 const player = new LedMatrixPlayer({

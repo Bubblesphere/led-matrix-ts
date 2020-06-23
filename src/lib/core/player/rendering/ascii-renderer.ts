@@ -1,5 +1,5 @@
 import { Renderer, IRendererParameters } from "./renderer";
-import { PanelFrame } from '../../../src/index';
+import { PanelFrame } from '../../../../index';
 
 export interface AsciiRendererParameter extends IRendererParameters  {
   characterBitOn?: string,

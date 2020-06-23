@@ -1,6 +1,6 @@
-import { PanelFrame, Sequence, Event } from '../../src/index';
+import { PanelFrame, Sequence, Event } from '../../../index';
 import { Renderer } from './rendering/renderer';
-import { Exception } from '../../src/lib/utils/exception';
+import { Exception } from '../../utils/exception';
 import { RendererBuilder, RendererTypes } from './rendering/renderer-builder';
 
 export interface PanelPlayerParameters  {

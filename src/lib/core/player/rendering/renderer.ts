@@ -1,4 +1,4 @@
-import { PanelFrame }  from '../../../src/index';
+import { PanelFrame }  from '../../../../index';
 
 export abstract class Renderer {
   protected _parameters: IRendererParameters;

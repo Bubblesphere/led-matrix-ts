@@ -1,6 +1,6 @@
 import { LedMatrix } from "../../src/lib/core/led-matrix";
 import { CharactersJSON } from "../../src/lib/core/character-json";
-import { LedMatrixPlayer } from "../player/led-matrix-player";
+import { LedMatrixPlayer } from '../../src/lib/core/player/led-matrix-player';
 
 const ledMatrix = new LedMatrix();
 const player = new LedMatrixPlayer();

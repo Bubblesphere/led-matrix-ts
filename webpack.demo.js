@@ -11,11 +11,12 @@ module.exports = {
     alphabet: "./demos/alphabet/index.ts",
     basics: "./demos/basics/index.ts",
     playground: "./demos/playground/index.ts",
+    gif: "./demos/gif/index.ts",
   },
   output: {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "distDemos"),
-    publicPath: "/distDemos/"
+    publicPath: "/distDemos/",
   },
   plugins: [
     new CopyWebpackPlugin([{ 
@@ -23,6 +24,12 @@ module.exports = {
       flatten: true
     },{ 
       from: './demos/**/*.json',
+      flatten: true
+    },{ 
+      from: './demos/**/*.gif',
+      flatten: true
+    },{ 
+      from: './demos/**/*.jpg',
       flatten: true
     }])
   ],

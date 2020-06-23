@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>led-matrix-ts</title>
+  </head>
+  <body>
+
+    <h1>LED Matrix Typescript Basics</h1>
+    
+    <ul>
+      <li><a href="alphabet.html">Alphabet</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="playground.html">Playground</a></li>
+    </ul>
+
+    <xmp>
+      const ledMatrix = new LedMatrix();
+      const player = new LedMatrixPlayer();
+      
+      ledMatrix.event.newSequence.on((sequence) => {
+        player.sequence = sequence;
+      })
+      
+      CharactersJSON.import("alphabet.json", (characters) => {
+        ledMatrix.addCharacters(characters);
+        ledMatrix.input = "hello world";
+      });
+    </xmp>
+
+    <img id="example1" src="./rub_test_preview.jpg" rel:animated_src="./homer.gif" rel:auto_play="0" width="24" height="20" />
+    <!--<canvas id="led-matrix" width="1000" height="1000"></canvas>-->
+    <div id="led-matrix" style="font-family: monospace; white-space: pre;"></div>
+
+    
+    <script src="gif-bundle.js"></script>
+  </body>
+</html>
